@@ -14,10 +14,11 @@ namespace API.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public bool Is_Verified { get; set; }
-        public bool Is_Seller { get; set; }
-        public bool Is_Disabled { get; set; }
-        public bool Is_Support { get; set; }
-        public bool Is_Admin { get; set; }
+        public bool IsVerified { get; set; }
+        public bool IsSeller { get; set; }
+        public bool IsDisabled { get; set; }
+        public bool IsSupport { get; set; }
+        public bool IsAdmin { get; set; }
+        public List<Wishlist> Whislists { get; set; }
     }
 }

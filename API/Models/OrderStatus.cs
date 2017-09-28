@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    public class Wishlist
+    public class OrderStatus
     {
-        public User User { get; set; }
-        public int UserId { get; set; }
         public int Id { get; set; }
-        public string Name { get; set; }
-
+        public DateTime Date { get; set; }
+        public StatusOfOrder Status { get; set; }
+        
     }
 }

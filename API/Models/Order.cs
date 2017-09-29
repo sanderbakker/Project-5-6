@@ -13,6 +13,7 @@ namespace API.Models
         public int UserId { get; set; }
         public int UserAddressId { get; set; }
         public int Id { get; set; }
+        public List<OrderStatus> OrderStatus { get; set; } 
 
     }
 }

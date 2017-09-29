@@ -10,7 +10,9 @@ namespace API.Models
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public StatusOfOrder Status { get; set; }
+        public int StatusId { get; set;  }
+        public Order Order { get; set; }
+        public int OrderId { get; set; }
         
     }
 }

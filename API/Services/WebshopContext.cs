@@ -47,7 +47,11 @@ namespace API.Services
             modelBuilder.Entity<UserAddress>()
                 .HasMany(ua => ua.Orders)
                 .WithOne(o => o.UserAddress)
-                .HasForeignKey(o => o.UserAddressId); 
+                .HasForeignKey(o => o.UserAddressId);
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderStatus)
+                .WithOne(os => os.Order)
+                .HasForeignKey(os => os.OrderId); 
 
             
         }

@@ -14,6 +14,7 @@ namespace API.Services
         public DbSet<Country> Countries { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<StatusOfOrder> StatusOfOrder { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
         
 
         public WebshopContext(DbContextOptions<WebshopContext> options)
@@ -48,12 +49,27 @@ namespace API.Services
                 .HasMany(ua => ua.Orders)
                 .WithOne(o => o.UserAddress)
                 .HasForeignKey(o => o.UserAddressId);
+
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderStatus)
                 .WithOne(os => os.Order)
-                .HasForeignKey(os => os.OrderId); 
+                .HasForeignKey(os => os.OrderId);
 
-            
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Tickets)
+                .WithOne(t => t.User)
+                .HasForeignKey(t => t.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Tickets)
+                .WithOne(t => t.Admin)
+                .HasForeignKey(t => t.AdminId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Tickets)
+                .WithOne(t => t.Customer)
+                .HasForeignKey(t => t.CustomerId);
+
         }
     }
 }

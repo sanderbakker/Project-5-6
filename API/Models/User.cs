@@ -22,5 +22,6 @@ namespace API.Models
         public List<Wishlist> Whislists { get; set; }
         public List<UserAddress> Address { get; set; }
         public List<Order> Orders { get; set; }
+        public List<Ticket> Tickets { get; set; }
     }
 }

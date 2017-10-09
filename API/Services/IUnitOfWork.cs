@@ -2,7 +2,7 @@
 
 namespace API.Services
 {
-    interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         IProductRepository Products { get; }
         int Complete();

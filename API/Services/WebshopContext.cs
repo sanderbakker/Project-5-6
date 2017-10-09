@@ -9,7 +9,7 @@ namespace API.Services
     public class WebshopContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<Product> Products { get; set; }
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
         //public DbSet<Wishlist> Wishlists { get; set; }
         //public DbSet<UserAddress> Addresses { get; set; }
         //public DbSet<Country> Countries { get; set; }
@@ -17,15 +17,16 @@ namespace API.Services
         //public DbSet<StatusOfOrder> StatusOfOrder { get; set; }
         //public DbSet<Ticket> Tickets { get; set; }
         
-
         public WebshopContext(DbContextOptions<WebshopContext> options)
             : base(options)
         {
 
         }
+
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);
+
         //    modelBuilder.Entity<User>()
         //        .HasMany(u => u.Whislists)
         //        .WithOne(w => w.User)
@@ -70,7 +71,6 @@ namespace API.Services
         //        .HasMany(u => u.Tickets)
         //        .WithOne(t => t.Customer)
         //        .HasForeignKey(t => t.CustomerId);
-
         //}
     }
 }

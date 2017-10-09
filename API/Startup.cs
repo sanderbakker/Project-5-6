@@ -37,15 +37,15 @@ namespace API
                 .AddEntityFrameworkStores<WebshopContext>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.Events.OnRedirectToLogin = context =>
+                .AddCookie(options =>
                 {
-                    context.Response.Headers["Location"] = context.RedirectUri;
-                    context.Response.StatusCode = 401;
-                    return Task.CompletedTask;
-                };
-            });
+                    options.Events.OnRedirectToLogin = context =>
+                    {
+                        context.Response.Headers["Location"] = context.RedirectUri;
+                        context.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
+                });
 
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("JWTSettings:SecretKey").Value));
 
@@ -67,13 +67,16 @@ namespace API
                 // If you want to allow a certain amount of clock drift, set that here:
                 ClockSkew = TimeSpan.Zero
             };
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                options.TokenValidationParameters = tokenValidationParameters;
-            });
+                .AddJwtBearer(options => {
+                    options.TokenValidationParameters = tokenValidationParameters;
+                });
+
             services.AddAuthorization(options =>
             {
-                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build();
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                                                .RequireAuthenticatedUser().Build();
             });
 
             services.AddMvc();

@@ -8,7 +8,7 @@ namespace API.Models
 {
     public class Wishlist
     {
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
         public int UserId { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }

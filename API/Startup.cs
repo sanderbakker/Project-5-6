@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using API.Models;
 
 namespace API
 {
@@ -29,7 +30,9 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WebshopContext>(opt => opt.UseInMemoryDatabase());
+            var connectionString = Configuration.GetConnectionString("WebshopDb");
+
+            services.AddEntityFrameworkNpgsql().AddDbContext<WebshopContext>(opt => opt.UseNpgsql(connectionString));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));

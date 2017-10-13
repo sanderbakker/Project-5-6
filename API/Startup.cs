@@ -30,15 +30,19 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // get the connection string from appsettings.json
             var connectionString = Configuration.GetConnectionString("WebshopDb");
 
+            // setup database and unit of work
             services.AddEntityFrameworkNpgsql().AddDbContext<WebshopContext>(opt => opt.UseNpgsql(connectionString));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            // configure asp.net identity with settings from appsettings.json
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<WebshopContext>();
 
+            // prevent a 401 unauthorized errorpage from redirecting to non existant page
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -50,8 +54,10 @@ namespace API
                     };
                 });
 
+            // grab the secret from JWTSettings in appsettings.json
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("JWTSettings:SecretKey").Value));
 
+            // setup some token validation parameters
             var tokenValidationParameters = new TokenValidationParameters
             {
                 // The signing key must match!
@@ -71,11 +77,13 @@ namespace API
                 ClockSkew = TimeSpan.Zero
             };
 
+            // add bearer tokens
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = tokenValidationParameters;
                 });
 
+            // set default authentication policies
             services.AddAuthorization(options =>
             {
                 options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)

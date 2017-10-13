@@ -42,10 +42,11 @@ namespace API.Controllers
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return new JsonResult(new Dictionary<string, object>
-                        {
-                            { "access_token", GetAccessToken(Credentials.Email) },
-                            { "id_token", GetIdToken(user) }
-                        });
+                    {
+                        // setup token for newly registered user
+                        { "access_token", GetAccessToken(Credentials.Email) },
+                        { "id_token", GetIdToken(user) }
+                    });
                 }
                 return Errors(result);
 
@@ -65,6 +66,7 @@ namespace API.Controllers
                     var user = await _userManager.FindByEmailAsync(Credentials.Email);
                     return new JsonResult(new Dictionary<string, object>
                     {
+                        // setup token for signed in user
                         { "access_token", GetAccessToken(Credentials.Email) },
                         { "id_token", GetIdToken(user) }
                     });
@@ -100,14 +102,17 @@ namespace API.Controllers
 
         private string GetToken(Dictionary<string, object> payload)
         {
+            // setup the token with proper secret
             var secret = _options.SecretKey;
 
+            // grab all the necessary data for the token
             payload.Add("iss", _options.Issuer);
             payload.Add("aud", _options.Audience);
             payload.Add("nbf", ConvertToUnixTimestamp(DateTime.Now));
             payload.Add("iat", ConvertToUnixTimestamp(DateTime.Now));
             payload.Add("exp", ConvertToUnixTimestamp(DateTime.Now.AddDays(7)));
 
+            // set the proper encryption
             IJwtAlgorithm algorithm = new HMACSHA256Algorithm();
             IJsonSerializer serializer = new JsonNetSerializer();
             IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();

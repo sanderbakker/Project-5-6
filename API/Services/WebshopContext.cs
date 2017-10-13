@@ -6,7 +6,7 @@ using API.Models;
 
 namespace API.Services
 {
-    public class WebshopContext : IdentityDbContext<IdentityUser>
+    public class WebshopContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Product> Products { get; set; }
         //public DbSet<User> Users { get; set; }

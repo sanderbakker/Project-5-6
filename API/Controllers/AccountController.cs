@@ -1,30 +1,28 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using API.Models;
-using System.Linq;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
+﻿using System;
 using System.Threading.Tasks;
-using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using JWT;
 using JWT.Serializers;
 using JWT.Algorithms;
-using Microsoft.Extensions.Options;
-using System;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+using API.Models;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JWTSettings _options;
 
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IOptions<JWTSettings> optionsAccessor)
         {
             _userManager = userManager;
@@ -37,7 +35,7 @@ namespace API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Credentials.Email, Email = Credentials.Email };
+                var user = new ApplicationUser { UserName = Credentials.Email, Email = Credentials.Email };
                 var result = await _userManager.CreateAsync(user, Credentials.Password);
 
                 if (result.Succeeded)

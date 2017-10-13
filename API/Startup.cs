@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Threading.Tasks;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Threading.Tasks;
-
-using API.Services;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System;
 using Microsoft.AspNetCore.Authorization;
+
+using API.Services;
 using API.Models;
 
 namespace API
@@ -36,7 +36,7 @@ namespace API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<WebshopContext>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

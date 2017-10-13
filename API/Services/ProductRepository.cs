@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using API.Models;
 using System.Linq;
+
+using API.Models;
 
 namespace API.Services
 {

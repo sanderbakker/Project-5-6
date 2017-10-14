@@ -8,7 +8,6 @@ using API.Models;
 
 namespace API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     public class ProductsController : Controller
     {

@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
 using API.Models;
@@ -22,8 +21,7 @@ namespace API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _unitOfWork.Users.Register(Credentials);
-                return result;
+                return await _unitOfWork.Users.Register(Credentials);
             }
             return _unitOfWork.Users.Error("Unexpected error");
         }
@@ -33,8 +31,7 @@ namespace API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _unitOfWork.Users.SignIn(Credentials);
-                return result;
+                return await _unitOfWork.Users.SignIn(Credentials);
             }
             return _unitOfWork.Users.Error("Unexpected error");
         }

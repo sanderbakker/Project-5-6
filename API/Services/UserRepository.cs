@@ -30,6 +30,7 @@ namespace API.Services
             _options = optionsAccessor.Value;
         }
 
+        
         public async Task<IActionResult> Register(Credentials Credentials)
         {
             var user = new ApplicationUser { UserName = Credentials.Email, Email = Credentials.Email };
@@ -131,6 +132,25 @@ namespace API.Services
             TimeSpan diff = date.ToUniversalTime() - origin;
 
             return Math.Floor(diff.TotalSeconds);
+        }
+
+        public async Task<ApplicationUser> Get(string id)
+        {
+            return await _userManager.FindByIdAsync(id);
+        }
+
+        public IEnumerable<ApplicationUser> GetAll()
+        {
+            return _userManager.Users.ToList();
+        }
+
+        public IEnumerable<ApplicationUser> GetAllPaginated(int pageIndex, int pageSize = 10)
+        {
+            return _userManager.Users
+                .OrderBy(p => p.UserName)
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
         }
     }
 }

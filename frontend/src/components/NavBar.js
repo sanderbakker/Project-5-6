@@ -38,9 +38,6 @@ class NavBar extends Component {
                                     Categories
                                 </NavLink>
                             </NavItem>
-                            <NavItem>
-                                {/* <NavLink href="https://github.com/reactstrap/reactstrap">Github</NavLink> */}
-                            </NavItem>
                         </Nav>
                         <Nav className='mx-auto' navbar>
                             <Form inline>

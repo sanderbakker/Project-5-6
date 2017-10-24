@@ -1,0 +1,19 @@
+.content-container{
+    margin-top: 15px;  
+}
+.check{
+    list-style-type: none;
+}
+ul{
+    padding: 0;
+    list-style-type: none;
+}
+hr{
+    background-color: #2C3544;
+}
+.margin-row{
+    margin-top: 30px;
+}
+.offset-md-1{
+    margin-left: 8.333333%;
+}

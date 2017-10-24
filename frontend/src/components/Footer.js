@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'; 
+import {Container, Col, Row} from 'reactstrap'; 
 import '../css/Footer.css'; 
 
 class Footer extends Component{
     render(){
         return(
             <div>
-                <footer className="mainfooter fixed-bottom" role="contentinfo">
+                <footer className="mainfooter" role="contentinfo">
                     <div className="footer-middle">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-md-3 col-sm-6">
+                        <Container>
+                            <Row>
+                                <Col md="3" sm="3">
                                     <div className="footer-pad">
                                         <h4>Address</h4>
                                             <address>
@@ -24,8 +25,9 @@ class Footer extends Component{
                                                 </ul>
                                             </address>
                                     </div>
-                                </div>
-                                <div className="col-md-3 col-sm-6">
+                                </Col>
+                                <Col md="3" sm="6">
+                                
                                     <div className="footer-pad">
                                         <h4>Categories</h4>
                                         <ul className="list-unstyled">
@@ -71,8 +73,8 @@ class Footer extends Component{
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
-                                <div className="col-md-3 col-sm-6">
+                                </Col>
+                                <Col md="3" sm="6">
                                     <div className="footer-pad">
                                         <h4>About Us</h4>
                                         <ul className="list-unstyled">
@@ -108,8 +110,8 @@ class Footer extends Component{
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
-                                <div className="col-md-3 col-sm-6">
+                                </Col>
+                                <Col sm="6" md="3">
                                     <div className="footer-pad">
                                         <h4>Contact Us</h4>
                                         <ul className="list-unstyled">
@@ -145,18 +147,18 @@ class Footer extends Component{
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                </Col>
+                            </Row>
+                        </Container>
                     </div>
                     <div className="footer-bottom">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-xs-12">
+                        <Container>
+                            <Row>
+                                <Col xs='12'>
                                     <p className="text-xs-center">[NAME] &copy; 2017 </p>
-                                </div>
-                            </div>
-                        </div>
+                                </Col>
+                            </Row>
+                        </Container>
                     </div>
                 </footer>
             </div>

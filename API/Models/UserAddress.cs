@@ -8,7 +8,7 @@ namespace API.Models
     public class UserAddress
     {
         public int Id { get; set; }
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
         public int UserId { get; set; }
         public string Street { get; set; }
         public string Number { get; set; }

@@ -2,9 +2,10 @@
 
 namespace API.Services
 {
-    interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         IProductRepository Products { get; }
+        UserRepository Users { get; }
         int Complete();
     }
 }

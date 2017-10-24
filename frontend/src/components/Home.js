@@ -8,43 +8,43 @@ class Home extends Component {
     render(){
         return(
             <div>
-                <Container fluid='true' className="content-container container-height">
+                <Container fluid={true} className="content-container container-height">
                     <Row>
                         <Col md="2">
                             <ListGroup>
                                 <ListGroupItem>
                                     <Link exact to='/'>
-                                        <i class="fa fa-ship"></i> Ships
+                                        <i className="fa fa-ship"></i> Ships
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     <Link exact to='/'>
-                                        <i class="fa fa-plane"></i> Planes
+                                        <i className="fa fa-plane"></i> Planes
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     <Link exact to='/'>
-                                        <i class="fa fa-inbox"></i> Bundles
+                                        <i className="fa fa-inbox"></i> Bundles
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     <Link exact to='/'>
-                                        <i class="fa fa-home"></i> Houses
+                                        <i className="fa fa-home"></i> Houses
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     <Link exact to='/'>
-                                        <i class="fa fa-diamond"></i> Jewelry
+                                        <i className="fa fa-diamond"></i> Jewelry
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     <Link exact to='/'>
-                                        <i class="fa fa-sun-o"></i> Private Islands
+                                        <i className="fa fa-sun-o"></i> Private Islands
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     <Link exact to='/'>
-                                        <i class="fa fa-globe"></i> Other
+                                        <i className="fa fa-globe"></i> Other
                                     </Link>
                                 </ListGroupItem>
                             </ListGroup>

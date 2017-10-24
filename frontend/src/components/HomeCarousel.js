@@ -4,7 +4,7 @@ import {
     CarouselItem,
     CarouselControl,
     CarouselIndicators,
-    CarouselCaption
+    // CarouselCaption
   } from 'reactstrap';
 
 import slide1 from '../assets/slider1.jpg';
@@ -76,7 +76,7 @@ import slide3 from '../assets/slider3.jpg';
                 src={item.src}
                 altText={item.altText}
             >
-                <CarouselCaption captionText={item.caption} captionHeader={item.caption} />
+                {/* <CarouselCaption captionText={item.caption} captionHeader={item.caption} /> */}
             </CarouselItem>
             );
         });

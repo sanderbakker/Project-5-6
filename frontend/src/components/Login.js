@@ -10,6 +10,8 @@ class Login extends Component{
         super(props); 
         this.state = {email: '', password: ''}
         this.handleEmailChange = this.handleEmailChange.bind(this); 
+        this.handlePasswordChange = this.handlePasswordChange.bind(this); 
+        this.handleSubmit = this.handleSubmit.bind(this); 
     }
 
     handleEmailChange(e){
@@ -20,8 +22,8 @@ class Login extends Component{
         this.setState({password: e.target.value})
     }
 
-    handleButtonClick(e){
-        
+    handleSubmit(e){
+        e.preventDefault(); 
         console.log(this.state.email, this.state.password); 
         
     }
@@ -49,9 +51,9 @@ class Login extends Component{
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="inputPassword">Password</Label>
-                                    <Input size='sm' type="password" required className="form-control col-md-6" id="inputPassword" placeholder="Password"/>
+                                    <Input size='sm' onChange={this.handlePasswordChange} type="password" required className="form-control col-md-6" id="inputPassword" placeholder="Password"/>
                                 </FormGroup>
-                                <Button color='secondary' size='sm'>Login</Button>
+                                <Button color='secondary' size='sm' onClick={this.handleSubmit}>Login</Button>
                                 <br></br>
                                 <br></br>
                                 <small>

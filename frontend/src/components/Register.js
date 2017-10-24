@@ -33,7 +33,7 @@ class Register extends Component{
                                 <br></br>
                                 <br></br>
                                 <small>
-                                    <Link excat to='/login'>
+                                    <Link exact to='/login'>
                                         <i className="fa fa-arrow-right"></i> Already have an account? Login
                                     </Link>
                                 </small>

@@ -32,42 +32,42 @@ class Footer extends Component{
                                         <h4>Categories</h4>
                                         <ul className="list-unstyled">
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Islands
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Ships
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Planes
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Bundles
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Houses
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Jewelry
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Private Islands
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Other
                                                 </Link>
                                             </li>
@@ -79,32 +79,32 @@ class Footer extends Component{
                                         <h4>About Us</h4>
                                         <ul className="list-unstyled">
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Giftcards
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     News
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Disclaimer
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Privacy Policy
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     FAQs
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     Webmaster
                                                 </Link>
                                             </li>
@@ -116,32 +116,32 @@ class Footer extends Component{
                                         <h4>Contact Us</h4>
                                         <ul className="list-unstyled">
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     <i className="fa fa-phone"></i> Phone
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     <i className="fa fa-envelope"></i> Mail
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     <i className="fa fa-facebook"></i> Facebook
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     <i className="fa fa-twitter"></i> Twitter
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     <i className="fa fa-linkedin"></i> Linkedin
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link excat to='/'>
+                                                <Link exact to='/'>
                                                     <i className="fa fa-google"></i> Google
                                                 </Link>
                                             </li>

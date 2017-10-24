@@ -27,7 +27,7 @@ class NavBar extends Component {
             <div>
                 <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'/>
                 <Navbar color="faded" light expand="md">
-                    <NavLink className='navbar-brand' excat to='/'>
+                    <NavLink className='navbar-brand' exact to='/'>
                         <img src={logo} alt='Brand' width='35px' height='35px'/>
                     </NavLink>
                     <NavbarToggler onClick={this.toggle} />
@@ -49,7 +49,7 @@ class NavBar extends Component {
                         </Nav>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink className='nav-link' excat to='/cart'>
+                                <NavLink className='nav-link' exact to='/cart'>
                                     <i className='fa fa-shopping-cart'></i>
                                 </NavLink>
                             </NavItem>

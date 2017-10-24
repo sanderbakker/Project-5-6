@@ -13,37 +13,37 @@ class Home extends Component {
                         <Col md="2">
                             <ListGroup>
                                 <ListGroupItem>
-                                    <Link excat to='/'>
+                                    <Link exact to='/'>
                                         <i class="fa fa-ship"></i> Ships
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                                    <Link excat to='/'>
+                                    <Link exact to='/'>
                                         <i class="fa fa-plane"></i> Planes
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                                    <Link excat to='/'>
+                                    <Link exact to='/'>
                                         <i class="fa fa-inbox"></i> Bundles
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                                    <Link excat to='/'>
+                                    <Link exact to='/'>
                                         <i class="fa fa-home"></i> Houses
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                                    <Link excat to='/'>
+                                    <Link exact to='/'>
                                         <i class="fa fa-diamond"></i> Jewelry
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                                    <Link excat to='/'>
+                                    <Link exact to='/'>
                                         <i class="fa fa-sun-o"></i> Private Islands
                                     </Link>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                                    <Link excat to='/'>
+                                    <Link exact to='/'>
                                         <i class="fa fa-globe"></i> Other
                                     </Link>
                                 </ListGroupItem>

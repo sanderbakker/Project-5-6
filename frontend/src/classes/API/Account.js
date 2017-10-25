@@ -7,8 +7,8 @@ class Account extends API  {
 
 	login(_email, _password) {
 		this.post('/account/sign-in', {_email, _password})
-
 	}
+
 	register(_email, _password){
 		this.post('/account', {"email": _email, "password": _password}); 
 	}

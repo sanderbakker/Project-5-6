@@ -31,7 +31,7 @@ class Register extends Component{
     handleSubmit(e){
         e.preventDefault();
         if(this.state.password === this.state.rePassword){
-            account.register(this.state.email, this.state.password); 
+            console.log(account.register(this.state.email, this.state.password)); 
             console.log(this.state.email, this.state.password, this.state.rePassword);    
         }
         else{

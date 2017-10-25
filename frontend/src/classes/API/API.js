@@ -5,7 +5,8 @@
 
 class API {
 	constructor() {
-		this.API_url = 'http://localhost:5000/api'
+		this.API_url = 'http://localhost:50594/api'
+		
 	} 
 
 	/**
@@ -23,9 +24,22 @@ class API {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(_data)
+		})
+		.then(response => response.json())
+		.then(function(response){
+			console.log(response); 
+			return response;
+		})
+		// .then(function(response) {
+		// 	console.log(response.status);
+		// 	return response.json();
+		//   })
+		
+		.catch(error => {
+			console.log(error); 
 		});	
-
-		return response.json();
+		
+		
 	}
 
 	/**
@@ -35,8 +49,11 @@ class API {
 	 */	
 
 	async get(_endpoint) {
-		let response = await fetch(this.API_url + _endpoint); 
-		return response.json();
+		let response = await fetch(this.API_url + _endpoint)
+		.then(response => response.json())
+		.then(response => {
+			return response; 
+		}); 
 	}
 }
 

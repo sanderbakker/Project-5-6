@@ -13,8 +13,8 @@ class Login extends Component{
         this.handlePasswordChange = this.handlePasswordChange.bind(this); 
         this.handleSubmit = this.handleSubmit.bind(this); 
 
-        var products = new Products();
-        console.log(products.getProducts());
+        // var products = new Products();
+        // console.log(products.getProducts());
     }
 
     handleEmailChange(e){

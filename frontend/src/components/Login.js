@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom'; 
 import {Row, Col, Container, Form, Input, Label, FormGroup, Button} from 'reactstrap'; 
 import '../css/Login.css'; 
-
+import {Products} from '../classes/API/Products.js';
 
 
 class Login extends Component{
@@ -12,6 +12,9 @@ class Login extends Component{
         this.handleEmailChange = this.handleEmailChange.bind(this); 
         this.handlePasswordChange = this.handlePasswordChange.bind(this); 
         this.handleSubmit = this.handleSubmit.bind(this); 
+
+        var products = new Products();
+        console.log(products.getProducts());
     }
 
     handleEmailChange(e){

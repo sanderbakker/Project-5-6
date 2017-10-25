@@ -1,8 +1,40 @@
-﻿namespace API.Models
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace API.Models
 {
     public class Product
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        [Column("Category")]
+        public string CategoryString
+        {
+            get { return Category.ToString(); }
+            private set { Category = value.ParseEnum<Categories>(); }
+        }
+
+        [NotMapped]
+        public Categories Category { get; set; }
+        
+        public enum Categories
+        {
+            House,
+            Island,
+            Plane,
+            Ship,
+            Car,
+            Jewelry,
+            Other
+        }
+    }
+
+    public static class StringExtensions
+    {
+        public static T ParseEnum<T>(this string value)
+        {
+            return (T)Enum.Parse(typeof(T), value, true);
+        }
     }
 }

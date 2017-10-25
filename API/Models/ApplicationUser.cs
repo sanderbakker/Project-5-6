@@ -12,9 +12,5 @@ namespace API.Models
         public bool IsDisabled { get; set; }
         public bool IsSupport { get; set; }
         public bool IsAdmin { get; set; }
-        public List<Wishlist> Whislists { get; set; }
-        public List<UserAddress> Address { get; set; }
-        public List<Order> Orders { get; set; }
-        public List<Ticket> Tickets { get; set; }
     }
 }

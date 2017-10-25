@@ -19,7 +19,7 @@ namespace API.Controllers
 
             if (_unitOfWork.Products.GetAll().Count() == 0)
             {
-                _unitOfWork.Products.Add(new Product { Id = 1, Name = "Banaan" });
+                _unitOfWork.Products.Add(new Product { Id = 1, Name = "Banaan", Category = Product.Categories.Other });
                 _unitOfWork.Complete();
             }
         }

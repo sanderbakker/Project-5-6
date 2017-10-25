@@ -16,7 +16,7 @@ namespace API.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Credentials Credentials)
         {
             if (ModelState.IsValid)
@@ -26,7 +26,7 @@ namespace API.Controllers
             return _unitOfWork.Users.Error("Unexpected error");
         }
 
-        [HttpPost("sign-in")]
+        [HttpPost("login")]
         public async Task<IActionResult> SignIn([FromBody] Credentials Credentials)
         {
             if (ModelState.IsValid)

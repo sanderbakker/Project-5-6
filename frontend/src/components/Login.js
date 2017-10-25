@@ -36,7 +36,7 @@ class Login extends Component{
                 if(typeof val.access_token !== 'undefined')
                     console.log(val.access_token);
                 else 
-                    alert(val);
+                    console.error(val);
             });
 
     }

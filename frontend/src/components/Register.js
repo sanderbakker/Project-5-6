@@ -4,8 +4,6 @@ import {Link} from 'react-router-dom';
 import '../css/Login.css'; 
 import {Account} from '../classes/API/Account';
 
-let account = new Account(); 
-
 class Register extends Component{
     constructor(props){
         super(props);
@@ -31,12 +29,21 @@ class Register extends Component{
     handleSubmit(e){
         e.preventDefault();
         if(this.state.password === this.state.rePassword){
-            console.log(account.register(this.state.email, this.state.password)); 
-            console.log(this.state.email, this.state.password, this.state.rePassword);    
-        }
-        else{
+            let account = new Account();             
+            let accountPromise = account.register(this.state.email, this.state.password);
+            accountPromise.then(
+                (val) => {
+                    if(typeof val.access_token !== 'undefined')
+                        console.log(val.access_token);
+                    else
+                        console.error(val)
+
+                 });            
+        } else{
             console.log("Passwords don't match try again"); 
         }
+
+
          
     }
 

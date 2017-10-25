@@ -19,7 +19,7 @@ namespace API.Controllers
 
             if (_unitOfWork.Products.GetAll().Count() == 0)
             {
-                _unitOfWork.Products.Add(new Product { Id = 1, Name = "Banaan" });
+                _unitOfWork.Products.Add(new Product { Id = 1, Name = "Banaan", Category = Product.Categories.Other });
                 _unitOfWork.Complete();
             }
         }
@@ -28,6 +28,71 @@ namespace API.Controllers
         public IEnumerable<Product> GetAll()
         {
             return _unitOfWork.Products.GetAll();
+        }
+
+        [HttpGet("{id}", Name = "GetProduct" )]
+        public IActionResult Get(int id)
+        {
+            var item = _unitOfWork.Products.Get(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return new ObjectResult(item);
+        }
+
+        [HttpGet("paginated/{index}/{pagesize?}")]
+        public IActionResult GetPaginated(int index, int pagesize = 10)
+        {
+            return new ObjectResult(_unitOfWork.Products.GetAllPaginated(index, pagesize));
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] Product item)
+        {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+
+            _unitOfWork.Products.Add(item);
+            _unitOfWork.Complete();
+
+            return CreatedAtRoute("GetProduct", new { id = item.Id }, item);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] Product item)
+        {
+            if (item == null || item.Id != id)
+            {
+                return BadRequest();
+            }
+
+            var product = _unitOfWork.Products.Find(p => p.Id == id).FirstOrDefault();
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.Name = item.Name;
+            _unitOfWork.Complete();
+
+            return new NoContentResult();
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var item = _unitOfWork.Products.Get(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            _unitOfWork.Products.Remove(item);
+            _unitOfWork.Complete();
+            return new NoContentResult();
         }
     }
 }

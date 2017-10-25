@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {Row, Container, Form, FormGroup, Col, Label, Input, Button} from 'reactstrap';
 import {Link} from 'react-router-dom'; 
 import '../css/Login.css'; 
+import {Account} from '../classes/API/Account';
+
+let account = new Account(); 
 
 class Register extends Component{
     constructor(props){
@@ -28,6 +31,7 @@ class Register extends Component{
     handleSubmit(e){
         e.preventDefault();
         if(this.state.password === this.state.rePassword){
+            account.register(this.state.email, this.state.password); 
             console.log(this.state.email, this.state.password, this.state.rePassword);    
         }
         else{

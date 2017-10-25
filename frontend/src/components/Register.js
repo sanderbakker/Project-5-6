@@ -4,6 +4,38 @@ import {Link} from 'react-router-dom';
 import '../css/Login.css'; 
 
 class Register extends Component{
+    constructor(props){
+        super(props);
+        this.state = {email: '', password: '', rePassword: ''};
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handleRepeatPasswordChange = this.handleRepeatPasswordChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);  
+    }
+    
+    handleEmailChange(e){
+        this.setState({email: e.target.value}); 
+    }
+
+    handleRepeatPasswordChange(e){
+        this.setState({rePassword: e.target.value});
+    }
+    
+    handlePasswordChange(e){
+        this.setState({password: e.target.value}); 
+    }
+
+    handleSubmit(e){
+        e.preventDefault();
+        if(this.state.password === this.state.rePassword){
+            console.log(this.state.email, this.state.password, this.state.rePassword);    
+        }
+        else{
+            console.log("Passwords don't match try again"); 
+        }
+         
+    }
+
     render(){
         return(
             <div>
@@ -19,21 +51,21 @@ class Register extends Component{
                             <Form className="mx-auto">
                                 <FormGroup>
                                     <Label for="exampleInputEmail1">Email address</Label>
-                                    <Input size="sm" type="email" className="form-control col-md-6" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
+                                    <Input size="sm" type="email" onChange={this.handleEmailChange} className="form-control col-md-6" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="password">Password</Label>
-                                    <Input size="sm" type="password" className="form-control col-md-6" id="password" placeholder="Password"/>
+                                    <Input size="sm" type="password" onChange={this.handlePasswordChange} className="form-control col-md-6" id="password" placeholder="Password"/>
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="repeatPassword">Repeat password</Label>
-                                    <Input size="sm" type="password" className="form-control col-md-6" id="repeatPassword" placeholder="Repeat password"/>
+                                    <Input size="sm" type="password" onChange={this.handleRepeatPasswordChange} className="form-control col-md-6" id="repeatPassword" placeholder="Repeat password"/>
                                 </FormGroup>
-                                <Button size="sm" color='secondary' type="submit">Create account</Button>
+                                <Button size="sm" color='secondary' onClick={this.handleSubmit} type="submit">Create account</Button>
                                 <br></br>
                                 <br></br>
                                 <small>
-                                    <Link excat to='/login'>
+                                    <Link exact to='/login'>
                                         <i className="fa fa-arrow-right"></i> Already have an account? Login
                                     </Link>
                                 </small>

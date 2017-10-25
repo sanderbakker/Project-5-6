@@ -5,7 +5,7 @@
 
 class API {
 	constructor() {
-		this.API_url = 'http://localhost:50594/api'
+		this.API_url = 'http://localhost:5000/api'
 	} 
 
 	/**
@@ -15,8 +15,8 @@ class API {
 	 * var _data 	  - (Array) array that will be send to the server.  
 	 */
 
-	post(_endpoint, _data) {
-		return fetch(this.API_url + _endpoint, { 
+	async post(_endpoint, _data) {
+		let response = fetch(this.API_url + _endpoint, { 
 			method: "POST",
 			headers: {
 				'Accept': 'application/json',
@@ -24,6 +24,8 @@ class API {
 			},
 			body: JSON.stringify(_data)
 		});	
+
+		return response.json();
 	}
 
 	/**
@@ -32,8 +34,9 @@ class API {
 	 * var _endpoint  - (String) API endpoint (part after the base URL). 
 	 */	
 
-	get(_endpoint) {
-		return fetch(this.API_url + _endpoint); 
+	async get(_endpoint) {
+		let response = await fetch(this.API_url + _endpoint); 
+		return response.json();
 	}
 }
 

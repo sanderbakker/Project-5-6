@@ -7,6 +7,6 @@ export class Products extends API {
 	}
 
 	getProducts() {
-		this.get('/products')
+		return this.get('/products')
 	}
 }

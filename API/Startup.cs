@@ -90,6 +90,8 @@ namespace API
                                                 .RequireAuthenticatedUser().Build();
             });
 
+            services.AddCors();
+
             services.AddMvc();
         }
 
@@ -102,6 +104,9 @@ namespace API
             }
             
             app.UseAuthentication();
+
+            app.UseCors(builder =>
+                builder.WithOrigins("http://localhost"));
 
             app.UseMvc();
         }

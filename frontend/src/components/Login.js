@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {Row, Col, Container, Form, Input, Label, FormGroup, Button} from 'reactstrap'; 
 import '../css/Login.css'; 
 import {Products} from '../classes/API/Products.js';
+import {Account} from '../classes/API/Account.js';
 
 
 class Login extends Component{
@@ -13,12 +14,12 @@ class Login extends Component{
         this.handlePasswordChange = this.handlePasswordChange.bind(this); 
         this.handleSubmit = this.handleSubmit.bind(this); 
 
-        // var products = new Products();
-        // console.log(products.getProducts());
+        //var products = new Products();
+        //console.log(products.getProducts());
     }
 
     handleEmailChange(e){
-        this.setState({email: e.target.value}) 
+        this.setState({email: e.target.value})
     }
 
     handlePasswordChange(e){
@@ -27,9 +28,17 @@ class Login extends Component{
 
     handleSubmit(e){
         e.preventDefault(); 
-        console.log(this.state.email, this.state.password); 
-        // MAKE API CALL HERE TO VALIDATE DATA; 
-        
+
+        var account = new Account();
+        var accountPromise = account.login(this.state.email, this.state.password);         
+        accountPromise.then(
+            (val) => {
+                if(typeof val.access_token !== 'undefined')
+                    console.log(val.access_token);
+                else 
+                    alert(val);
+            });
+
     }
 
     render(){

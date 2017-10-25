@@ -106,7 +106,9 @@ namespace API
             app.UseAuthentication();
 
             app.UseCors(builder =>
-                builder.WithOrigins("http://localhost"));
+                builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
 
             app.UseMvc();
         }

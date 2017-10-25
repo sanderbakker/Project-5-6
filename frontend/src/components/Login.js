@@ -25,6 +25,7 @@ class Login extends Component{
     handleSubmit(e){
         e.preventDefault(); 
         console.log(this.state.email, this.state.password); 
+        // MAKE API CALL HERE TO VALIDATE DATA; 
         
     }
 

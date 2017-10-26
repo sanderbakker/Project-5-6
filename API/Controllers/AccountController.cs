@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 using API.Models;
 using API.Services;
@@ -14,6 +15,23 @@ namespace API.Controllers
         public AccountController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        [HttpGet("users")]
+        public IEnumerable<ApplicationUser> GetAll()
+        {
+            return _unitOfWork.Users.GetAll();
+        }
+
+        [HttpGet("users/{id}")]
+        public IActionResult GetUser(string id)
+        {
+            var user = _unitOfWork.Users.Get(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return new ObjectResult(user.Result);
         }
 
         [HttpPost("register")]

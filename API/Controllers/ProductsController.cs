@@ -47,6 +47,12 @@ namespace API.Controllers
             return new ObjectResult(_unitOfWork.Products.GetAllPaginated(index, pagesize));
         }
 
+        [HttpGet("categories", Name = "GetCategories")]
+        public IActionResult GetCategories()
+        {
+            return new ObjectResult(_unitOfWork.Products.GetCategories());
+        }
+
         [HttpPost]
         public IActionResult Create([FromBody] Product item)
         {

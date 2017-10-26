@@ -2,6 +2,7 @@
 using System.Linq;
 
 using API.Models;
+using System;
 
 namespace API.Services
 {
@@ -20,6 +21,11 @@ namespace API.Services
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
+        }
+
+        public IEnumerable<string> GetCategories()
+        {
+            return Enum.GetNames(typeof(Product.Categories)).ToList();
         }
 
         public WebshopContext WebshopContext

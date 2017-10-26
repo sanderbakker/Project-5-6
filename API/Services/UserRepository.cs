@@ -137,6 +137,7 @@ namespace API.Services
 
         public async Task<ApplicationUser> Get(string id)
         {
+            // include lists in ApplicationUser to eagerly load them
             return await _userManager.Users
                 .Include(u => u.Addresses)
                 .Where(u => u.Id == id)

@@ -26,7 +26,7 @@ namespace API.Controllers
         [HttpGet("users/{id}")]
         public IActionResult GetUser(string id)
         {
-            var user = _unitOfWork.Users.Get(id);
+            var user = _unitOfWork.Users.Get(id).Result;
             if (user == null)
             {
                 return NotFound();
@@ -37,7 +37,7 @@ namespace API.Controllers
         [HttpGet("users/{id}/addresses")]
         public IActionResult GetAdresses(string id)
         {
-            var user = _unitOfWork.Users.Get(id);
+            var user = _unitOfWork.Users.Get(id).Result;
             if (user == null)
             {
                 return NotFound();
@@ -49,7 +49,7 @@ namespace API.Controllers
         [HttpPost("users/{id}/addresses")]
         public IActionResult AddAddress(string id, [FromBody] UserAddress address)
         {
-            var user = _unitOfWork.Users.Get(id);
+            var user = _unitOfWork.Users.Get(id).Result;
             if (user == null)
             {
                 return NotFound();

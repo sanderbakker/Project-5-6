@@ -26,12 +26,12 @@ namespace API.Controllers
         [HttpGet("users/{id}")]
         public IActionResult GetUser(string id)
         {
-            var user = _unitOfWork.Users.Get(id);
-            if (user.Result == null)
+            var user = _unitOfWork.Users.Get(id).Result;
+            if (user == null)
             {
                 return NotFound();
             }
-            return new ObjectResult(user.Result);
+            return new ObjectResult(user);
         }
 
         [HttpPost("register")]

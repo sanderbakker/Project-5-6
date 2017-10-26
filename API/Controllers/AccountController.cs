@@ -54,11 +54,6 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-
-            if (user.Addresses == null)
-            {
-                user.Addresses = new List<UserAddress>();
-            }
             var addresses = user.Addresses;
             addresses.Add(address);
 

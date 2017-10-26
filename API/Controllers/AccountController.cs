@@ -27,7 +27,7 @@ namespace API.Controllers
         public IActionResult GetUser(string id)
         {
             var user = _unitOfWork.Users.Get(id);
-            if (user == null)
+            if (user.Result == null)
             {
                 return NotFound();
             }

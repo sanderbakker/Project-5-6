@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using JWT;
 using JWT.Algorithms;
@@ -136,7 +137,10 @@ namespace API.Services
 
         public async Task<ApplicationUser> Get(string id)
         {
-            return await _userManager.FindByIdAsync(id);
+            return await _userManager.Users
+                .Include(u => u.Addresses)
+                .Where(u => u.Id == id)
+                .FirstOrDefaultAsync();
         }
 
         public IEnumerable<ApplicationUser> GetAll()

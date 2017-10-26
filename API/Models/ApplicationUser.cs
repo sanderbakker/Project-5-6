@@ -12,5 +12,7 @@ namespace API.Models
         public bool IsDisabled { get; set; }
         public bool IsSupport { get; set; }
         public bool IsAdmin { get; set; }
+
+        public List<UserAddress> Addresses { get; set; }
     }
 }

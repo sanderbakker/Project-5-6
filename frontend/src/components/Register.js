@@ -37,7 +37,11 @@ class Register extends Component{
             accountPromise.then(
                 (val) => {
                     if(typeof val.access_token !== 'undefined') {
-                        window.location.replace('/');                       
+                        this.setState({
+                            issetMessage: true, 
+                            message: 'Account created successfully', 
+                            messageType: 'success'
+                        });                    
                     } else {
                         this.setState({
                             issetMessage: true, 

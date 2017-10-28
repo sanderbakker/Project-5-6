@@ -14,7 +14,15 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {};  
+    this.handleLogout = this.handleLogout.bind(this); 
   }
+
+  handleLogout(){
+    this.setState({loggedOut: false});
+    console.log('testing'); 
+    sessionStorage.clear(); 
+  }
+
   componentWillMount(){
       if(sessionStorage.getItem('access_token') != null && sessionStorage.getItem('id_token') != null){
           this.setState({loggedIn: true}); 
@@ -25,14 +33,14 @@ class App extends Component {
         <BrowserRouter>
           <div>
             <title>Webshop</title> 
-            <NavBar/>
+            <NavBar loggedIn={this.state.loggedIn} />
             <Switch>
                     {/*Routes need to be include in App.js otherwise root can't find the paths*/}
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/categories' component={Categories}/>
                     <Route exact path='/login' component={Login}/>
                     <Route exact path='/register' component={Register}/>
-                    {(this.state.loggedIn) ? <Route exact path='/logout' component={Logout}/> : null}
+                    {(this.state.loggedIn) ? <Route exact path='/logout' logOutHandler={this.handleLogout} component={Logout}/> : null}
                     <Route render={function(){
                         return (<NotFound/>); 
                     }}/>

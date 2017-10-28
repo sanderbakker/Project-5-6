@@ -4,6 +4,9 @@ import {Link} from 'react-router-dom';
 import '../css/Login.css'; 
 import {Account} from '../classes/API/Account';
 
+import Message from './Message.js';
+
+
 class Register extends Component{
     constructor(props){
         super(props);
@@ -33,13 +36,23 @@ class Register extends Component{
             let accountPromise = account.register(this.state.email, this.state.password);
             accountPromise.then(
                 (val) => {
-                    if(typeof val.access_token !== 'undefined')
-                        console.log(val.access_token);
-                    else
-                        console.error(val)
-
+                    if(typeof val.access_token !== 'undefined') {
+                        window.location.replace('/');                       
+                    } else {
+                        this.setState({
+                            issetMessage: true, 
+                            message: val, 
+                            messageType: 'danger'
+                        });
+                    }
                  });            
         } else{
+            this.setState({
+                issetMessage: true,
+                message: "Passwords don't match try again",
+                messageType: 'danger'
+            });
+
             console.log("Passwords don't match try again"); 
         }
 
@@ -60,6 +73,7 @@ class Register extends Component{
                     <Row>
                         <Col md={{size: 6, offset: 1}}>
                             <Form className="mx-auto">
+                                {(this.state.issetMessage == true) ? <Message type={this.state.messageType} message={this.state.message} /> : null }                                                        
                                 <FormGroup>
                                     <Label for="exampleInputEmail1">Email address</Label>
                                     <Input size="sm" type="email" onChange={this.handleEmailChange} className="form-control col-md-6" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>

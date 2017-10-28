@@ -82,5 +82,11 @@ namespace API.Controllers
             }
             return _unitOfWork.Users.Error("Unexpected error");
         }
+
+        [HttpPost("users/adminify/{id}")]
+        public IActionResult Adminify(string id)
+        {
+            return new ObjectResult(_unitOfWork.Users.MakeAdmin(id).Result);
+        }
     }
 }

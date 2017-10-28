@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 
 using API.Models;
+using System.Security.Claims;
 
 namespace API.Services
 {
@@ -31,6 +32,11 @@ namespace API.Services
             _options = optionsAccessor.Value;
         }
 
+        public async Task<IdentityResult> MakeAdmin(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            return await _userManager.AddToRoleAsync(user, "Administrator");
+        }
         
         public async Task<IActionResult> Register(Credentials Credentials)
         {
@@ -69,12 +75,14 @@ namespace API.Services
 
         public string GetIdToken(IdentityUser user)
         {
+            var appUser = _userManager.FindByIdAsync(user.Id).Result;
             var payload = new Dictionary<string, object>
             {
                 { "id", user.Id },
                 { "sub", user.Email },
                 { "email", user.Email },
                 { "emailConfirmed", user.EmailConfirmed },
+                { "roles", _userManager.GetRolesAsync(appUser).Result }
             };
 
             return GetToken(payload);

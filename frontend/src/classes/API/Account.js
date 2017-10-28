@@ -1,9 +1,6 @@
 import {API} from '../API/API.js';
 
-class Account extends API  {
-	constructor() {
-		super();
-	} 
+class Account extends API  { 
 
 	login(_email, _password) {
 		return this.post('/account/login', {"email": _email, "password": _password})

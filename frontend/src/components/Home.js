@@ -4,7 +4,9 @@ import {Link} from 'react-router-dom';
 import '../css/Home.css'; 
 import HomeCarousel from './HomeCarousel.js'; 
 
+
 class Home extends Component {
+    
     render(){
         return(
             <div>

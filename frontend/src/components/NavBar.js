@@ -11,17 +11,27 @@ import logo from '../assets/logo-white.png';
 class NavBar extends Component {
     constructor(props) {
         super(props);
-    
         this.toggle = this.toggle.bind(this);
         this.state = {
           isOpen: false
         };
-      }
-      toggle() {
+    }
+
+    componentWillMount(){
+        if(sessionStorage.getItem('access_token') != null && sessionStorage.getItem('id_token') != null){
+            this.setState({loggedIn: true}); 
+        } 
+        else{
+            this.setState({loggedIn: false}); 
+        }
+    }
+    
+    toggle() {
         this.setState({
           isOpen: !this.state.isOpen
         });
-      }
+    }
+    
     render(){
         return(
             <div>
@@ -48,16 +58,35 @@ class NavBar extends Component {
                             </Form>
                         </Nav>
                         <Nav className="ml-auto" navbar>
+                        
                             <NavItem>
                                 <NavLink className='nav-link' exact to='/cart'>
                                     <i className='fa fa-shopping-cart'></i>
                                 </NavLink>
                             </NavItem>
+
+                            {(this.state.loggedIn) ?
+                            <NavItem>
+                                <NavLink className='nav-link' exact to='/profile'>
+                                    <i className='fa fa-user'></i> 
+                                </NavLink>
+                            </NavItem>
+                            : null }
+
+                            {(this.state.loggedIn) ?
+                            
+                            <NavItem>
+                                <NavLink className='nav-link' exact to='/logout'>
+                                    <i className='fa fa-sign-out'></i>
+                                </NavLink>
+                            </NavItem>
+                            : 
                             <NavItem>
                                 <NavLink className='nav-link' exact to='/login'>
                                     <i className='fa fa-sign-in'></i>
                                 </NavLink>
                             </NavItem>
+                            }
                         </Nav>
                     </Collapse>
                 </Navbar>

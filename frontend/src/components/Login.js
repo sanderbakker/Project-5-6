@@ -5,7 +5,6 @@ import '../css/Login.css';
 
 import Message from './Message.js';
 
-import {Products} from '../classes/API/Products.js';
 import {Account} from '../classes/API/Account.js';
 
 
@@ -36,7 +35,9 @@ class Login extends Component{
         var accountPromise = account.login(this.state.email, this.state.password);         
         accountPromise.then(
             (val) => {
-                if(typeof val.access_token !== 'undefined') {
+                if(typeof val.access_token !== 'undefined' && typeof(val.id_token !== 'undefined')) {
+                    sessionStorage.setItem('access_token', val.access_token); 
+                    sessionStorage.setItem('id_token', val.id_token); 
                     window.location.replace('/');
                 } else {
                     this.setState({
@@ -67,7 +68,7 @@ class Login extends Component{
                     <Row className="margin-row">
                         <Col md={{size: 6, offset: 1}} >
                             <Form className="mx-auto">
-                            {(this.state.issetMessage == true) ? <Message type={this.state.messageType} message={this.state.message} /> : null }                            
+                            {(this.state.issetMessage) ? <Message type={this.state.messageType} message={this.state.message} /> : null }                            
                                 <FormGroup>
                                     <Label for="inputMail">Email address</Label>
                                     <Input size='sm' onChange={this.handleEmailChange} type="email" className="form-control col-md-6" id="inputMail" required placeholder="Enter email"/>

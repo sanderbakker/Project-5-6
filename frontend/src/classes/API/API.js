@@ -5,7 +5,7 @@
 
 class API {
 	constructor() {
-		this.API_url = 'http://localhost:5000/api'
+		this.API_url = 'http://localhost:50594/api'
 		
 	} 
 

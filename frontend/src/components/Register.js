@@ -56,12 +56,7 @@ class Register extends Component{
                 message: "Passwords don't match try again",
                 messageType: 'danger'
             });
-
-            console.log("Passwords don't match try again"); 
         }
-
-
-         
     }
 
     render(){
@@ -77,7 +72,7 @@ class Register extends Component{
                     <Row>
                         <Col md={{size: 6, offset: 1}}>
                             <Form className="mx-auto">
-                                {(this.state.issetMessage == true) ? <Message type={this.state.messageType} message={this.state.message} /> : null }                                                        
+                                {(this.state.issetMessage) ? <Message type={this.state.messageType} message={this.state.message} /> : null }                                                        
                                 <FormGroup>
                                     <Label for="exampleInputEmail1">Email address</Label>
                                     <Input size="sm" type="email" onChange={this.handleEmailChange} className="form-control col-md-6" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>

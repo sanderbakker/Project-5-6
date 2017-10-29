@@ -9,7 +9,10 @@ import Footer from './Footer.js';
 import Login from './Login.js'; 
 import Register from './Register.js'; 
 import Logout from './Logout.js'; 
+import Profile from './Profile.js';
 
+
+  
 class App extends Component {
   constructor(props){
     super(props);
@@ -18,14 +21,17 @@ class App extends Component {
   }
 
   handleLogout(){
-    this.setState({loggedOut: false});
-    console.log('testing'); 
     sessionStorage.clear(); 
+    window.location.replace('/login'); 
   }
 
   componentWillMount(){
       if(sessionStorage.getItem('access_token') != null && sessionStorage.getItem('id_token') != null){
           this.setState({loggedIn: true}); 
+          console.log(sessionStorage.getItem('id_token')); 
+      }
+      else{
+          this.setState({loggedIn: false}); 
       } 
   }
   render() {
@@ -40,7 +46,15 @@ class App extends Component {
                     <Route exact path='/categories' component={Categories}/>
                     <Route exact path='/login' component={Login}/>
                     <Route exact path='/register' component={Register}/>
-                    {(this.state.loggedIn) ? <Route exact path='/logout' logOutHandler={this.handleLogout} component={Logout}/> : null}
+
+                    {(this.state.loggedIn) ? 
+                    <Route exact path='/logout' render={(props) => (<Logout logOutHandler={this.handleLogout} {...props}/>)} />                    
+                    : null}
+                  
+                    {(this.state.loggedIn) ? 
+                    <Route exact path='/profile' component={Profile} />
+                    : null }
+
                     <Route render={function(){
                         return (<NotFound/>); 
                     }}/>

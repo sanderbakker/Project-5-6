@@ -15,17 +15,8 @@ class NavBar extends Component {
         this.toggle = this.toggle.bind(this);
         this.state = {
           isOpen: false
-        };
+        }; 
     }
-
-    // componentWillMount(){
-    //     if(sessionStorage.getItem('access_token') != null && sessionStorage.getItem('id_token') != null){
-    //         this.setState({loggedIn: true}); 
-    //     } 
-    //     else{
-    //         this.setState({loggedIn: false}); 
-    //     }
-    // }
     
     toggle() {
         this.setState({

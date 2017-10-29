@@ -13,10 +13,8 @@ class Logout extends Component{
         this.handleLogout = this.handleLogout.bind(this); 
         
     }
-
     handleLogout(){
-        sessionStorage.clear();
-        window.location.replace('/login'); 
+        this.props.logOutHandler(); 
     }
 
     render(){
@@ -35,7 +33,9 @@ class Logout extends Component{
                                     <Link exact to='/'>
                                     <Button size='sm' className='float-left' color='default'>Cancel</Button>
                                     </Link>
+                                    {/* <Link excat to='/login'> */}
                                     <Button size='sm'className='float-right' color='secondary' onClick={this.handleLogout}>Logout</Button>
+                                    {/* </Link> */}
                                 </CardBody>
                             </Card>
                         </Col>

@@ -5,16 +5,22 @@ import {Link} from 'react-router-dom';
 import {User} from '../classes/API/User.js'; 
 import '../css/Profile.css'; 
 import logo from '../assets/logo.png'; 
+import UserAddressCard from './UserAddressCard.js'; 
 
 class Profile extends Component {
     constructor(props){
         super(props);
         this.id = jwt_decode(sessionStorage.getItem('id_token'))['id'];
         this.getUserData = this.getUserData.bind(this);
-        this.getUserData(this.id);
-        this.state = {}
-        console.log(this.data);   
+        this.getUserAddresses = this.getUserAddresses.bind(this); 
+        this.createUserAddressCards = this.createUserAddressCards.bind(this); 
+        this.state = {}   
     } 
+
+    componentWillMount(){
+        this.getUserData(this.id);
+        this.getUserAddresses(this.id);  
+    }
 
     getUserData(_id){
        var user = new User(); 
@@ -27,6 +33,32 @@ class Profile extends Component {
            }
        )        
     }
+
+    getUserAddresses(_id){
+        var user = new User(); 
+        var addresses_promise = user.get_addresses(_id); 
+        addresses_promise.then(
+            (val) => {
+                this.setState({addresses: val}, function(){
+                    this.createUserAddressCards(this.state.addresses); 
+                }); 
+            }
+        )
+    }
+    createUserAddressCards(_addresses){
+        var addresCards = [];
+        for (var i=0; i < _addresses.length; i++) {
+            addresCards.push(
+                <UserAddressCard 
+                    street={_addresses[i]['street']} 
+                    streetNumber={_addresses[i]['streetNumber']}
+                    city={_addresses[i]['city']}
+                    zipcode={_addresses[i]['zipCode']} 
+                />);
+        }
+        this.setState({cards: addresCards});
+    }
+
     render(){
         return(
             <div>            
@@ -41,7 +73,7 @@ class Profile extends Component {
                                                 <i className='fa fa-pencil'></i>
                                             </Button>
                                         </Col>
-                                        <Col md={12}>
+                                        <Col className="card-row" md={12}>
                                             <img className='profileImage'  alt='Profile' src={logo} width={150} height={150}/>
                                             <Table>
                                                 <tbody>
@@ -76,12 +108,16 @@ class Profile extends Component {
                                             
                                             <Link exact to='profile/add/address' params={this.id}>
                                             <Button className='float-right' size='sm' color='success'>
-                                                <i class="fa fa-plus">
+                                                <i className="fa fa-plus">
                                                 </i>
                                             </Button>
                                             </Link>
                                         </Col>
-                                        [Here comes a foreach loop fetching all the UserAddress, visualizing them as one card per address, with an remove and edit button]
+                                        <Col className='card-row' md={12}>
+                                            <Row>
+                                            {this.state.cards}
+                                            </Row>
+                                        </Col>
                                     </Row>
                                 </CardBody>
                             </Card>

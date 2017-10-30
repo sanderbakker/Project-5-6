@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 import jwt_decode from 'jwt-decode'; 
 import {User} from '../classes/API/User.js'; 
+import {Link} from 'react-router-dom';
 
 class UserAddress extends Component{
     constructor(props){
         super(props); 
-        this.state = {street: null, streetNumber: null, zipcode: null, city: null}
+        this.state = {street: null, streetNumber: null, zipcode: null, city: null, added: false}
         this.id = jwt_decode(sessionStorage.getItem('id_token'))['id'];
         this.handleFormChanges = this.handleFormChanges.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);  
@@ -33,16 +34,20 @@ class UserAddress extends Component{
             var add_address_promise = user.add_address(this.state.street, this.state.streetNumber, this.state.city, this.state.zipcode, this.id);
             add_address_promise.then(
                 (val) => {
-                    if(val.constructor != Array){
+                    if(val.constructor !== Array){
                         this.setState({failed: true}); 
+                         
                     }
+                    this.setState({added: true}); 
+                    console.log(val);
                 }
             )
-            window.location.replace('/profile'); 
+            //window.location.replace('/profile'); 
         }
         else{
             this.setState({failed: true}); 
         }
+        
     }
     render(){
         return(
@@ -60,7 +65,8 @@ class UserAddress extends Component{
                             <Alert color="danger">
                                 Failed to add new address! Try again. 
                             </Alert>
-                            : "" 
+                            : (this.state.added) ?<Alert color='success'>Added address to your profile</Alert> 
+                            : ""
                             }
                             <Form>
                                 <FormGroup>
@@ -80,6 +86,9 @@ class UserAddress extends Component{
                                     <Input size='sm' type="text" onChange={this.handleFormChanges} name="city" id="cityLabel" placeholder="Enter your city" />
                                 </FormGroup>
                                 <Button size='sm' color='secondary' onClick={this.handleSubmit}>Add</Button>
+                                <Link exact to='/profile'>
+                                    <Button size='sm' className='float-right' color='danger'>Return to profile</Button>
+                                </Link>
                             </Form>
                         </Col>
                     </Row>

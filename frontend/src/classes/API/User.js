@@ -8,5 +8,8 @@ class User extends API{
         return this.post('/account/users/' + _id + '/addresses', 
                         {"street": _street, "streetNumber": _streetNumber, "city": _city, "zipCode": _zipcode}); 
     }
+    get_addresses(_id){
+        return this.get('/account/users/' + _id + '/addresses'); 
+    }
 }
 export {User}; 

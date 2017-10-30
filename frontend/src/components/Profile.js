@@ -1,7 +1,8 @@
 import React, {Component} from 'react'; 
 import jwt_decode from 'jwt-decode'; 
 import {Card, CardBody, Table, Col, Container, Row, Button} from 'reactstrap'; 
-import {Account} from '../classes/API/Account.js'; 
+import {Link} from 'react-router-dom'; 
+import {User} from '../classes/API/User.js'; 
 import '../css/Profile.css'; 
 import logo from '../assets/logo.png'; 
 
@@ -16,11 +17,10 @@ class Profile extends Component {
     } 
 
     getUserData(_id){
-       var account = new Account(); 
-       var accountPromise = account.user_data(_id);
-       accountPromise.then(
+       var user = new User(); 
+       var userPromise = user.user_data(_id);
+       userPromise.then(
            (val) => { 
-               console.log(val);
                this.setState({email: val.email,
                               firstName: val.firstName,
                               lastName: val.lastName});  
@@ -29,7 +29,7 @@ class Profile extends Component {
     }
     render(){
         return(
-            <div>
+            <div>            
                 <Container className='content-container'>
                     <Row>
                         <Col md={4}>
@@ -73,10 +73,13 @@ class Profile extends Component {
                                 <CardBody>
                                     <Row>
                                         <Col md={12}>
+                                            
+                                            <Link exact to='profile/add/address' params={this.id}>
                                             <Button className='float-right' size='sm' color='success'>
                                                 <i class="fa fa-plus">
                                                 </i>
                                             </Button>
+                                            </Link>
                                         </Col>
                                         [Here comes a foreach loop fetching all the UserAddress, visualizing them as one card per address, with an remove and edit button]
                                     </Row>

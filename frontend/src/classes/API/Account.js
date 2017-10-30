@@ -9,8 +9,5 @@ class Account extends API  {
 	register(_email, _password){
 		return this.post('/account/register', {"email": _email, "password": _password}); 
 	}
-	user_data(_id){
-		return this.get('/account/users/' + _id); 
-	}
 }
 export {Account}; 

@@ -21,6 +21,8 @@ class API {
 	 */
 
 	async post(_endpoint, _data) {
+		console.log(JSON.stringify(_data)); 
+		console.log(_endpoint); 
 		let response = await fetch(this.API_url + _endpoint, { 
 			method: "POST",
 			headers: {

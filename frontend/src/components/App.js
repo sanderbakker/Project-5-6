@@ -10,6 +10,7 @@ import Login from './Login.js';
 import Register from './Register.js'; 
 import Logout from './Logout.js'; 
 import Profile from './Profile.js';
+import UserAddress from './UserAddress.js'; 
 
 
   
@@ -54,6 +55,10 @@ class App extends Component {
                     {(this.state.loggedIn) ? 
                     <Route exact path='/profile' component={Profile} />
                     : null }
+
+                    {(this.state.loggedIn) ?
+                    <Route exact path ='/profile/add/address' component={UserAddress} />
+                    : null}
 
                     <Route render={function(){
                         return (<NotFound/>); 

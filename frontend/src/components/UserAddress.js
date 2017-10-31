@@ -7,10 +7,15 @@ import {Link} from 'react-router-dom';
 class UserAddress extends Component{
     constructor(props){
         super(props); 
-        this.state = {street: null, streetNumber: null, zipcode: null, city: null, added: false}
+        this.state = {street: null, streetNumber: null, zipcode: null, city: null, visible: false}
         this.id = jwt_decode(sessionStorage.getItem('id_token'))['id'];
         this.handleFormChanges = this.handleFormChanges.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);  
+        this.onDismiss = this.onDismiss.bind(this); 
+    }
+    
+    onDismiss(){
+        this.setState({visible: false}); 
     }
 
     handleFormChanges(e){
@@ -38,8 +43,8 @@ class UserAddress extends Component{
                         this.setState({failed: true}); 
                          
                     }
-                    this.setState({added: true}); 
-                    console.log(val);
+
+                    this.setState({visible: true}); 
                 }
             )
             //window.location.replace('/profile'); 
@@ -65,7 +70,7 @@ class UserAddress extends Component{
                             <Alert color="danger">
                                 Failed to add new address! Try again. 
                             </Alert>
-                            : (this.state.added) ?<Alert color='success'>Added address to your profile</Alert> 
+                            : (this.state.visible) ?<Alert isOpen={this.state.visible} toggle={this.onDismiss} color='success'>Added address to your profile</Alert> 
                             : ""
                             }
                             <Form>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardBody, CardText, Col, Row, Button} from 'reactstrap'; 
+import {Card, CardBody, CardText, Col, Row, Button, ButtonGroup} from 'reactstrap'; 
 
 class UserAddressCard extends Component {
     render(){
@@ -12,9 +12,14 @@ class UserAddressCard extends Component {
                                 <Col md={12}>
                                     <div className="address-card">
                                     <b>Street: </b>{this.props.street} {this.props.streetNumber}
-                                    <Button size='sm' className="float-right" color='warning'>
-                                        <i className="fa fa-pencil"/>
-                                    </Button>
+                                    <ButtonGroup className="float-right">
+                                        <Button size='sm' color='warning'>
+                                            <i className="fa fa-pencil"/>
+                                        </Button>
+                                        <Button size='sm' color='danger'>
+                                            <i className="fa fa-minus"/>
+                                        </Button>
+                                    </ButtonGroup>
                                     <br/>
                                     <b>Zipcode: </b>{this.props.zipcode} 
                                     <br/>

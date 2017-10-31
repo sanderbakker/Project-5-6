@@ -113,22 +113,38 @@ namespace API
 
             app.UseMvc();
 
-            CreateRoles(serviceProvider);
+            CreateRoles(serviceProvider).Wait();
         }
 
-        private void CreateRoles(IServiceProvider serviceProvider)
+        private async Task CreateRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             //Check that there is an Administrator role and create if not
-            var hasAdminRole = roleManager.RoleExistsAsync("Administrator");
-            hasAdminRole.Wait();
+            var hasAdminRole = await roleManager.RoleExistsAsync("Administrator");
 
-            if (!hasAdminRole.Result)
+            if (!hasAdminRole)
             {
-                var roleResult = roleManager.CreateAsync(new IdentityRole("Administrator"));
-                roleResult.Wait();
+                var roleResult = await roleManager.CreateAsync(new IdentityRole("Administrator"));
+            }
+
+            // create admin user
+            var user = await userManager.FindByEmailAsync("admin@webshop.com");
+            if (user == null)
+            {
+                var admin = new ApplicationUser
+                {
+                    Email = "admin@webshop.com",
+                    UserName = "admin@webshop.com",
+                };
+                string password = "Abcd!1234";
+
+                var createAdmin = userManager.CreateAsync(admin, password).Result;
+                if (createAdmin.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, "Administrator");
+                }
             }
         }
     }

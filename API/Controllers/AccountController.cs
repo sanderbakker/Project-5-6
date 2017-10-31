@@ -63,6 +63,26 @@ namespace API.Controllers
             return new ObjectResult(user.Addresses);
         }
 
+        [HttpDelete("users/{userId}/addresses/{addressId}")]
+        public IActionResult DeleteAddress(string userId, int addressId)
+        {
+            var user = _unitOfWork.Users.Get(userId).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var address = user.Addresses.Find(a => a.Id == addressId);
+            if (address == null)
+            {
+                return NotFound();
+            }
+            user.Addresses.Remove(address);
+            _unitOfWork.Complete();
+
+            return new NoContentResult();
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Credentials Credentials)
         {

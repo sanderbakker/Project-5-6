@@ -7,11 +7,6 @@ namespace API.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public bool IsVerified { get; set; }
-        public bool IsSeller { get; set; }
-        public bool IsDisabled { get; set; }
-        public bool IsSupport { get; set; }
-        public bool IsAdmin { get; set; }
 
         public List<UserAddress> Addresses { get; set; }
     }

@@ -34,6 +34,27 @@ namespace API.Controllers
             return new ObjectResult(user);
         }
 
+        [HttpPut("users/{id}")]
+        public IActionResult UpdateUser(string id, [FromBody] ApplicationUser item)
+        {
+            if (item == null || item.Id != id)
+            {
+                return BadRequest();
+            }
+
+            var user = _unitOfWork.Users.Get(id).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.FirstName = item.FirstName;
+            user.LastName = item.LastName;
+            _unitOfWork.Complete();
+
+            return new NoContentResult();
+        }
+
         [HttpGet("users/{id}/addresses")]
         public IActionResult GetAdresses(string id)
         {

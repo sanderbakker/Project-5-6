@@ -5,9 +5,11 @@
 
 class API {
 	constructor() {
-		this.API_url = 'http://localhost:50594/api'
+		this.API_url = 'http://localhost:5000/api'
 		
 	} 
+
+	
 
 	/**
 	 * Sends POST request to API.
@@ -19,6 +21,8 @@ class API {
 	 */
 
 	async post(_endpoint, _data) {
+		console.log(JSON.stringify(_data)); 
+		console.log(_endpoint); 
 		let response = await fetch(this.API_url + _endpoint, { 
 			method: "POST",
 			headers: {

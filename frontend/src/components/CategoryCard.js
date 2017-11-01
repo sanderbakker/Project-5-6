@@ -3,10 +3,7 @@ import {Card, CardBody, Col, CardImg, CardSubtitle} from 'reactstrap';
 import {Link} from 'react-router-dom'; 
 
 class CategoryCard extends Component {
-    constructor(props){
-        super(props);
-        
-    }
+
     render(){
         return(
         

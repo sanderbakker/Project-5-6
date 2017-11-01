@@ -1,5 +1,5 @@
 import React, {Component} from 'react'; 
-import {Container, Row, Card, Col, CardBody, CardImg, CardSubtitle} from 'reactstrap';
+import {Container, Row, Col} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {Products} from '../classes/API/Products.js';  
 

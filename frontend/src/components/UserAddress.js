@@ -12,8 +12,14 @@ class UserAddress extends Component{
         this.handleFormChanges = this.handleFormChanges.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);  
         this.onDismiss = this.onDismiss.bind(this); 
+        this.user = new User(); 
     }
     
+    componentWillMount(){
+        if(this.props.action === 'edit'){
+             
+        }
+    }
     onDismiss(){
         this.setState({visible: false}); 
     }
@@ -32,22 +38,24 @@ class UserAddress extends Component{
             this.setState({city: e.target.value}); 
         }
     }
+
     handleSubmit(e){
         e.preventDefault(); 
-        var user = new User(); 
         if(this.state.zipcode !== null && this.state.street !== null && this.state.streetNumber !== null && this.state.city !== null){
-            var add_address_promise = user.add_address(this.state.street, this.state.streetNumber, this.state.city, this.state.zipcode, this.id);
-            add_address_promise.then(
-                (val) => {
-                    if(val.constructor !== Array){
-                        this.setState({failed: true}); 
-                         
+            if(this.props.action = 'add'){
+                var add_address_promise = this.user.add_address(this.state.street, this.state.streetNumber, this.state.city, this.state.zipcode, this.id);
+                add_address_promise.then(
+                    (val) => {
+                        if(val.constructor !== Array){
+                            this.setState({failed: true}); 
+                        }
+                        this.setState({visible: true}); 
                     }
+                )
+            }
+            else if(this.props.action = 'edit'){
 
-                    this.setState({visible: true}); 
-                }
-            )
-            //window.location.replace('/profile'); 
+            }
         }
         else{
             this.setState({failed: true}); 
@@ -56,7 +64,6 @@ class UserAddress extends Component{
     }
     render(){
         return(
-            <div>
                 <Container className='content-container'>
                     <Row>
                         <Col md='12'>
@@ -76,19 +83,46 @@ class UserAddress extends Component{
                             <Form>
                                 <FormGroup>
                                     <Label for="streetLabel">Street</Label>
-                                    <Input size='sm' type="text" onChange={this.handleFormChanges} name="street" id="streetLabel" placeholder="Enter your streetname" />
+                                    <Input 
+                                        size='sm' 
+                                        type="text" 
+                                        onChange={this.handleFormChanges} 
+                                        name="street" 
+                                        id="streetLabel" 
+                                        placeholder="Enter your streetname" 
+                                        value={this.state.street}/>
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="streetNumberLabel">Streetnumber</Label>
-                                    <Input size='sm' type="text" onChange={this.handleFormChanges} name="streetNumber" id="streetNumberLabel" placeholder="Enter your streetnumber" />
+                                    <Input 
+                                        size='sm' 
+                                        type="text" 
+                                        onChange={this.handleFormChanges} 
+                                        name="streetNumber" 
+                                        id="streetNumberLabel" 
+                                        placeholder="Enter your streetnumber"
+                                        value={this.state.streetNumber} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="zipcodeLabel">Zipcode</Label>
-                                    <Input size='sm' type="text" onChange={this.handleFormChanges} name="zipcode" id="zipcodeLabel" placeholder="Enter your zipcode" />
+                                    <Input 
+                                        size='sm' 
+                                        type="text" 
+                                        onChange={this.handleFormChanges} 
+                                        name="zipcode" id="zipcodeLabel" 
+                                        placeholder="Enter your zipcode"
+                                        value={this.state.zipcode} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="cityLabel">City</Label>
-                                    <Input size='sm' type="text" onChange={this.handleFormChanges} name="city" id="cityLabel" placeholder="Enter your city" />
+                                    <Input 
+                                        size='sm' 
+                                        type="text" 
+                                        onChange={this.handleFormChanges} 
+                                        name="city" 
+                                        id="cityLabel" 
+                                        placeholder="Enter your city"
+                                        value={this.state.city} />
                                 </FormGroup>
                                 <Button size='sm' color='secondary' onClick={this.handleSubmit}>Add</Button>
                                 <Link exact to='/profile'>
@@ -98,7 +132,6 @@ class UserAddress extends Component{
                         </Col>
                     </Row>
                 </Container>
-            </div>
         )
     }
 }

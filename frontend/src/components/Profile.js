@@ -54,6 +54,7 @@ class Profile extends Component {
                     streetNumber={_addresses[i]['streetNumber']}
                     city={_addresses[i]['city']}
                     zipcode={_addresses[i]['zipCode']} 
+                    id={_addresses[i]['id']}
                 />);
         }
         this.setState({cards: addresCards});

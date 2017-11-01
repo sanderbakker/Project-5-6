@@ -99,7 +99,11 @@ class App extends Component {
                     : null }
 
                     {(this.state.loggedIn) ?
-                    <Route exact path ='/profile/add/address' component={UserAddress} />
+                    <PropsRoute action='add' exact path ='/profile/add/address' component={UserAddress} />
+                    : null}
+
+                    {(this.state.loggedIn) ?
+                    <PropsRoute action='edit' path ='/profile/edit/address/:id' component={UserAddress} />
                     : null}
 
                     <Route render={function(){

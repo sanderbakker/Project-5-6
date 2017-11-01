@@ -6,6 +6,7 @@
     "bootstrap": "^4.0.0-beta",
     "chart.js": "^2.7.0",
     "fontawesome": "^4.7.2",
+    "in-array": "^0.1.2",
     "jquery": "^3.2.1",
     "jwt-decode": "^2.2.0",
     "popper": "^1.0.0",

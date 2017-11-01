@@ -12,6 +12,7 @@ class NavBar extends Component {
     constructor(props) {
         super(props);
         this.loggedIn = this.props.loggedIn; 
+        this.admin = this.props.admin; 
         this.toggle = this.toggle.bind(this);
         this.state = {
           isOpen: false
@@ -56,6 +57,13 @@ class NavBar extends Component {
                                     <i className='fa fa-shopping-cart'></i>
                                 </NavLink>
                             </NavItem>
+                            {(this.admin) ?
+                            <NavItem>
+                                <NavLink className='nav-link' exact to='/admin'>
+                                    <i className='fa fa-cog'></i>
+                                </NavLink>
+                            </NavItem>
+                            : null }
 
                             {(this.loggedIn) ?
                             <NavItem>

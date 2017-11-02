@@ -29,6 +29,16 @@ namespace API.Services
                 .Where(x => x.Category == category);
         }
 
+        public IEnumerable<Product> GetWithCategoryPaginated(Product.Categories category, int pageIndex, int pageSize = 10)
+        {
+            return WebshopContext.Products
+                .Where(x => x.Category == category)
+                .OrderBy(p => p.Name)
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+        }
+
         public IEnumerable<string> GetCategories()
         {
             return Enum.GetNames(typeof(Product.Categories)).ToList();

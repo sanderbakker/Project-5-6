@@ -67,6 +67,19 @@ namespace API.Controllers
             return new ObjectResult(products);
         }
 
+        [HttpGet("withcategorypaginated/{category}/{index}/{pagesize?}")]
+        public IActionResult GetWithCategoryPaginated(string category, int index, int pagesize = 10)
+        {
+            if (!Enum.IsDefined(typeof(Product.Categories), category))
+            {
+                return NotFound();
+            }
+
+            var cat = category.ParseEnum<Product.Categories>();
+
+            return new ObjectResult(_unitOfWork.Products.GetWithCategoryPaginated(cat, index, pagesize));
+        }
+
         [HttpPost]
         public IActionResult Create([FromBody] Product item)
         {

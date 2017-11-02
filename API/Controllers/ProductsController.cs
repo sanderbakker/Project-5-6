@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using API.Services;
 using API.Models;
+using System;
 
 namespace API.Controllers
 {
@@ -50,6 +51,20 @@ namespace API.Controllers
         public IActionResult GetCategories()
         {
             return new ObjectResult(_unitOfWork.Products.GetCategories());
+        }
+
+        [HttpGet("withcategory/{category}")]
+        public IActionResult GetWithCategory(string category)
+        {
+            if (!Enum.IsDefined(typeof(Product.Categories), category))
+            {
+                return NotFound();
+            }
+
+            var cat = category.ParseEnum<Product.Categories>();
+            var products = _unitOfWork.Products.GetWithCategory(cat);
+
+            return new ObjectResult(products);
         }
 
         [HttpPost]

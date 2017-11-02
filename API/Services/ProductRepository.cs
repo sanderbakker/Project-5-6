@@ -23,6 +23,12 @@ namespace API.Services
                 .ToList();
         }
 
+        public IEnumerable<Product> GetWithCategory(Product.Categories category)
+        {
+            return WebshopContext.Products
+                .Where(x => x.Category == category);
+        }
+
         public IEnumerable<string> GetCategories()
         {
             return Enum.GetNames(typeof(Product.Categories)).ToList();

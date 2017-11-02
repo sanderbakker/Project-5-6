@@ -67,6 +67,24 @@ namespace API.Controllers
             return new ObjectResult(addresses);
         }
 
+        [HttpGet("users/{userdId}/addresses/{addressId}")]
+        public IActionResult GetAddress(string userId, int addressId)
+        {
+            var user = _unitOfWork.Users.Get(userId).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var address = user.Addresses.Find(a => a.Id == addressId);
+            if (address == null)
+            {
+                return NotFound();
+            }
+
+            return new ObjectResult(address);
+        }
+
         [HttpPost("users/{id}/addresses")]
         public IActionResult AddAddress(string id, [FromBody] UserAddress address)
         {

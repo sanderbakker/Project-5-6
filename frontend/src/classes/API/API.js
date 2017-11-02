@@ -51,6 +51,7 @@ class API {
 		let response = await fetch(this.API_url + _endpoint, {
 			method: "DELETE"
 		}); 
+		return response; 
 	}
 }
 

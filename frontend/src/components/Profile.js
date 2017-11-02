@@ -60,8 +60,9 @@ class Profile extends Component {
         }
         this.setState({cards: addresCards});
     }
-    deleteUserAddress(_address_id){
-        this.user.delete_address_by_id(this.id, _address_id);  
+    async deleteUserAddress(_address_id){
+        await this.user.delete_address_by_id(this.id, _address_id)
+        this.getUserAddresses(this.id); 
     }
 
     render(){

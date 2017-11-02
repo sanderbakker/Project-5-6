@@ -16,7 +16,7 @@ class User extends API{
         return this.get(('/account/users/'+ _user_id + '/addresses/' + _address_id));
     }
     delete_address_by_id(_user_id, _address_id){
-        this.delete(('/account/users/'+ _user_id + '/addresses/' + _address_id));   
+        return this.delete(('/account/users/'+ _user_id + '/addresses/' + _address_id));   
     }
 }
 export {User}; 

@@ -46,6 +46,12 @@ class API {
 		let response = await fetch(this.API_url + _endpoint);
 		return response.json();
 	}
+	
+	async delete(_endpoint){
+		let response = await fetch(this.API_url + _endpoint, {
+			method: "DELETE"
+		}); 
+	}
 }
 
 // Export API for global use

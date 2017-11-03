@@ -21,8 +21,6 @@ class API {
 	 */
 
 	async post(_endpoint, _data) {
-		console.log(JSON.stringify(_data)); 
-		console.log(_endpoint); 
 		let response = await fetch(this.API_url + _endpoint, { 
 			method: "POST",
 			headers: {
@@ -32,6 +30,18 @@ class API {
 		})
 		
 		return response.json();
+	}
+
+	async put(_endpoint, _data){
+		let response = await fetch(this.API_url + _endpoint, {
+			method: "PUT", 
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(_data)
+		})
+
+		return response; 
 	}
 
 	/**
@@ -47,6 +57,14 @@ class API {
 		return response.json();
 	}
 	
+	/**
+	 * Sends DELETE request to API.
+	 *
+	 * var _endpoint  - (String) API endpoint (part after the base URL). 
+	 *
+	 * returns promise
+	 */	
+
 	async delete(_endpoint){
 		let response = await fetch(this.API_url + _endpoint, {
 			method: "DELETE"

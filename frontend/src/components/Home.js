@@ -34,7 +34,7 @@ class Home extends Component {
         var fontAwesome = ['home', 'sun-o', 'plane', 'ship', 'car', 'diamond', 'globe'];
         for (var i=0; i < _categories.length; i++) {
             listGroupItems.push(
-                <ListGroupItem>
+                <ListGroupItem key={_categories[i]}>
                     <Link exact to={'/categories/' + _categories[i].toLowerCase()}>
                         <i className={"fa fa-" + fontAwesome[i]}></i> {_categories[i]}
                     </Link>

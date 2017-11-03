@@ -18,20 +18,21 @@ import {PropsRoute} from 'react-router-with-props';
 
 import in_array from 'in-array';
 import Admin from './Admin.js'; 
+import UserEdit from './UserEdit.js'; 
 
   
 class App extends Component {
   constructor(props){
     super(props);
-    this.state = {admin: false}; 
+    this.state = {admin: false, loggedIn: false}; 
     this.roles = null;
     this.handleLogout = this.handleLogout.bind(this); 
     this.getAllCategories = this.getAllCategories.bind(this); 
     this.createProductRoutes = this.createProductRoutes.bind(this); 
   }
 
-  handleLogout(){
-    sessionStorage.clear(); 
+  async handleLogout(){
+    sessionStorage.clear();  
     window.location.replace('/login'); 
   }
 
@@ -64,7 +65,7 @@ class App extends Component {
       var routes = [];
       for (var i=0; i < _categories.length; i++) {
           routes.push(
-                <PropsRoute exact path={"/categories/" + _categories[i].toLowerCase()} component={CategoryProducts} name={_categories[i]} />
+                <PropsRoute key={_categories[i]} exact path={"/categories/" + _categories[i].toLowerCase()} component={CategoryProducts} name={_categories[i]} />
               );
       }
       this.setState({routes: routes});
@@ -100,6 +101,10 @@ class App extends Component {
 
                     {(this.state.loggedIn) ?
                     <PropsRoute action='add' exact path ='/profile/add/address' component={UserAddress} />
+                    : null}
+
+                    {(this.state.loggedIn) ?
+                    <Route exact path ='/profile/edit/' component={UserEdit} />
                     : null}
 
                     {(this.state.loggedIn) ?

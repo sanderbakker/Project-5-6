@@ -75,9 +75,11 @@ class Profile extends Component {
                                 <CardBody>
                                     <Row>
                                         <Col md={12}>
-                                            <Button className='float-right' color='secondary' size='sm'>
-                                                <i className='fa fa-pencil'></i>
-                                            </Button>
+                                            <Link to='/profile/edit'>
+                                                <Button className='float-right' color='secondary' size='sm'>
+                                                    <i className='fa fa-pencil'></i>
+                                                </Button>
+                                            </Link>
                                         </Col>
                                         <Col className="card-row" md={12}>
                                             <img className='profileImage'  alt='Profile' src={logo} width={150} height={150}/>

@@ -89,7 +89,7 @@ class Register extends Component{
                                 <br></br>
                                 <br></br>
                                 <small>
-                                    <Link exact to='/login'>
+                                    <Link to='/login'>
                                         <i className="fa fa-arrow-right"></i> Already have an account? Login
                                     </Link>
                                 </small>

@@ -28,9 +28,9 @@ class Logout extends Component{
                                     <img className="logoutImage" src={logo} width='130' height='130px' alt='Logo'/>
                                     <hr></hr>
                                     <CardText>
-                                        Clicking "Logout" will log you out from webshop [NAME]
+                                        Clicking "Logout" will log you out from webshop
                                     </CardText>
-                                    <Link exact to='/'>
+                                    <Link to='/'>
                                     <Button size='sm' className='float-left' color='default'>Cancel</Button>
                                     </Link>
                                     {/* <Link excat to='/login'> */}

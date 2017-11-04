@@ -14,7 +14,9 @@ class Profile extends Component {
         this.getUserData = this.getUserData.bind(this);
         this.getUserAddresses = this.getUserAddresses.bind(this); 
         this.createUserAddressCards = this.createUserAddressCards.bind(this); 
+        this.deleteUserAddress = this.deleteUserAddress.bind(this); 
         this.state = {}   
+        this.user = new User(); 
     } 
 
     componentWillMount(){
@@ -23,8 +25,7 @@ class Profile extends Component {
     }
 
     getUserData(_id){
-       var user = new User(); 
-       var userPromise = user.user_data(_id);
+       var userPromise = this.user.user_data(_id);
        userPromise.then(
            (val) => { 
                this.setState({email: val.email,
@@ -34,9 +35,8 @@ class Profile extends Component {
        )        
     }
 
-    getUserAddresses(_id){
-        var user = new User(); 
-        var addresses_promise = user.get_addresses(_id); 
+    getUserAddresses(_id){ 
+        var addresses_promise = this.user.get_addresses(_id); 
         addresses_promise.then(
             (val) => {
                 this.setState({addresses: val}, function(){
@@ -55,9 +55,14 @@ class Profile extends Component {
                     city={_addresses[i]['city']}
                     zipcode={_addresses[i]['zipCode']} 
                     id={_addresses[i]['id']}
+                    delete={this.deleteUserAddress}
                 />);
         }
         this.setState({cards: addresCards});
+    }
+    async deleteUserAddress(_address_id){
+        await this.user.delete_address_by_id(this.id, _address_id)
+        this.getUserAddresses(this.id); 
     }
 
     render(){
@@ -70,9 +75,11 @@ class Profile extends Component {
                                 <CardBody>
                                     <Row>
                                         <Col md={12}>
-                                            <Button className='float-right' color='secondary' size='sm'>
-                                                <i className='fa fa-pencil'></i>
-                                            </Button>
+                                            <Link to='/profile/edit'>
+                                                <Button className='float-right' color='secondary' size='sm'>
+                                                    <i className='fa fa-pencil'></i>
+                                                </Button>
+                                            </Link>
                                         </Col>
                                         <Col className="card-row" md={12}>
                                             <img className='profileImage'  alt='Profile' src={logo} width={150} height={150}/>
@@ -107,7 +114,7 @@ class Profile extends Component {
                                     <Row>
                                         <Col md={12}>
                                             
-                                            <Link exact to='profile/add/address' params={this.id}>
+                                            <Link to='profile/add/address' params={this.id}>
                                             <Button className='float-right' size='sm' color='success'>
                                                 <i className="fa fa-plus">
                                                 </i>

@@ -17,7 +17,11 @@ class UserAddress extends Component{
     
     componentWillMount(){
         if(this.props.action === 'edit'){
-             
+            var getAddresByIdPromise = this.user.get_address_by_id(this.id, this.props.match.params.id);
+            getAddresByIdPromise.then(
+                (val) => {
+                }
+            )
         }
     }
     onDismiss(){
@@ -42,7 +46,7 @@ class UserAddress extends Component{
     handleSubmit(e){
         e.preventDefault(); 
         if(this.state.zipcode !== null && this.state.street !== null && this.state.streetNumber !== null && this.state.city !== null){
-            if(this.props.action = 'add'){
+            if(this.props.action === 'add'){
                 var add_address_promise = this.user.add_address(this.state.street, this.state.streetNumber, this.state.city, this.state.zipcode, this.id);
                 add_address_promise.then(
                     (val) => {
@@ -53,7 +57,7 @@ class UserAddress extends Component{
                     }
                 )
             }
-            else if(this.props.action = 'edit'){
+            else if(this.props.action === 'edit'){
 
             }
         }
@@ -125,7 +129,7 @@ class UserAddress extends Component{
                                         value={this.state.city} />
                                 </FormGroup>
                                 <Button size='sm' color='secondary' onClick={this.handleSubmit}>Add</Button>
-                                <Link exact to='/profile'>
+                                <Link to='/profile'>
                                     <Button size='sm' className='float-right' color='danger'>Return to profile</Button>
                                 </Link>
                             </Form>

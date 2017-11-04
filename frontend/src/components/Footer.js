@@ -2,8 +2,44 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom'; 
 import {Container, Col, Row} from 'reactstrap'; 
 import '../css/Footer.css'; 
+import {Products} from '../classes/API/Products.js'; 
 
 class Footer extends Component{
+    constructor(props){
+        super(props);
+        this.getAllCategories = this.getAllCategories.bind(this); 
+        this.createList = this.createList.bind(this); 
+        this.state = {};
+    }
+    componentWillMount(){
+        this.getAllCategories(); 
+    }
+    
+    getAllCategories(){
+        var products = new Products();
+        var categories_promise = products.getCategories(); 
+        categories_promise.then(
+            (val) => {
+                this.setState({categories: val}, function(){
+                    this.createList(this.state.categories); 
+                }); 
+            }
+        );
+    }
+
+    createList(_categories){
+        var listItems = [];
+        for (var i=0; i < _categories.length; i++) {
+            listItems.push(
+                <li key={_categories[i]}>
+                    <Link to={'/categories/' + _categories[i].toLowerCase()}>
+                        {_categories[i]}
+                    </Link>
+                </li>
+                );
+        }
+        this.setState({list: listItems});
+    }
     render(){
         return(
             <div>
@@ -31,46 +67,7 @@ class Footer extends Component{
                                     <div className="footer-pad">
                                         <h4>Categories</h4>
                                         <ul className="list-unstyled">
-                                            <li>
-                                                <Link exact to='/'>
-                                                    Islands
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link exact to='/'>
-                                                    Ships
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link exact to='/'>
-                                                    Planes
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link exact to='/'>
-                                                    Bundles
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link exact to='/'>
-                                                    Houses
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link exact to='/'>
-                                                    Jewelry
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link exact to='/'>
-                                                    Private Islands
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link exact to='/'>
-                                                    Other
-                                                </Link>
-                                            </li>
+                                            {this.state.list}
                                         </ul>
                                     </div>
                                 </Col>
@@ -79,32 +76,32 @@ class Footer extends Component{
                                         <h4>About Us</h4>
                                         <ul className="list-unstyled">
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     Giftcards
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     News
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     Disclaimer
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     Privacy Policy
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     FAQs
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     Webmaster
                                                 </Link>
                                             </li>
@@ -116,32 +113,32 @@ class Footer extends Component{
                                         <h4>Contact Us</h4>
                                         <ul className="list-unstyled">
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     <i className="fa fa-phone"></i> Phone
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     <i className="fa fa-envelope"></i> Mail
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     <i className="fa fa-facebook"></i> Facebook
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     <i className="fa fa-twitter"></i> Twitter
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     <i className="fa fa-linkedin"></i> Linkedin
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link exact to='/'>
+                                                <Link to='/'>
                                                     <i className="fa fa-google"></i> Google
                                                 </Link>
                                             </li>

@@ -18,9 +18,11 @@ class UserAddressCard extends Component {
                                                 <i className="fa fa-pencil"/>
                                             </Button>
                                         </Link>
-                                        <Button addressId={this.props.id} size='sm' color='danger'>
+                                        
+                                        <Button onClick={()=>this.props.delete(this.props.id)} size='sm' color='danger'>
                                             <i className="fa fa-minus"/>
                                         </Button>
+                                    
                                     </ButtonGroup>
                                     <br/>
                                     <b>Zipcode: </b>{this.props.zipcode} 

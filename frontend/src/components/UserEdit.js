@@ -7,10 +7,11 @@ import {User} from '../classes/API/User.js';
 class UserEdit extends Component{
     constructor(props){
         super(props)
-        this.state = {name: '', surname: '', email: ''}
+        this.state = {name: '', surname: '', email: '', visible: false}
         this.id = jwt_decode(sessionStorage.getItem('id_token'))['id']; 
         this.handleFormChanges = this.handleFormChanges.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this); 
+        this.onDismiss = this.onDismiss.bind(this); 
         this.user = new User(); 
     }
     componentWillMount(){
@@ -22,6 +23,10 @@ class UserEdit extends Component{
                                surname: val.lastName});  
             }
         )
+    }
+
+    onDismiss(){
+        this.setState({visible: false}); 
     }
 
     getUserData(_id){
@@ -42,6 +47,7 @@ class UserEdit extends Component{
             (val) => {
                 if(val.ok && val.status === 204){
                     this.setState({faled: false}); 
+                    this.setState(({visible: true}))
                 }
                 else{
                     this.setState({failed: true}); 
@@ -65,7 +71,11 @@ class UserEdit extends Component{
                         <Alert color="danger">
                             Failed to update user profile! Try again. 
                         </Alert> 
-                    : null 
+                    : (this.state.visible) ?
+                        <Alert isOpen={this.state.visible} toggle={this.onDismiss} color='success'>
+                            Updated your user profile
+                        </Alert> 
+                    : ""
                     }
                     <Form>
                         <FormGroup>

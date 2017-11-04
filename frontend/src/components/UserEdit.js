@@ -101,7 +101,7 @@ class UserEdit extends Component{
                                 value={this.state.zipcode} />
                         </FormGroup> */}
                         <Button size='sm' color='secondary' onClick={this.handleSubmit}>Update</Button>
-                        <Link exact to='/profile'>
+                        <Link to='/profile'>
                             <Button size='sm' className='float-right' color='danger'>Return to profile</Button>
                         </Link>
                     </Form>

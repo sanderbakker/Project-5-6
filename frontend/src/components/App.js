@@ -84,13 +84,14 @@ class App extends Component {
                     <Route exact path='/categories' component={Categories}/>
                     <Route exact path='/login' component={Login}/>
                     <Route exact path='/register' component={Register}/>
+                    
                     {/* Renders routes for our categories */}
+                    
                     {this.state.routes}
 
                     {(this.state.loggedIn) ? 
                     <Route exact path='/logout' render={(props) => (<Logout logOutHandler={this.handleLogout} {...props}/>)} />                    
                     : null}
-                    {console.log(this.state.admin)}
                     {(this.state.loggedIn) ? 
                     <Route exact path='/profile' component={Profile} />
                     : null }

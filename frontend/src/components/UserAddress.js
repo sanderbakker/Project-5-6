@@ -20,7 +20,6 @@ class UserAddress extends Component{
             var getAddresByIdPromise = this.user.get_address_by_id(this.id, this.props.match.params.id);
             getAddresByIdPromise.then(
                 (val) => {
-                    console.log(val); 
                 }
             )
         }
@@ -130,7 +129,7 @@ class UserAddress extends Component{
                                         value={this.state.city} />
                                 </FormGroup>
                                 <Button size='sm' color='secondary' onClick={this.handleSubmit}>Add</Button>
-                                <Link exact to='/profile'>
+                                <Link to='/profile'>
                                     <Button size='sm' className='float-right' color='danger'>Return to profile</Button>
                                 </Link>
                             </Form>

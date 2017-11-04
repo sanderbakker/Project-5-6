@@ -35,7 +35,7 @@ class Home extends Component {
         for (var i=0; i < _categories.length; i++) {
             listGroupItems.push(
                 <ListGroupItem key={_categories[i]}>
-                    <Link exact to={'/categories/' + _categories[i].toLowerCase()}>
+                    <Link to={'/categories/' + _categories[i].toLowerCase()}>
                         <i className={"fa fa-" + fontAwesome[i]}></i> {_categories[i]}
                     </Link>
                 </ListGroupItem>

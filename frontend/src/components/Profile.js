@@ -114,7 +114,7 @@ class Profile extends Component {
                                     <Row>
                                         <Col md={12}>
                                             
-                                            <Link exact to='profile/add/address' params={this.id}>
+                                            <Link to='profile/add/address' params={this.id}>
                                             <Button className='float-right' size='sm' color='success'>
                                                 <i className="fa fa-plus">
                                                 </i>

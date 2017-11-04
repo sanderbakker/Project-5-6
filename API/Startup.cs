@@ -91,7 +91,14 @@ namespace API
                                                 .RequireAuthenticatedUser().Build();
             });
 
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
 
             services.AddMvc();
         }
@@ -106,10 +113,7 @@ namespace API
 
             app.UseAuthentication();
 
-            app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:3000")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod());
+            app.UseCors("CorsPolicy");
 
             app.UseMvc();
 

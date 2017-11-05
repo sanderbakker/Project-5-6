@@ -109,6 +109,7 @@ namespace API.Controllers
             }
 
             product.Name = item.Name;
+            product.Description = item.Description; 
             _unitOfWork.Complete();
 
             return new NoContentResult();

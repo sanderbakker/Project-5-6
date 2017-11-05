@@ -9,4 +9,7 @@ export class Products extends API {
 	getCategories(){
 		return this.get('/products/categories'); 
 	}
+	getProductsInCategory(_category){
+		return this.get('/products/withcategory/' + _category); 
+	}
 }

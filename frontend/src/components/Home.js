@@ -26,10 +26,9 @@ class Home extends Component {
             <div>
                 <Container fluid={true} className="content-container container-height">
                     <Row>
-                        <Col md="2">
+                        <Col md={2}>
                             <ListGroup>
-                                {this.state.categories && this.state.categories.map(function(item, i){
-                                    console.log(item); 
+                                {this.state.categories && this.state.categories.map((item, i) => {
                                     var fontAwesome = ['home', 'sun-o', 'plane', 'ship', 'car', 'diamond', 'globe'];
                                     return <ListGroupItem key={item}>
                                                 <Link to={'/categories/' + item.toLowerCase()}>
@@ -39,7 +38,7 @@ class Home extends Component {
                                 })}
                             </ListGroup>
                         </Col>
-                        <Col md="10">
+                        <Col md={10}>
                             <HomeCarousel/>
                         </Col>
                     </Row>

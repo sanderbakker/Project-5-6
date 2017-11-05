@@ -28,11 +28,16 @@ class CategoryProducts extends Component{
                     </Col>
                 </Row>
                 <Row>
-                    <Col md={2}>
+                    <Col md={3}>
                         Some space for possible filters in the future 
                     </Col>
-                    <Col md={10}>
+                    <Col md={9}>
                         <Row>
+                            {this.state.products && this.state.products.length === 0 ? 
+                                <p>No products found in this category</p> 
+                                : 
+                                null
+                            }
                             {this.state.products && this.state.products.map(function(item, i){
                                 return <ProductCard key={item.id} name={item.name} description={item.description} />
                             })}

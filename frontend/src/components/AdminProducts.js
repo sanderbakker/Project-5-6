@@ -3,6 +3,7 @@ import {Col, Row, Button} from 'reactstrap';
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4';
 import {Products} from '../classes/API/Products.js'; 
 import ProductCard from './ProductCard.js'; 
+import {Link} from 'react-router-dom'; 
 
 class AdminProducts extends Component {
     constructor(props) {
@@ -51,7 +52,9 @@ class AdminProducts extends Component {
             <Col md={{size: 10}}>
                 <Row>
                     <Col md={12}>
-                        <Button color="success" className="pull-right" size="sm"><i className="fa fa-plus"/> Add</Button>
+                        <Link to="/admin/add/product">
+                            <Button color="success" className="pull-right" size="sm"><i className="fa fa-plus"/> Add</Button>
+                        </Link>
                     </Col>
                 </Row>
                 <Row className="margin-top-row">
@@ -59,6 +62,7 @@ class AdminProducts extends Component {
                             return <ProductCard 
                                 key = {item.id}
                                 name= {item.name}
+                                admin={true}
                                 description = {item.description}
                             />
                         })} 

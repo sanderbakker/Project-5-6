@@ -116,6 +116,7 @@ namespace API.Controllers
 
             product.Name = item.Name;
             product.Description = item.Description; 
+            product.Price = item.Price; 
             _unitOfWork.Complete();
 
             return new NoContentResult();

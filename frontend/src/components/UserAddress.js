@@ -45,7 +45,7 @@ class UserAddress extends Component{
 
     handleSubmit(e){
         e.preventDefault(); 
-        if(this.state.zipcode !== null && this.state.street !== null && this.state.streetNumber !== null && this.state.city !== null){
+        if(this.state.zipcode !== "" && this.state.street !== "" && this.state.streetNumber !== "" && this.state.city !== ""){
             if(this.props.action === 'add'){
                 var add_address_promise = this.user.add_address(this.state.street, this.state.streetNumber, this.state.city, this.state.zipcode, this.id);
                 add_address_promise.then(

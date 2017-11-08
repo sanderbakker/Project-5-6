@@ -19,6 +19,7 @@ import {PropsRoute} from 'react-router-with-props';
 import in_array from 'in-array';
 import Admin from './Admin.js'; 
 import UserEdit from './UserEdit.js'; 
+import AdminProductFrom from './AdminProductForm.js'; 
 
   
 class App extends Component {
@@ -107,6 +108,11 @@ class App extends Component {
                     {(this.state.admin) ?
                     <PropsRoute type='stats' exact path ='/admin/statistics/' component={Admin} />
                     : null}
+
+                    {(this.state.admin) ?
+                    <PropsRoute action='add' exact path ='/admin/add/product' component={AdminProductFrom} />
+                    : null}
+
 
                     {(this.state.admin) ?
                     <PropsRoute type='users' exact path ='/admin/users/' component={Admin} />

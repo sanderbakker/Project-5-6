@@ -10,12 +10,12 @@ class CategoryProducts extends Component{
         this.products = new Products(); 
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.products.getProductsInCategory(this.props.name).then(
             (val) => {
                 this.setState({products: val}); 
             }
-        )
+        );
     }
 
     render(){

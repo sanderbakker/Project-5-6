@@ -97,8 +97,22 @@ class App extends Component {
                     : null }
 
                     {(this.state.admin) ? 
-                    <Route exact path='/admin' component={Admin} />
+                    <Route exact path='/admin' type='default' component={Admin} />
                     : null }
+
+                    {(this.state.admin) ?
+                    <PropsRoute type='products' exact path ='/admin/products/' component={Admin} />
+                    : null}
+
+                    {(this.state.admin) ?
+                    <PropsRoute type='stats' exact path ='/admin/statistics/' component={Admin} />
+                    : null}
+
+                    {(this.state.admin) ?
+                    <PropsRoute type='users' exact path ='/admin/users/' component={Admin} />
+                    : null}
+
+
 
                     {(this.state.loggedIn) ?
                     <PropsRoute action='add' exact path ='/profile/add/address' component={UserAddress} />

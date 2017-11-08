@@ -8,17 +8,17 @@ class AdminSideBar extends Component{
         return(
             <ListGroup>
                 <ListGroupItem>
-                    <Link to={'/'}>
+                    <Link to={'/admin/products'}>
                         <i className={"fa fa-desktop"}></i> Products
                     </Link>
                 </ListGroupItem>
                 <ListGroupItem>
-                    <Link to={'/'}>
+                    <Link to={'/admin/users'}>
                         <i className={"fa fa-user"}></i> Users
                     </Link>
                 </ListGroupItem>
                 <ListGroupItem>
-                    <Link to={'/'}>
+                    <Link to={'/admin/statistics'}>
                         <i className={"fa fa-pie-chart"}></i> Statistics
                     </Link>
                 </ListGroupItem>

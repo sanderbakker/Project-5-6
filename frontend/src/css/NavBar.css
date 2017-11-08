@@ -16,3 +16,10 @@
 .nav-link{
     color: #fff !important;
 }
+
+.line-height-edit{
+    line-height: 0; 
+}
+.margin-top-row{
+    margin-top: 15px; 
+}

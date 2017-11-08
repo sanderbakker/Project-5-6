@@ -28,10 +28,6 @@ class UserEdit extends Component{
     onDismiss(){
         this.setState({visible: false}); 
     }
-
-    getUserData(_id){
-                
-     }
     
     handleFormChanges(e){
         if(e.target.name === 'name'){

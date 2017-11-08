@@ -12,4 +12,11 @@ export class Products extends API {
 	getProductsInCategory(_category){
 		return this.get('/products/withcategory/' + _category); 
 	}
+
+	getProductsAmount(){
+		return this.get('/products/amount'); 
+	}
+	getProductsPaginated(_page_number){
+		return this.get('/products/paginated/' + _page_number + '/9')
+	}
 }

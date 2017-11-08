@@ -30,6 +30,12 @@ namespace API.Controllers
             return _unitOfWork.Products.GetAll();
         }
 
+        [HttpGet("amount")]
+        public IActionResult GetAmount()
+        {
+            return Ok(_unitOfWork.Products.GetAmount());
+        }
+
         [HttpGet("{id}", Name = "GetProduct" )]
         public IActionResult Get(int id)
         {

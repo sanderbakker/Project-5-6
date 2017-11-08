@@ -44,6 +44,11 @@ namespace API.Services
             return Enum.GetNames(typeof(Product.Categories)).ToList();
         }
 
+        public int GetAmount()
+        {
+            return WebshopContext.Products.Count();
+        }
+
         public WebshopContext WebshopContext
         {
             get { return _context as WebshopContext; }

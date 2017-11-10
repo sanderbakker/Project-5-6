@@ -12,6 +12,9 @@ export class Products extends API {
 	getProductsInCategory(_category){
 		return this.get('/products/withcategory/' + _category); 
 	}
+	getProduct(_id){
+		return this.get('/products/' + _id); 
+	}
 
 	getProductsAmount(){
 		return this.get('/products/amount'); 
@@ -28,5 +31,18 @@ export class Products extends API {
 							"category": _category
 						}
 					)
+	}
+	getProductsByCategoryPaginated(_category, _page_number){
+		return this.get("/products/withcategorypaginated/" + _category + "/" + _page_number + "/9")
+	}
+
+	updateProduct(_id, _description, _price, _category, _name){
+		return this.put("/products/" + _id, {
+			"description": _description,
+			"price": _price,
+			"name": _name,
+			"category": _category,
+			"id": _id
+		})
 	}
 }

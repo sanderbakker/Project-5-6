@@ -4,6 +4,7 @@ import UltimatePagination from 'react-ultimate-pagination-bootstrap-4';
 import {Products} from '../classes/API/Products.js'; 
 import ProductCard from './ProductCard.js'; 
 import {Link} from 'react-router-dom'; 
+import Loading from './Loading.js';         
 
 class AdminProducts extends Component {
     constructor(props) {
@@ -27,11 +28,12 @@ class AdminProducts extends Component {
       }
 
       calculateNumberOfPages(_total_amount_products){
+            setTimeout( () => {
             this.setState({total: Math.ceil(_total_amount_products/9)}, () => {
                 this.product.getProductsPaginated(1).then(
                     (val) => this.setState({products: val,  fetching: false}) 
                 )
-            });  
+            })}, 1000);  
       }
       
       onPageChange(page) {
@@ -44,8 +46,9 @@ class AdminProducts extends Component {
     render(){
         if(this.state.fetching){
             return(
-                <div>
-                </div>
+                <Col md={10}>
+                    <Loading/>
+                </Col>
             )
         }
         return(
@@ -61,16 +64,18 @@ class AdminProducts extends Component {
                     {this.state.products && this.state.products.map((item, i) => {
                             return <ProductCard 
                                 key = {item.id}
+                                id = {item.id}
                                 name= {item.name}
                                 admin={true}
                                 description = {item.description}
+                                price={item.price}
+                                category={item.category}
                             />
                         })} 
                 </Row>
                 <Row>
                 <Col md={12}>
                     <div className='float-right'>
-                        {console.log(this.state.products)}
                         <UltimatePagination 
                             currentPage={this.state.page} 
                             totalPages={this.state.total} 

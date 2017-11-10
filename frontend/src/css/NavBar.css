@@ -23,3 +23,10 @@
 .margin-top-row{
     margin-top: 15px; 
 }
+.loading-margin{
+    margin-top: 15px; 
+}
+
+.hr-margin-bottom{
+    margin-bottom: 5px !important;
+}

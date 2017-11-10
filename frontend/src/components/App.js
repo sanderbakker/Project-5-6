@@ -20,6 +20,7 @@ import in_array from 'in-array';
 import Admin from './Admin.js'; 
 import UserEdit from './UserEdit.js'; 
 import AdminProductFrom from './AdminProductForm.js'; 
+import Product from './Product.js';
 
   
 class App extends Component {
@@ -113,6 +114,10 @@ class App extends Component {
                     <PropsRoute action='add' exact path ='/admin/add/product' component={AdminProductFrom} />
                     : null}
 
+                    {(this.state.admin) ?
+                    <PropsRoute action='edit' exact path ='/admin/edit/product/:id' component={AdminProductFrom} />
+                    : null}
+
 
                     {(this.state.admin) ?
                     <PropsRoute type='users' exact path ='/admin/users/' component={Admin} />
@@ -131,6 +136,8 @@ class App extends Component {
                     {(this.state.loggedIn) ?
                     <PropsRoute action='edit' path ='/profile/edit/address/:id' component={UserAddress} />
                     : null}
+
+                    <Route path='/product/:id' component={Product}/>
 
                     <Route render={function(){
                         return (<NotFound/>); 

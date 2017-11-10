@@ -11,6 +11,9 @@ class ProductCard extends Component{
                         <CardImg top width="100%" height='130px' src="http://via.placeholder.com/300x130" alt="Placeholder image" />
                         <CardBody>
                             <CardSubtitle><b>{this.props.name}</b>
+                            <Button size="sm" color="success" className="float-right line-height-edit">
+                                <i className="fa fa-shopping-cart"/>
+                            </Button>
                             {this.props.admin ? 
                                 <Link to={'/admin/edit/product/' + this.props.id}>
                                     <Button color="warning" size="sm" className='float-right line-height-edit'>

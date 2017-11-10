@@ -21,7 +21,8 @@ class AdminProductForm extends Component {
                 this.product.getProduct(this.props.match.params.id).then(
                     
                     (value) =>
-                        this.setState({name: value.name, category: value.category, price: value.price, description: value.description, fetching: false}) 
+                        
+                        this.setState({name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false}) 
                 )
             }
         );

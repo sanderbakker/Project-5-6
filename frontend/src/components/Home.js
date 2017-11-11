@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Row, Col, ListGroup, ListGroupItem} from 'reactstrap';
 import {Link} from 'react-router-dom'; 
-import '../css/Home.css'; 
+ 
 import HomeCarousel from './HomeCarousel.js';
 import {Products} from '../classes/API/Products.js';  
 

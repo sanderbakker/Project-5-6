@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'; 
 import {Container, Col, Row} from 'reactstrap'; 
-import '../css/Footer.css'; 
+
 import {Products} from '../classes/API/Products.js'; 
 
 class Footer extends Component{

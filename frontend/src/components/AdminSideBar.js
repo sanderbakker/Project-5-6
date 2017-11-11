@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {ListGroupItem, ListGroup} from 'reactstrap';
 import {Link} from 'react-router-dom'; 
-import '../css/AdminSideBar.css'; 
 
 class AdminSideBar extends Component{
     render(){

@@ -10,7 +10,6 @@ import island from '../assets/slider2.jpg';
 import other from '../assets/circuit1.jpg';
 import jewelry from '../assets/jewelry.jpg'; 
 
-import '../css/Categories.css';
 import CategoryCard from './CategoryCard.js'; 
 
 class Categories extends Component {

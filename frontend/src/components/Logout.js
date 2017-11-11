@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 import logo from '../assets/logo.png'; 
 
-import '../css/Logout.css'; 
+
 
 class Logout extends Component{
     constructor(props){

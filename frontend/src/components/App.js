@@ -22,6 +22,8 @@ import UserEdit from './UserEdit.js';
 import AdminProductFrom from './AdminProductForm.js'; 
 import Product from './Product.js';
 
+import '../css/style.css'; 
+
   
 class App extends Component {
   constructor(props){

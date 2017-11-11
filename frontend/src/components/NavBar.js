@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React, {Component} from 'react'; 
 import { Collapse, Navbar, NavbarToggler, Nav, NavItem, Button, Form, FormGroup, Input } from 'reactstrap';
 import {NavLink} from 'react-router-dom'; 
-import '../css/NavBar.css'; 
 import logo from '../assets/logo-white.png'; 
 
 

@@ -3,7 +3,6 @@ import jwt_decode from 'jwt-decode';
 import {Card, CardBody, Table, Col, Container, Row, Button} from 'reactstrap'; 
 import {Link} from 'react-router-dom'; 
 import {User} from '../classes/API/User.js'; 
-import '../css/Profile.css'; 
 import logo from '../assets/logo.png'; 
 import UserAddressCard from './UserAddressCard.js'; 
 

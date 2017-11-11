@@ -1,6 +1,6 @@
 import React, {Component} from 'react'; 
 import {Row, Container} from 'reactstrap'; 
-import '../css/Loading.css'; 
+
 
 class Loading extends Component {
     render(){

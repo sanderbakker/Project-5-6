@@ -1,7 +1,6 @@
 import React, {Component} from 'react'; 
 import {Link} from 'react-router-dom'; 
 import {Row, Col, Container, Form, Input, Label, FormGroup, Button} from 'reactstrap'; 
-import '../css/Login.css'; 
 
 import Message from './Message.js';
 

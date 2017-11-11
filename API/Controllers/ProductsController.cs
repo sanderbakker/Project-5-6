@@ -30,11 +30,6 @@ namespace API.Controllers
             return _unitOfWork.Products.GetAll();
         }
 
-        [HttpGet("/latest/{size}")]
-        public IActionResult GetLatest(int size){
-            return new ObjectResult(_unitOfWork.Products.GetLatest(size)); 
-        }
-
         [HttpGet("amount")]
         public IActionResult GetAmount()
         {
@@ -89,6 +84,19 @@ namespace API.Controllers
             var cat = category.ParseEnum<Product.Categories>();
 
             return new ObjectResult(_unitOfWork.Products.GetWithCategoryPaginated(cat, index, pagesize));
+        }
+
+        [HttpGet("latest/{size}")]
+        public IActionResult GetLatest(int size)
+        {
+            var result = _unitOfWork.Products.GetLatest(size);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
         }
 
         [HttpPost]

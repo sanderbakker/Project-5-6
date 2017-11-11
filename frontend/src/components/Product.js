@@ -62,7 +62,7 @@ class Product extends Component {
                         <h5>Additional information</h5>
                     </Col>
                     <Col md={6}>
-                        <h5>Customizables</h5>
+                        <h5>Customizations</h5>
                     </Col>
                 </Row>
             </Container>

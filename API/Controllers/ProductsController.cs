@@ -30,6 +30,11 @@ namespace API.Controllers
             return _unitOfWork.Products.GetAll();
         }
 
+        [HttpGet("/latest/{size}")]
+        public IActionResult GetLatest(int size){
+            return NotFound(); 
+        }
+
         [HttpGet("amount")]
         public IActionResult GetAmount()
         {

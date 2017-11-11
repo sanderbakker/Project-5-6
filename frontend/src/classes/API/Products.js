@@ -45,4 +45,8 @@ export class Products extends API {
 			"id": _id
 		})
 	}
+
+	deleteProduct(_id){
+		return this.delete('/products/' + _id); 
+	}
 }

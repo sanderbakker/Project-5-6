@@ -14,13 +14,16 @@ class AdminProducts extends Component {
           fetching: true
         };
         this.onPageChange = this.onPageChange.bind(this);
-        
         this.product = new Products();
-         
-
         this.calculateNumberOfPages = this.calculateNumberOfPages.bind(this); 
+        this.deleteProduct = this.deleteProduct.bind(this); 
+        this.getAmountOfProducts = this.getAmountOfProducts.bind(this); 
       }
       componentDidMount(){
+            this.getAmountOfProducts(); 
+      }
+
+      getAmountOfProducts(){
         this.product.getProductsAmount().then(
             (val) => 
             this.calculateNumberOfPages(val)
@@ -41,6 +44,12 @@ class AdminProducts extends Component {
             (val) => this.setState({page: page, products: val})
         )
         // this.setState({page: page});
+      }
+
+      async deleteProduct(_id){ 
+        await this.product.deleteProduct(_id); 
+        this.setState({fetching: true}); 
+        this.getAmountOfProducts();
       }
 
     render(){
@@ -70,22 +79,22 @@ class AdminProducts extends Component {
                                 description = {item.description}
                                 price={item.price}
                                 category={item.category}
+                                delete={this.deleteProduct}
                             />
                         })} 
                 </Row>
                 <Row>
-                <Col md={12}>
-                    <div className='float-right'>
-                        <UltimatePagination 
-                            currentPage={this.state.page} 
-                            totalPages={this.state.total} 
-                            onChange={this.onPageChange}
-                        />
-                    </div>
-                </Col>
-                </Row>
-                
-        </Col> 
+                    <Col md={12}>
+                        <div className='float-right'>
+                            <UltimatePagination 
+                                currentPage={this.state.page} 
+                                totalPages={this.state.total} 
+                                onChange={this.onPageChange}
+                            />
+                        </div>
+                    </Col>
+                </Row> 
+            </Col> 
 
         )
     }

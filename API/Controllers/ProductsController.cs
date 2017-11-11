@@ -122,7 +122,7 @@ namespace API.Controllers
             return new NoContentResult();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var item = _unitOfWork.Products.Get(id);

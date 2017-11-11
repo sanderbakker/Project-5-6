@@ -1,7 +1,6 @@
 import React, {Component} from 'react'; 
 import {Link} from 'react-router-dom'; 
 import {Row, Col, Container, Form, Input, Label, FormGroup, Button} from 'reactstrap'; 
-import '../css/Login.css'; 
 
 import Message from './Message.js';
 
@@ -15,9 +14,6 @@ class Login extends Component{
         this.handleEmailChange = this.handleEmailChange.bind(this); 
         this.handlePasswordChange = this.handlePasswordChange.bind(this); 
         this.handleSubmit = this.handleSubmit.bind(this); 
-
-        //var products = new Products();
-        //console.log(products.getProducts());
     }
 
     handleEmailChange(e){
@@ -81,13 +77,13 @@ class Login extends Component{
                                 <br></br>
                                 <br></br>
                                 <small>
-                                    <Link exact to='/'>
+                                    <Link to='/'>
                                         <i className="fa fa-arrow-right"></i> Forgot email
                                     </Link>
                                 </small>
                                 <br></br>
                                 <small>
-                                    <Link exact to='/'>
+                                    <Link to='/'>
                                         <i className="fa fa-arrow-right"></i> Forgot password
                                     </Link>
                                 </small>
@@ -100,7 +96,7 @@ class Login extends Component{
                                 <li><i className="fa fa-check check-green"></i> Show order history</li>
                                 <li><i className="fa fa-check check-green"></i> Use your shopping cart everywhere</li>
                             </ul>
-                            <Link exact to = '/register'>
+                            <Link to = '/register'>
                                 <Button size='sm' color='secondary'>Register Now!</Button> 
                             </Link> 
                         </Col>

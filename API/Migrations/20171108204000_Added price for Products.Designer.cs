@@ -11,9 +11,10 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    partial class WebshopContextModelSnapshot : ModelSnapshot
+    [Migration("20171108204000_Added price for Products")]
+    partial class AddedpriceforProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,8 +80,6 @@ namespace API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("AddedAt");
-
                     b.Property<string>("CategoryString")
                         .HasColumnName("Category");
 
@@ -88,7 +87,7 @@ namespace API.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<float>("Price");
+                    b.Property<string>("Price");
 
                     b.HasKey("Id");
 

@@ -3,7 +3,6 @@ import jwt_decode from 'jwt-decode';
 import {Card, CardBody, Table, Col, Container, Row, Button} from 'reactstrap'; 
 import {Link} from 'react-router-dom'; 
 import {User} from '../classes/API/User.js'; 
-import '../css/Profile.css'; 
 import logo from '../assets/logo.png'; 
 import UserAddressCard from './UserAddressCard.js'; 
 
@@ -11,55 +10,32 @@ class Profile extends Component {
     constructor(props){
         super(props);
         this.id = jwt_decode(sessionStorage.getItem('id_token'))['id'];
-        this.getUserData = this.getUserData.bind(this);
         this.getUserAddresses = this.getUserAddresses.bind(this); 
-        this.createUserAddressCards = this.createUserAddressCards.bind(this); 
         this.deleteUserAddress = this.deleteUserAddress.bind(this); 
         this.state = {}   
         this.user = new User(); 
     } 
 
     componentWillMount(){
-        this.getUserData(this.id);
+        this.user.user_data(this.id).then(
+            (val) => { 
+                this.setState({email: val.email,
+                               firstName: val.firstName,
+                               lastName: val.lastName});  
+            }
+        )
         this.getUserAddresses(this.id);  
-    }
-
-    getUserData(_id){
-       var userPromise = this.user.user_data(_id);
-       userPromise.then(
-           (val) => { 
-               this.setState({email: val.email,
-                              firstName: val.firstName,
-                              lastName: val.lastName});  
-           }
-       )        
     }
 
     getUserAddresses(_id){ 
         var addresses_promise = this.user.get_addresses(_id); 
         addresses_promise.then(
             (val) => {
-                this.setState({addresses: val}, function(){
-                    this.createUserAddressCards(this.state.addresses); 
-                }); 
+                this.setState({addresses: val}); 
             }
         )
     }
-    createUserAddressCards(_addresses){
-        var addresCards = [];
-        for (var i=0; i < _addresses.length; i++) {
-            addresCards.push(
-                <UserAddressCard 
-                    street={_addresses[i]['street']} 
-                    streetNumber={_addresses[i]['streetNumber']}
-                    city={_addresses[i]['city']}
-                    zipcode={_addresses[i]['zipCode']} 
-                    id={_addresses[i]['id']}
-                    delete={this.deleteUserAddress}
-                />);
-        }
-        this.setState({cards: addresCards});
-    }
+
     async deleteUserAddress(_address_id){
         await this.user.delete_address_by_id(this.id, _address_id)
         this.getUserAddresses(this.id); 
@@ -114,7 +90,7 @@ class Profile extends Component {
                                     <Row>
                                         <Col md={12}>
                                             
-                                            <Link exact to='profile/add/address' params={this.id}>
+                                            <Link to='profile/add/address' params={this.id}>
                                             <Button className='float-right' size='sm' color='success'>
                                                 <i className="fa fa-plus">
                                                 </i>
@@ -123,7 +99,16 @@ class Profile extends Component {
                                         </Col>
                                         <Col className='card-row' md={12}>
                                             <Row>
-                                            {this.state.cards}
+                                            {this.state.addresses && this.state.addresses.map((item, i) => {
+                                                return <UserAddressCard key={item.id}
+                                                street={item.street} 
+                                                streetNumber={item.streetNumber}
+                                                city={item.city}
+                                                zipcode={item.zipCode} 
+                                                id={item.id}
+                                                delete={this.deleteUserAddress}
+                                            />
+                                            })}
                                             </Row>
                                         </Col>
                                     </Row>

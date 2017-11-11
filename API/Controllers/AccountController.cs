@@ -67,7 +67,7 @@ namespace API.Controllers
             return new ObjectResult(addresses);
         }
 
-        [HttpGet("users/{userdId}/addresses/{addressId}")]
+        [HttpGet("users/{userId}/addresses/{addressId}")]
         public IActionResult GetAddress(string userId, int addressId)
         {
             var user = _unitOfWork.Users.Get(userId).Result;
@@ -100,6 +100,31 @@ namespace API.Controllers
             _unitOfWork.Complete();
 
             return new ObjectResult(user.Addresses);
+        }
+
+        [HttpPut("users/{userId}/addresses/{id}")]
+        public IActionResult Update(string userId, int id, [FromBody] UserAddress address)
+        {
+            var user = _unitOfWork.Users.Get(userId).Result;
+            
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var userAddress = user.Addresses.Find(a => a.Id == id); 
+            if (userAddress == null)
+            {
+                return NotFound();
+            }
+
+            userAddress.City = address.City;
+            userAddress.Street = address.Street; 
+            userAddress.StreetNumber = address.StreetNumber; 
+            userAddress.ZipCode = address.ZipCode;
+            _unitOfWork.Complete();
+
+            return new OkResult();
         }
 
         [HttpDelete("users/{userId}/addresses/{addressId}")]

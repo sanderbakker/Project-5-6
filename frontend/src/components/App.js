@@ -19,6 +19,10 @@ import {PropsRoute} from 'react-router-with-props';
 import in_array from 'in-array';
 import Admin from './Admin.js'; 
 import UserEdit from './UserEdit.js'; 
+import AdminProductFrom from './AdminProductForm.js'; 
+import Product from './Product.js';
+
+import '../css/style.css'; 
 
   
 class App extends Component {
@@ -84,20 +88,44 @@ class App extends Component {
                     <Route exact path='/categories' component={Categories}/>
                     <Route exact path='/login' component={Login}/>
                     <Route exact path='/register' component={Register}/>
+                    
                     {/* Renders routes for our categories */}
+                    
                     {this.state.routes}
 
                     {(this.state.loggedIn) ? 
                     <Route exact path='/logout' render={(props) => (<Logout logOutHandler={this.handleLogout} {...props}/>)} />                    
                     : null}
-                    {console.log(this.state.admin)}
                     {(this.state.loggedIn) ? 
                     <Route exact path='/profile' component={Profile} />
                     : null }
 
                     {(this.state.admin) ? 
-                    <Route exact path='/admin' component={Admin} />
+                    <Route exact path='/admin' type='default' component={Admin} />
                     : null }
+
+                    {(this.state.admin) ?
+                    <PropsRoute type='products' exact path ='/admin/products/' component={Admin} />
+                    : null}
+
+                    {(this.state.admin) ?
+                    <PropsRoute type='stats' exact path ='/admin/statistics/' component={Admin} />
+                    : null}
+
+                    {(this.state.admin) ?
+                    <PropsRoute action='add' exact path ='/admin/add/product' component={AdminProductFrom} />
+                    : null}
+
+                    {(this.state.admin) ?
+                    <PropsRoute action='edit' exact path ='/admin/edit/product/:id' component={AdminProductFrom} />
+                    : null}
+
+
+                    {(this.state.admin) ?
+                    <PropsRoute type='users' exact path ='/admin/users/' component={Admin} />
+                    : null}
+
+
 
                     {(this.state.loggedIn) ?
                     <PropsRoute action='add' exact path ='/profile/add/address' component={UserAddress} />
@@ -110,6 +138,8 @@ class App extends Component {
                     {(this.state.loggedIn) ?
                     <PropsRoute action='edit' path ='/profile/edit/address/:id' component={UserAddress} />
                     : null}
+
+                    <Route path='/product/:id' component={Product}/>
 
                     <Route render={function(){
                         return (<NotFound/>); 

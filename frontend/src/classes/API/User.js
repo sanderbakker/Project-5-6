@@ -12,7 +12,6 @@ class User extends API{
         return this.get('/account/users/' + _id + '/addresses'); 
     }
     get_address_by_id(_user_id, _address_id){
-        console.log('/account/users/'+ _user_id + '/addresses/' + _address_id);
         return this.get(('/account/users/'+ _user_id + '/addresses/' + _address_id));
     }
     delete_address_by_id(_user_id, _address_id){
@@ -27,6 +26,16 @@ class User extends API{
                             "lastName": _lastname 
                         }
                     )
+    }
+
+    update_user_address(_user_id, _city, _street, _streetNumber, _zipcode, _address_id){
+        return this.put('/account/users/' + _user_id + '/addresses/' + _address_id, {
+            "city" : _city,
+            "street": _street,
+            "id": _address_id,
+            "streetNumber": _streetNumber,
+            "zipCode": _zipcode
+        })
     }
 }
 export {User}; 

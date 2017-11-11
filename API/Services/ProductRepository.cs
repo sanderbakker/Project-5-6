@@ -23,6 +23,13 @@ namespace API.Services
                 .ToList();
         }
 
+        public IEnumerable<Product> GetLatest(int size){
+            return WebshopContext.Products
+                .OrderBy(p => p.AddedAt)
+                .Take(size)
+                .ToList(); 
+        }
+
         public IEnumerable<Product> GetWithCategory(Product.Categories category)
         {
             return WebshopContext.Products
@@ -42,6 +49,11 @@ namespace API.Services
         public IEnumerable<string> GetCategories()
         {
             return Enum.GetNames(typeof(Product.Categories)).ToList();
+        }
+
+        public int GetAmount()
+        {
+            return WebshopContext.Products.Count();
         }
 
         public WebshopContext WebshopContext

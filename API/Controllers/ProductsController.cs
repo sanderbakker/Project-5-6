@@ -30,6 +30,12 @@ namespace API.Controllers
             return _unitOfWork.Products.GetAll();
         }
 
+        [HttpGet("amount")]
+        public IActionResult GetAmount()
+        {
+            return Ok(_unitOfWork.Products.GetAmount());
+        }
+
         [HttpGet("{id}", Name = "GetProduct" )]
         public IActionResult Get(int id)
         {
@@ -80,6 +86,19 @@ namespace API.Controllers
             return new ObjectResult(_unitOfWork.Products.GetWithCategoryPaginated(cat, index, pagesize));
         }
 
+        [HttpGet("latest/{size}")]
+        public IActionResult GetLatest(int size)
+        {
+            var result = _unitOfWork.Products.GetLatest(size);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
         [HttpPost]
         public IActionResult Create([FromBody] Product item)
         {
@@ -109,12 +128,14 @@ namespace API.Controllers
             }
 
             product.Name = item.Name;
+            product.Description = item.Description; 
+            product.Price = item.Price; 
             _unitOfWork.Complete();
 
             return new NoContentResult();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var item = _unitOfWork.Products.Get(id);

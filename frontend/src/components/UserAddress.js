@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 class UserAddress extends Component{
     constructor(props){
         super(props); 
-        this.state = {street: null, streetNumber: null, zipcode: null, city: null, visible: false}
+        this.state = {street: "", streetNumber: "", zipcode: "", city: "", fetching: true, visible: false}
         this.id = jwt_decode(sessionStorage.getItem('id_token'))['id'];
         this.handleFormChanges = this.handleFormChanges.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);  
@@ -20,7 +20,7 @@ class UserAddress extends Component{
             var getAddresByIdPromise = this.user.get_address_by_id(this.id, this.props.match.params.id);
             getAddresByIdPromise.then(
                 (val) => {
-                    console.log(val); 
+                    this.setState({street: val.street, streetNumber: val.streetNumber, city: val.city, zipcode: val.zipCode, fetching: false}); 
                 }
             )
         }
@@ -46,7 +46,7 @@ class UserAddress extends Component{
 
     handleSubmit(e){
         e.preventDefault(); 
-        if(this.state.zipcode !== null && this.state.street !== null && this.state.streetNumber !== null && this.state.city !== null){
+        if(this.state.zipcode !== "" && this.state.street !== "" && this.state.streetNumber !== "" && this.state.city !== ""){
             if(this.props.action === 'add'){
                 var add_address_promise = this.user.add_address(this.state.street, this.state.streetNumber, this.state.city, this.state.zipcode, this.id);
                 add_address_promise.then(
@@ -59,7 +59,19 @@ class UserAddress extends Component{
                 )
             }
             else if(this.props.action === 'edit'){
-
+                console.log(this.props.match.params.id);
+                
+                this.user.update_user_address(this.id, this.state.city, this.state.street, this.state.streetNumber, this.state.zipcode, this.props.match.params.id).then(
+                    (val) => {
+                        console.log(val);
+                        if(val.ok && val.status === 200){
+                            this.setState({visible: true});
+                        }
+                        else{
+                            this.setState({failed: true})
+                        }
+                    }
+                )
             }
         }
         else{
@@ -72,7 +84,9 @@ class UserAddress extends Component{
                 <Container className='content-container'>
                     <Row>
                         <Col md='12'>
-                            <p className="mb-0">New Address</p>
+                            <p className="mb-0">
+                                {this.props.action === 'add' ? 'New Address' : "Edit Address"}   
+                            </p>
                             <hr></hr>
                         </Col>
                     </Row>
@@ -130,7 +144,7 @@ class UserAddress extends Component{
                                         value={this.state.city} />
                                 </FormGroup>
                                 <Button size='sm' color='secondary' onClick={this.handleSubmit}>Add</Button>
-                                <Link exact to='/profile'>
+                                <Link to='/profile'>
                                     <Button size='sm' className='float-right' color='danger'>Return to profile</Button>
                                 </Link>
                             </Form>

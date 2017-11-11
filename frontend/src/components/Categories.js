@@ -10,48 +10,25 @@ import island from '../assets/slider2.jpg';
 import other from '../assets/circuit1.jpg';
 import jewelry from '../assets/jewelry.jpg'; 
 
-import '../css/Categories.css';
 import CategoryCard from './CategoryCard.js'; 
-
-var imageArray = [house, island, plane, ship, car, jewelry, other];
 
 class Categories extends Component {
     constructor(props){
         super(props); 
         this.state = {}
-        this.getAllCategories = this.getAllCategories.bind(this);
-        this.createCategoryCards = this.createCategoryCards.bind(this); 
     }
+    
     componentWillMount(){
-        this.getAllCategories(); 
-    }
-
-    getAllCategories(){
         var products = new Products();
-        var categories_promise = products.getCategories(); 
-        categories_promise.then(
+        products.getCategories().then(
             (val) => {
-                this.setState({categories: val}, function(){
-                    this.createCategoryCards(this.state.categories); 
-                }); 
+                this.setState({categories: val}); 
             }
-        ); 
-    }
-    createCategoryCards(_categories){
-        var categoryCards = [];
-        for (var i=0; i < _categories.length; i++) {
-            categoryCards.push(
-                <CategoryCard 
-                    image={imageArray[i]}
-                    title={_categories[i]}
-                />);
-        }
-        this.setState({cards: categoryCards});
+        );  
     }
 
     render(){
         return(
-            <div>
                 <Container className='content-container'> 
                     <Row>
                         <Col md="12">
@@ -60,10 +37,16 @@ class Categories extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        {this.state.cards}
+                        {this.state.categories && this.state.categories.map(function(item, i){
+                            var imageArray = [house, island, plane, ship, car, jewelry, other];
+                            return <CategoryCard 
+                                        key={item}
+                                        image={imageArray[i]}
+                                        title={item}
+                                    />
+                        })}
                     </Row>
                 </Container>
-            </div>
         ); 
     }
 }

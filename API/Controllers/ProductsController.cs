@@ -32,7 +32,7 @@ namespace API.Controllers
 
         [HttpGet("/latest/{size}")]
         public IActionResult GetLatest(int size){
-            return NotFound(); 
+            return new ObjectResult(_unitOfWork.Products.GetLatest(size)); 
         }
 
         [HttpGet("amount")]

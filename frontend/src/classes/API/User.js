@@ -27,5 +27,15 @@ class User extends API{
                         }
                     )
     }
+
+    update_user_address(_user_id, _city, _street, _streetNumber, _zipcode, _address_id){
+        return this.put('/account/users/' + _user_id + '/addresses/' + _address_id, {
+            "city" : _city,
+            "street": _street,
+            "id": _address_id,
+            "streetNumber": _streetNumber,
+            "zipCode": _zipcode
+        })
+    }
 }
 export {User}; 

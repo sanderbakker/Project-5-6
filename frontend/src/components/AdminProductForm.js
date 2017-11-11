@@ -16,14 +16,13 @@ class AdminProductForm extends Component {
     componentDidMount(){
         this.product.getCategories().then(
             (val) =>{ 
-                this.setState({categories: val}) 
-                console.log(this.props.key)
-                this.product.getProduct(this.props.match.params.id).then(
-                    
-                    (value) =>
-                        
-                        this.setState({name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false}) 
-                )
+                this.setState({categories: val, fetching: false}) 
+                if(this.props.action === 'edit'){
+                    this.product.getProduct(this.props.match.params.id).then(
+                        (value) =>
+                            this.setState({name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false}) 
+                    )
+                }
             }
         );
         

@@ -9,7 +9,7 @@ class Admin extends Component {
             <Container fluid={true} className="content-container">
                 <Row>
                     <Col className="full-height" md={2}>
-                        <AdminSideBar />
+                        <AdminSideBar />                        
                     </Col>
                         {this.props.type === 'default' ? 
                             'default component'

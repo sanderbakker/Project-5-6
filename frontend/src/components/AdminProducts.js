@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Row, Button} from 'reactstrap'; 
+import {Col, Row, Button, Input} from 'reactstrap'; 
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4';
 import {Products} from '../classes/API/Products.js'; 
 import ProductCard from './ProductCard.js'; 
@@ -11,13 +11,16 @@ class AdminProducts extends Component {
         super(props);
         this.state = {
           page: 1,
-          fetching: true
+          fetching: true,
+          filter_name: '',
+          filter_sort: ''
         };
         this.onPageChange = this.onPageChange.bind(this);
         this.product = new Products();
         this.calculateNumberOfPages = this.calculateNumberOfPages.bind(this); 
         this.deleteProduct = this.deleteProduct.bind(this); 
         this.getAmountOfProducts = this.getAmountOfProducts.bind(this); 
+        this.filterProducts = this.filterProducts.bind(this); 
       }
       componentDidMount(){
             this.getAmountOfProducts(); 
@@ -33,16 +36,31 @@ class AdminProducts extends Component {
       calculateNumberOfPages(_total_amount_products){
             setTimeout( () => {
             this.setState({total: Math.ceil(_total_amount_products/9)}, () => {
-                this.product.getProductsPaginated(1).then(
-                    (val) => this.setState({products: val,  fetching: false}) 
-                )
+                if(this.state.filter_name ===  ''){
+                    this.product.getProductsPaginated(1).then(
+                        (val) => this.setState({products: val,  fetching: false}) 
+                    )
+                }
+                else{    
+                    this.product.getFilteredProducts(this.state.filter_name, this.state.filter_sort, 1).then(
+                        (val) => this.setState({products: val,  fetching: false}) 
+                    )
+                }
             })}, 1000);  
       }
       
       onPageChange(page) {
-        this.product.getProductsPaginated(page).then(
-            (val) => this.setState({page: page, products: val})
-        )
+          if(this.state.filter_name.name === '')
+          {
+            this.product.getProductsPaginated(page).then(
+                (val) => this.setState({page: page, products: val})
+            )
+          }
+          else{
+            this.product.getFilteredProducts(this.state.filter_name, this.state.filter_sort, page).then(
+                (val) => this.setState({page: page, products: val})
+            ) 
+          }
         // this.setState({page: page});
       }
 
@@ -50,6 +68,11 @@ class AdminProducts extends Component {
         await this.product.deleteProduct(_id); 
         this.setState({fetching: true}); 
         this.getAmountOfProducts();
+      }
+
+      filterProducts(e){        
+            this.setState({filter_name: e.target.value.split(" ")[0], filter_sort: e.target.value.split(" ")[1], fetching: true});
+            this.getAmountOfProducts(); 
       }
 
     render(){
@@ -64,9 +87,23 @@ class AdminProducts extends Component {
             <Col md={{size: 10}}>
                 <Row>
                     <Col md={12}>
+                        
                         <Link to="/admin/add/product">
                             <Button color="success" className="pull-right" size="sm"><i className="fa fa-plus"/> Add</Button>
                         </Link>
+                        
+                        <Col md={4} className="col-padding-left">
+                            <Input onChange={this.filterProducts} value={this.state.filter_name + ' ' + this.state.filter_sort} type="select">
+                                <option value=''>Default</option>
+                                <option selected value='price desc'>Price (High-Low)</option>
+                                <option value='price asc'>Price (Low-High)</option>
+                                <option value='addedAt desc'>Added At (First-Last)</option>
+                                <option value='addedAt asc' >Added At (Last-First)</option>
+                                <option value='name asc'>Name (A-Z)</option>
+                                <option value='name desc'>Name (Z-A)</option>
+                            </Input>
+                        </Col>
+                        
                     </Col>
                 </Row>
                 <Row className="margin-top-row">

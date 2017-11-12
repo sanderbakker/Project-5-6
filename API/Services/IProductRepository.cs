@@ -11,6 +11,7 @@ namespace API.Services
         IEnumerable<Product> GetWithCategoryPaginated(Product.Categories category, int pageIndex, int pageSize = 10);
         IEnumerable<string> GetCategories();
         IEnumerable<Product> GetLatest(int size); 
+        IEnumerable<Product> GetFiltered(string name, string sort, int index, int size); 
         int GetAmount();
     }
 }

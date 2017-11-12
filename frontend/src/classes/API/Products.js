@@ -50,4 +50,7 @@ export class Products extends API {
 	deleteProduct(_id){
 		return this.delete('/products/' + _id); 
 	}
+	getFilteredProducts(_name, _sort, _index){
+		return this.get('/products/filter/' + _name + '/' + _sort + '/' + _index + '/9'); 
+	}
 }

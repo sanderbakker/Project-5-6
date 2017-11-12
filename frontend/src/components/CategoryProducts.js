@@ -40,7 +40,6 @@ class CategoryProducts extends Component{
 
     render(){
         if(this.state.fetching){
-            console.log(this.state.fetching, this.state.products); 
             return (
                 
                 <Container className='content-container'> 
@@ -62,7 +61,6 @@ class CategoryProducts extends Component{
                             </Container>
             )
         }
-        console.log(this.state.fetching, this.state.products); 
         return(
             <Container className='content-container'> 
                 <Row>

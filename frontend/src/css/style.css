@@ -19,6 +19,10 @@
     font-size: 14px;
 }
 
+.col-padding-left{
+    padding-left: 0 !important; 
+}
+
 .animation {
     /* background-color: #fff; */
     height: 100%;

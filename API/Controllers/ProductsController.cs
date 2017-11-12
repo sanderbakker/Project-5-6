@@ -99,6 +99,19 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("filter/{name}/{sort}/{index}/{size}")]
+        public IActionResult GetFiltered(string name, string sort, int index, int size = 10)
+        {
+            
+            var result = _unitOfWork.Products.GetFiltered(name, sort, index, size);
+
+            if(result == null){
+                return NotFound();
+            }
+
+            return Ok(result); 
+        }
+
         [HttpPost]
         public IActionResult Create([FromBody] Product item)
         {

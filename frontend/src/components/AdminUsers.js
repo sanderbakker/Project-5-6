@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {Col, Table, Button, ButtonGroup} from 'reactstrap'; 
+import {Col, Table, Button, ButtonGroup, ModalBody} from 'reactstrap'; 
 import Loading from './Loading.js';
 import {User} from '../classes/API/User.js'; 
 import {Link} from 'react-router-dom'; 
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4';
+import AdminUserForm from './AdminUserForm.js'; 
 
 class AdminUsers extends Component{
     constructor(props){
@@ -51,6 +52,8 @@ class AdminUsers extends Component{
         }
         return (
             <Col md={10}>
+                <AdminUserForm  action='add'/>
+                
                 <Table>
                     <thead>
                     <tr>
@@ -76,10 +79,11 @@ class AdminUsers extends Component{
                                     <td>{item.isAdmin}</td>
                                     <td>
                                         <ButtonGroup size="sm">
-                                            <Link to={'/admin/edit/user/' + item.id}>
+                                            {/* <Link to={'/admin/edit/user/' + item.id}>
                                                 <Button color="warning" size="sm"><i className="fa fa-edit"></i></Button>
-                                            </Link>
-                                            <Button color="danger" size="sm"><i className="fa fa-minus"></i></Button>
+                                            </Link> */}
+                                            <AdminUserForm id={item.id} action="edit"/>
+                                            {/* <Button color="danger" size="sm"><i className="fa fa-minus"></i></Button> */}
                                         </ButtonGroup>
                                     </td>
                               </tr>

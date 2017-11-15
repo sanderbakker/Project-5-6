@@ -26,25 +26,19 @@ class AdminProducts extends Component {
             this.getAmountOfProducts(); 
       }
 
-      getAmountOfProducts(){
-          console.log('IN amount of products'); 
+      getAmountOfProducts(){ 
         this.product.getProductsAmount().then(
-            (val) => {
-            this.calculateNumberOfPages(val)
-                console.log(val);
-        }
+            (val) => this.calculateNumberOfPages(val)
         );
       }
 
       calculateNumberOfPages(_total_amount_products){
-          console.log('passed amount of products'); 
             setTimeout( () => {
             this.setState({total: Math.ceil(_total_amount_products/9)}, () => {
-                console.log(this.state.filter_name)
                 if(this.state.filter_name ===  ''){
                     this.product.getProductsPaginated(this.state.page).then(
-                        (val) => {this.setState({products: val,  fetching: false}) 
-                        })
+                        (val) => this.setState({products: val,  fetching: false}) 
+                        )
                 }
                 else{    
                     this.product.getFilteredProducts(this.state.filter_name, this.state.filter_sort, 1).then(

@@ -170,6 +170,8 @@ namespace API.Controllers
         [HttpPost("users/adminify/{id}")]
         public IActionResult Adminify(string id)
         {
+            var user = _unitOfWork.Users.Get(id).Result;
+            user.IsAdmin = true;
             return new ObjectResult(_unitOfWork.Users.MakeAdmin(id).Result);
         }
 

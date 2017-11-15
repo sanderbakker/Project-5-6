@@ -172,5 +172,16 @@ namespace API.Controllers
         {
             return new ObjectResult(_unitOfWork.Users.MakeAdmin(id).Result);
         }
+
+        [HttpGet("users/amount")]
+        public IActionResult GetAmount(){
+            return Ok(_unitOfWork.Users.GetAmount()); 
+        }
+
+        [HttpGet("users/withpagination/{index}/{pagesize}")]
+
+        public IActionResult GetPaginated(int index, int pagesize = 10){
+            return Ok(_unitOfWork.Users.GetAllPaginated(index, pagesize)); 
+        }
     }
 }

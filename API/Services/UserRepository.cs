@@ -165,5 +165,10 @@ namespace API.Services
                 .Take(pageSize)
                 .ToList();
         }
+
+        public int GetAmount()
+        {
+            return _userManager.Users.Count();
+        }
     }
 }

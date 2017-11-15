@@ -50,12 +50,13 @@ class NavBar extends Component {
                             </Form>
                         </Nav>
                         <Nav className="ml-auto" navbar>
-                        
+                            {(this.admin) ? 
                             <NavItem>
                                 <NavLink className='nav-link' exact to='/cart'>
                                     <i className='fa fa-shopping-cart'></i>
                                 </NavLink>
                             </NavItem>
+                            : null}
                             {(this.admin) ?
                             <NavItem>
                                 <NavLink className='nav-link' exact to='/admin'>

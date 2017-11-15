@@ -37,5 +37,13 @@ class User extends API{
             "zipCode": _zipcode
         })
     }
+
+    getAmountOfUsers(){
+        return this.get('/account/users/amount'); 
+    }
+    
+    getUsersPaginated(_page){
+        return this.get('/account/users/withpagination/' + _page + '/10'); 
+    }
 }
 export {User}; 

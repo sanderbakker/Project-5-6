@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace API.Models
 {
@@ -34,6 +35,8 @@ namespace API.Models
             Jewelry,
             Other
         }
+
+        public List<ShoppingCartProduct> ShoppingCartProducts { get; set; }
     }
 
     public static class StringExtensions

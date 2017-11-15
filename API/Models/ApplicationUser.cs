@@ -9,5 +9,6 @@ namespace API.Models
         public string LastName { get; set; }
 
         public List<UserAddress> Addresses { get; set; }
+        public List<ShoppingCart> ShoppingCarts { get; set; }
     }
 }

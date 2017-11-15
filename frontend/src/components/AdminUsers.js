@@ -16,21 +16,23 @@ class AdminUsers extends Component{
         this.onPageChange =  this.onPageChange.bind(this); 
     }
 
-    componentDidMount(){
+    componentWillMount(){
         this.getAmountOfUsers(); 
     }
 
     getAmountOfUsers(){
         this.user.getAmountOfUsers().then(
-            (val) => 
-            this.calculateNumberOfPages(val)
+            (val) =>{ 
+                this.calculateNumberOfPages(val)
+                //this.setState({fetching: true}); 
+            }
         );
     }
 
     calculateNumberOfPages(_total_users){
         setTimeout( () => {
         this.setState({total: Math.ceil(_total_users/10)}, () => {
-                            this.user.getUsersPaginated(1).then(
+                            this.user.getUsersPaginated(this.state.page).then(
                     (val) => this.setState({users: val,  fetching: false}) 
                 )
         })}, 1000);  
@@ -52,7 +54,7 @@ class AdminUsers extends Component{
         }
         return (
             <Col md={10}>
-                <AdminUserForm  action='add'/>
+                <AdminUserForm user={this.getAmountOfUsers} action='add'/>
                 
                 <Table>
                     <thead>

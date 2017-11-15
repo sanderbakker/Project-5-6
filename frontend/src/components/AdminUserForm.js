@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label, ButtonGroup} from 'reactstrap';
 import {User} from '../classes/API/User.js'; 
+import { Account } from '../classes/API/Account';
 
 class AdminUserForm extends Component{
     constructor(props) {
@@ -15,6 +16,8 @@ class AdminUserForm extends Component{
         this.handleFormChanges = this.handleFormChanges.bind(this); 
         this.toggle = this.toggle.bind(this);
         this.user = new User();   
+        this.account = new Account(); 
+        this.handleClick = this.handleClick.bind(this); 
       }
     
       componentWillMount(){
@@ -49,12 +52,28 @@ class AdminUserForm extends Component{
         }
       }
 
+      handleClick(){
+           
+      }
+      handleFormSubmit(){
+        this.account.register(this.state.email, this.state.password).then(
+            (val) => {
+                if(typeof val.access_token !== 'undefined') {
+                    this.props.user(); 
+                    this.toggle();
+                    this.setState({email: '', password: ''})
+                }
+            }
+        )
+
+      }
+
     render(){
         if(this.state.fetching){
             return(
                 <div></div>
             )
-        }
+  ;      }
         if(this.props.action === 'edit'){
             return(
                 <div>
@@ -95,28 +114,6 @@ class AdminUserForm extends Component{
                 <ModalBody>
                 <Form>
                     <FormGroup>
-                        <Label for="nameLabel">Name</Label>
-                        <Input 
-                            size='sm' 
-                            type="text" 
-                            onChange={this.handleFormChanges} 
-                            name="name" 
-                            id="nameLabel" 
-                            placeholder="Enter name" 
-                            value={this.state.name}/>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="surnameLabel">Surname</Label>
-                        <Input 
-                            size='sm' 
-                            type="text" 
-                            onChange={this.handleFormChanges} 
-                            name="surname" 
-                            id="surnameLabel" 
-                            placeholder="Enter surname" 
-                            value={this.state.surname}/>
-                    </FormGroup>
-                    <FormGroup>
                         <Label for="emailLabel">Email</Label>
                         <Input 
                             size='sm' 
@@ -141,7 +138,7 @@ class AdminUserForm extends Component{
                 </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="success" size="sm" onClick={this.toggle}>Add</Button>{' '}
+                    <Button color="success" size="sm" onClick={() => this.handleFormSubmit()}>Add</Button>{' '}
                     <Button color="secondary" size="sm" onClick={this.toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>

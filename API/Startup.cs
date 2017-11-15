@@ -39,8 +39,8 @@ namespace API
 
             // configure asp.net identity with settings from appsettings.json
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
-            // services.AddIdentity<ApplicationUser, IdentityRole>()
-            //     .AddEntityFrameworkStores<WebshopContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<WebshopContext>();
 
             // prevent a 401 unauthorized errorpage from redirecting to non existant page
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -117,39 +117,40 @@ namespace API
 
             app.UseMvc();
 
-            // CreateRoles(serviceProvider).Wait();
+            CreateRoles(serviceProvider).Wait();
         }
 
-        // private async Task CreateRoles(IServiceProvider serviceProvider)
-        // {
-        //     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        //     var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-        //     //Check that there is an Administrator role and create if not
-        //     var hasAdminRole = await roleManager.RoleExistsAsync("Administrator");
+            //Check that there is an Administrator role and create if not
+            var hasAdminRole = await roleManager.RoleExistsAsync("Administrator");
 
-        //     if (!hasAdminRole)
-        //     {
-        //         var roleResult = await roleManager.CreateAsync(new IdentityRole("Administrator"));
-        //     }
+            if (!hasAdminRole)
+            {
+                var roleResult = await roleManager.CreateAsync(new IdentityRole("Administrator"));
+            }
 
-        //     // create admin user
-        //     var user = await userManager.FindByEmailAsync("admin@webshop.com");
-        //     if (user == null)
-        //     {
-        //         var admin = new ApplicationUser
-        //         {
-        //             Email = "admin@webshop.com",
-        //             UserName = "admin@webshop.com",
-        //         };
-        //         string password = "Abcd!1234";
+            // create admin user
+            var user = await userManager.FindByEmailAsync("admin@webshop.com");
+            if (user == null)
+            {
+                var admin = new ApplicationUser
+                {
+                    Email = "admin@webshop.com",
+                    UserName = "admin@webshop.com",
+                };
+                string password = "Abcd!1234";
 
-        //         var createAdmin = userManager.CreateAsync(admin, password).Result;
-        //         if (createAdmin.Succeeded)
-        //         {
-        //             await userManager.AddToRoleAsync(admin, "Administrator");
-        //         }
-        //     }
-        // }
+                var createAdmin = userManager.CreateAsync(admin, password).Result;
+                if (createAdmin.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, "Administrator");
+                    user.IsAdmin = true;
+                }
+            }
+        }
     }
 }

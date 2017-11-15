@@ -90,7 +90,11 @@ namespace API.Migrations
 
                     b.Property<float>("Price");
 
+                    b.Property<int?>("ShoppingCartId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("Products");
                 });
@@ -106,7 +110,20 @@ namespace API.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("ShoppingCart");
+                    b.ToTable("ShoppingCarts");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
+                {
+                    b.Property<int>("ShoppingCartId");
+
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("ShoppingCartId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCartProducts");
                 });
 
             modelBuilder.Entity("API.Models.UserAddress", b =>
@@ -238,11 +255,31 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("API.Models.Product", b =>
+                {
+                    b.HasOne("API.Models.ShoppingCart")
+                        .WithMany("Products")
+                        .HasForeignKey("ShoppingCartId");
+                });
+
             modelBuilder.Entity("API.Models.ShoppingCart", b =>
                 {
                     b.HasOne("API.Models.ApplicationUser")
                         .WithMany("ShoppingCarts")
                         .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
+                {
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("ShoppingCartProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany("ShoppingCartProducts")
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("API.Models.UserAddress", b =>

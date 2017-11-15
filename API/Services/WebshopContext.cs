@@ -20,17 +20,11 @@ namespace API.Services
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<TUserRole>()
-                .HasKey(r => new {r.UserId, r.RoleId})
-                .ToTable("AspNetUserRoles");
-
-            modelBuilder.Entity<TUserLogin>()
-                .HasKey(l => new {l.LoginProvider, l.ProviderKey, l.UserId})
-                .ToTable("AspNetUserLogins");            
-
+        {          
+            base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<ShoppingCartProduct>()
-                .HasKey(sp => new { sp.ShoppingCartId, sp.ProductId });
+                    .HasKey(sp => new { sp.ShoppingCartId, sp.ProductId });
 
             modelBuilder.Entity<ShoppingCartProduct>()
                 .HasOne(p => p.Product)

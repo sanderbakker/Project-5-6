@@ -21,6 +21,7 @@ import Admin from './Admin.js';
 import UserEdit from './UserEdit.js'; 
 import AdminProductFrom from './AdminProductForm.js'; 
 import Product from './Product.js';
+import AdminUserForm from './AdminUserForm.js'; 
 
 import '../css/style.css'; 
 
@@ -103,6 +104,10 @@ class App extends Component {
                     {(this.state.admin) ? 
                     <Route exact path='/admin' type='default' component={Admin} />
                     : null }
+
+                    {(this.state.admin) ?
+                    <PropsRoute action='edit' exact path='/admin/edit/user/:id' component={AdminUserForm}/>
+                    : null}
 
                     {(this.state.admin) ?
                     <PropsRoute type='products' exact path ='/admin/products/' component={Admin} />

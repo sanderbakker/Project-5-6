@@ -21,7 +21,6 @@ class ProductCard extends Component{
     render(){
         return(
             <Col md={4}>
-                
                     <Card>
                         <Link to={'/product/' + this.props.id }>
                             <CardImg top width="100%" height='130px' src="http://via.placeholder.com/300x130" alt="Placeholder image" />

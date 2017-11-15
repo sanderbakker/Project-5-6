@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Col, Table, Button, ButtonGroup} from 'reactstrap'; 
 import Loading from './Loading.js';
 import {User} from '../classes/API/User.js'; 
+import {Link} from 'react-router-dom'; 
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4';
 
 class AdminUsers extends Component{
@@ -56,12 +57,13 @@ class AdminUsers extends Component{
                         <th>Name</th>
                         <th>Surname</th>
                         <th>Email</th>
+                        <th>Admin</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     {this.state.users.map((item, i) => {
-                        return <tr>
+                        return <tr key={i}>
                                 {
                                     item.firstName != null ? <td>{item.firstName}</td> 
                                     : <td>Not filled in</td> 
@@ -71,9 +73,12 @@ class AdminUsers extends Component{
                                     : <td>Not filled in</td>
                                 }
                                     <td>{item.email}</td>
+                                    <td>{item.isAdmin}</td>
                                     <td>
-                                        <ButtonGroup>
-                                            <Button color="warning" size="sm"><i className="fa fa-edit"></i></Button>
+                                        <ButtonGroup size="sm">
+                                            <Link to={'/admin/edit/user/' + item.id}>
+                                                <Button color="warning" size="sm"><i className="fa fa-edit"></i></Button>
+                                            </Link>
                                             <Button color="danger" size="sm"><i className="fa fa-minus"></i></Button>
                                         </ButtonGroup>
                                     </td>

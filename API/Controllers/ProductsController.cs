@@ -161,5 +161,12 @@ namespace API.Controllers
             _unitOfWork.Complete();
             return new NoContentResult();
         }
+
+        [HttpGet("search/{searchString}")]
+        public IActionResult Search(string searchString) {
+            var result = _unitOfWork.Products.SearchByName(searchString);
+
+            return Ok(result);
+        }
     }
 }

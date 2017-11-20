@@ -53,4 +53,8 @@ export class Products extends API {
 	getFilteredProducts(_name, _sort, _index){
 		return this.get('/products/filter/' + _name + '/' + _sort + '/' + _index + '/9'); 
 	}
+
+	searchProducts(_search_string) {
+		return this.get('/products/search/' + _search_string);
+	} 
 }

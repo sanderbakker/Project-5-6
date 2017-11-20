@@ -170,11 +170,21 @@ a, a:hover, a:active, a:visited, a:focus {
     min-height: 51.7%;
 }
 
+html {
+    position: relative;
+    min-height: 100%;    
+}
 
+body {
+    margin: 0 0 290px; /* bottom = footer height */
+}
 
 footer{
     color: black !important;
-    margin-top: 15px;
+    position: absolute;
+    width: 100%;
+    height: 290px;
+    bottom: 0px;
 }
 footer a{
     color: black !important;

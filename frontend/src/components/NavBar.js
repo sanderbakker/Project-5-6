@@ -3,8 +3,7 @@ import React, {Component} from 'react';
 import { Collapse, Navbar, NavbarToggler, Nav, NavItem, Button, Form, FormGroup, Input } from 'reactstrap';
 import {NavLink} from 'react-router-dom'; 
 import logo from '../assets/logo-white.png'; 
-
-
+import {Products} from '../classes/API/Products.js';  
 
 
 class NavBar extends Component {
@@ -16,6 +15,15 @@ class NavBar extends Component {
         this.state = {
           isOpen: false
         }; 
+        this.products = new Products();
+    }
+
+    componentDidMount() {
+        this.products.getCategories().then(
+            (val) => {
+                this.setState({categories: val}); 
+            }
+        );         
     }
     
     toggle() {
@@ -50,7 +58,12 @@ class NavBar extends Component {
                         <Nav className='mx-auto' navbar>
                             <Form onSubmit={this.handleSearchForm} action="" method="get" inline>
                                 <FormGroup>
-                                    <Input size='sm' type="text" id="search" name="search" placeholder="Search" />
+                                    <Input size='sm' type="text" id="search" name="search" placeholder="Search" list="suggestions" />
+                                        <datalist id="suggestions">                                    
+                                        {this.state.categories && this.state.categories.map(function(item, i){  
+                                                return <option value={item} />
+                                        })}
+                                        </datalist> 
                                 </FormGroup>
                                 <Button size='sm'><i className='fa fa-search'></i></Button>
                             </Form>

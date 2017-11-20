@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import NavBar from './NavBar.js'; 
 import Categories from './Categories.js';
+import SearchResult from './SearchResult.js';
 import Home from './Home.js'; 
 import NotFound from './NotFound.js'; 
 import Footer from './Footer.js'; 
@@ -89,6 +90,7 @@ class App extends Component {
                     <Route exact path='/categories' component={Categories}/>
                     <Route exact path='/login' component={Login}/>
                     <Route exact path='/register' component={Register}/>
+                    <Route exact path='/search/:search' component={SearchResult}/>
                     
                     {/* Renders routes for our categories */}
                     

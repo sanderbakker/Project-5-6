@@ -23,6 +23,12 @@ class NavBar extends Component {
           isOpen: !this.state.isOpen
         });
     }
+
+    handleSearchForm(e) {
+        e.preventDefault();
+        var searchString = (document.getElementById("search").value);
+        window.location.replace("/search/" + searchString);
+    }
     
     render(){
         return(
@@ -42,9 +48,9 @@ class NavBar extends Component {
                             </NavItem>
                         </Nav>
                         <Nav className='mx-auto' navbar>
-                            <Form inline>
+                            <Form onSubmit={this.handleSearchForm} action="" method="get" inline>
                                 <FormGroup>
-                                    <Input size='sm' type="text" name="search" placeholder="Search" />
+                                    <Input size='sm' type="text" id="search" name="search" placeholder="Search" />
                                 </FormGroup>
                                 <Button size='sm'><i className='fa fa-search'></i></Button>
                             </Form>

@@ -12,6 +12,11 @@ export default class SearchResult extends Component {
 		}
 	}
 
+	copmonentWillMount() {
+		// Redirect if categorie before render 
+		
+	}
+
 	componentDidMount() {
         this.products.searchProducts(this.props.match.params.search).then(
             (result) => {
@@ -22,7 +27,7 @@ export default class SearchResult extends Component {
 
 	render() {
 		return (
-			<row>
+			<Row>
 		        {this.state.products && this.state.products.map(function(item, i){		
 			        return <ProductCard 
 			                        key={item.id} 
@@ -35,7 +40,7 @@ export default class SearchResult extends Component {
 	    			<p>Product not found</p>
 	    			: null
 	    		}
-	        </row>
+	        </Row>
 	    );
     }
 }

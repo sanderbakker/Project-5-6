@@ -65,7 +65,7 @@ namespace API.Controllers
                 return new ObjectResult(null);
             }
 
-            return new ObjectResult(category);
+            return new JsonResult(category);
         }
 
         [HttpGet("withcategory/{category}")]

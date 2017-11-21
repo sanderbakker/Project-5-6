@@ -8,12 +8,24 @@ export default class SearchResult extends Component {
 		super(props);
 		this.products = new Products();
 		this.state = {
-			products: null
+			products: null,
+			fetching: true,
+			categoryCheck: true
 		}
 	}
 
-	copmonentWillMount() {
-		// Redirect if categorie before render 
+	componentWillMount() {
+		// Redirect if categorie before render
+		this.products.getCategory(this.props.match.params.search).then(
+			(result) => {
+				window.location.replace('/categories/' + result.toLowerCase());
+			}
+		).catch(
+			(result) => {
+				this.setState(this.setState({categoryCheck: false}));		
+			}
+		);
+		
 		
 	}
 
@@ -41,7 +53,7 @@ export default class SearchResult extends Component {
 												description={item.description}
 												price={item.price} />
 							})}
-							{this.state.products && this.state.products.length === 0 ?
+							{this.state.products && this.state.products.length === 0 && this.state.categoryCheck === false ?
 								<p>Product not found</p>
 								: null
 							}

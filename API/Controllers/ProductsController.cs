@@ -164,7 +164,10 @@ namespace API.Controllers
 
         [HttpGet("search/{searchString}")]
         public IActionResult Search(string searchString) {
-            var result = _unitOfWork.Products.SearchByName(searchString);
+            var result = _unitOfWork.Products.Find(p =>
+                p.Name.ToLower()
+                .Contains(searchString.ToLower()))
+                .ToList();
 
             return Ok(result);
         }

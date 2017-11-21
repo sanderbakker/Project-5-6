@@ -110,10 +110,6 @@ namespace API.Services
             return WebshopContext.Products.Count();
         }
 
-        public IEnumerable<Product> SearchByName(string searchString) {
-            return WebshopContext.Products.Where(p => p.Name.ToLower().Contains(searchString.ToLower())).ToList();
-        }
-
         public WebshopContext WebshopContext
         {
             get { return _context as WebshopContext; }

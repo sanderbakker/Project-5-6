@@ -12,7 +12,6 @@ namespace API.Services
         IEnumerable<string> GetCategories();
         IEnumerable<Product> GetLatest(int size); 
         IEnumerable<Product> GetFiltered(string name, string sort, int index, int size); 
-        IEnumerable<Product> SearchByName(string searchString); 
         int GetAmount();
     }
 }

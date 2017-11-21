@@ -59,6 +59,15 @@ namespace API.Controllers
             return new ObjectResult(_unitOfWork.Products.GetCategories());
         }
 
+        [HttpGet("category/{category}")]
+        public IActionResult GetCategory(string category) {
+            if(!Enum.IsDefined(typeof(Product.Categories), category)) {
+                return new ObjectResult(null);
+            }
+
+            return new ObjectResult(category);
+        }
+
         [HttpGet("withcategory/{category}")]
         public IActionResult GetWithCategory(string category)
         {

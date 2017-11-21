@@ -27,20 +27,28 @@ export default class SearchResult extends Component {
 
 	render() {
 		return (
-			<Row>
-		        {this.state.products && this.state.products.map(function(item, i){		
-			        return <ProductCard 
-			                        key={item.id} 
-			                        id={item.id}
-			                        name={item.name} 
-			                        description={item.description}
-			                        price={item.price} />
-			    })}
-			    {this.state.products && this.state.products.length == 0 ?
-	    			<p>Product not found</p>
-	    			: null
-	    		}
-	        </Row>
+			<Container className='content-container'>
+				<Row>
+					<Col md={3}>
+					</Col>
+					<Col md={9}>
+						<Row>
+							{this.state.products && this.state.products.map(function(item, i){		
+								return <ProductCard 
+												key={item.id} 
+												id={item.id}
+												name={item.name} 
+												description={item.description}
+												price={item.price} />
+							})}
+							{this.state.products && this.state.products.length === 0 ?
+								<p>Product not found</p>
+								: null
+							}
+						</Row>
+					</Col>
+				</Row>
+			</Container>
 	    );
     }
 }

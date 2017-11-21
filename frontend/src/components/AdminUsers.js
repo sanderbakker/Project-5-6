@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {Col, Table, Button, ButtonGroup, ModalBody} from 'reactstrap'; 
+import {Col, Table, ButtonGroup} from 'reactstrap'; 
 import Loading from './Loading.js';
-import {User} from '../classes/API/User.js'; 
-import {Link} from 'react-router-dom'; 
+import {User} from '../classes/API/User.js';  
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4';
 import AdminUserForm from './AdminUserForm.js'; 
 

@@ -35,8 +35,6 @@ namespace API.Models
             Jewelry,
             Other
         }
-
-        public List<ShoppingCartProduct> ShoppingCartProducts { get; set; }
     }
 
     public static class StringExtensions

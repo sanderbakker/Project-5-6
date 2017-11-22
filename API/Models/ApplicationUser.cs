@@ -10,6 +10,5 @@ namespace API.Models
 
         public bool IsAdmin { get; set;}
         public List<UserAddress> Addresses { get; set; }
-        public List<ShoppingCart> ShoppingCarts { get; set; }
     }
 }

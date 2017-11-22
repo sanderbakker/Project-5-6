@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Col, Row, Button, Input} from 'reactstrap'; 
+import {Col, Row, Input} from 'reactstrap'; 
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4';
 import {Products} from '../classes/API/Products.js'; 
 import ProductCard from './ProductCard.js'; 
-import {Link} from 'react-router-dom'; 
-import Loading from './Loading.js';         
+import Loading from './Loading.js';        
+import AdminProductForm from './AdminProductForm.js'; 
 
 class AdminProducts extends Component {
     constructor(props) {
@@ -87,10 +87,7 @@ class AdminProducts extends Component {
                 <Row>
                     <Col md={12}>
                         
-                        <Link to="/admin/add/product">
-                            <Button color="success" className="pull-right" size="sm"><i className="fa fa-plus"/> Add</Button>
-                        </Link>
-                        
+                        <AdminProductForm action="add" updateProducts={this.getAmountOfProducts}/>
                         <Col md={4} className="col-padding-left">
                             <Input onChange={this.filterProducts} value={this.state.filter_name + ' ' + this.state.filter_sort} type="select">
                                 <option value=''>Default</option>
@@ -116,6 +113,7 @@ class AdminProducts extends Component {
                                 price={item.price}
                                 category={item.category}
                                 delete={this.deleteProduct}
+                                updateProducts = {this.getAmountOfProducts}
                             />
                         })} 
                 </Row>

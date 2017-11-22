@@ -1,6 +1,7 @@
 import React, {Component} from 'react'; 
-import {Card, Col, CardBody, CardImg, CardSubtitle, CardText, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'; 
+import {Card, Col, CardBody, CardImg, CardSubtitle, CardText, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ButtonGroup} from 'reactstrap'; 
 import {Link} from 'react-router-dom';
+import AdminProductForm from './AdminProductForm.js'; 
 
 class ProductCard extends Component{
     constructor(props) {
@@ -38,11 +39,9 @@ class ProductCard extends Component{
                                     </DropdownToggle>
                                     <DropdownMenu right>
 
-                                    <Link to={'/admin/edit/product/' + this.props.id}>
-                                        <DropdownItem>
-                                                Edit
-                                        </DropdownItem>
-                                    </Link>
+                                    {/* <Link to={'/admin/edit/product/' + this.props.id}> */}
+                                                                                
+                                    {/* </Link> */}
 
                                     <DropdownItem onClick={() => {if(window.confirm('Delete this item?')) this.props.delete(this.props.id)}}>
                                             Delete
@@ -61,9 +60,13 @@ class ProductCard extends Component{
                                 
                                 {this.props.description}
                             </CardText>
-                            <Button size="sm" color="success" className="float-right line-height-edit">
-                                <i className="fa fa-shopping-cart"/>
-                            </Button>
+                            <ButtonGroup size="sm" className="float-right line-height-edit">
+                                <AdminProductForm id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
+                                <Button size="sm" color="success" className="float-right line-height-edit">
+                                    <i className="fa fa-shopping-cart"/>
+                                </Button>
+                            </ButtonGroup>
+                            
                         </CardBody>
                     </Card>
           

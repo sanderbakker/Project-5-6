@@ -184,7 +184,8 @@ footer{
     position: absolute;
     width: 100%;
     height: 290px;
-    margin-top: 15px; 
+    margin-top: 305px; 
+    bottom: 0px;
 }
 footer a{
     color: black !important;

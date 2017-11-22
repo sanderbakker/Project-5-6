@@ -181,5 +181,18 @@ namespace API.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("search/{searchString}/{index}/{size}")]
+        public IActionResult PaginatedSearch(string searchString, int index, int size = 10){
+            
+            var result = _unitOfWork.Products
+                .Find(p =>
+                p.Name.ToLower().Contains(searchString.ToLower()) || p.CategoryString == searchString )
+                .Skip((index - 1) * size)
+                .Take(size)
+                .ToList(); 
+            
+            return Ok(result); 
+        }
     }
 }

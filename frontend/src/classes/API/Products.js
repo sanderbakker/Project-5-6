@@ -34,7 +34,7 @@ export class Products extends API {
 							"price": _price,
 							"description": _description,
 							"category": _category,
-							"addedAt": new Date().toLocaleString()
+							"addedAt": new Date()
 						}
 					)
 	}

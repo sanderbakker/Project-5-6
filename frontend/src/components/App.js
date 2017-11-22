@@ -12,6 +12,7 @@ import Register from './Register.js';
 import Logout from './Logout.js'; 
 import Profile from './Profile.js';
 import UserAddress from './UserAddress.js'; 
+import ChatBox from './ChatBox.js'; 
 import jwt_decode from 'jwt-decode'; 
 import CategoryProducts from './CategoryProducts.js';
 import {PropsRoute} from 'react-router-with-props'; 
@@ -124,6 +125,7 @@ class App extends Component {
                         return (<NotFound/>); 
                     }}/>
                 </Switch>
+                <ChatBox />
               <Footer/>
           </div>  
         </BrowserRouter>

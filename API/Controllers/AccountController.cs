@@ -172,6 +172,7 @@ namespace API.Controllers
         {
             var user = _unitOfWork.Users.Get(id).Result;
             user.IsAdmin = true;
+            _unitOfWork.Complete(); 
             return new ObjectResult(_unitOfWork.Users.MakeAdmin(id).Result);
         }
 

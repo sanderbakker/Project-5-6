@@ -18,6 +18,7 @@ class AdminUserForm extends Component{
         this.user = new User();   
         this.account = new Account(); 
         this.handleClick = this.handleClick.bind(this); 
+        this.deleteUser = this.deleteUser.bind(this); 
       }
     
       componentWillMount(){
@@ -33,7 +34,7 @@ class AdminUserForm extends Component{
 
       getUser(){
         this.user.user_data(this.props.id).then(
-            (val) => this.setState({name: val.firstName, surname: val.lastName, email: val.email, fetching: false})
+            (val) => this.setState({user_id: val.id, name: val.firstName, surname: val.lastName, email: val.email, fetching: false, admin: val.isAdmin})
         )
       }
 
@@ -56,30 +57,45 @@ class AdminUserForm extends Component{
            
       }
       handleFormSubmit(){
-        this.account.register(this.state.email, this.state.password).then(
-            (val) => {
-                if(typeof val.access_token !== 'undefined') {
-                    this.props.user(); 
-                    this.toggle();
-                    this.setState({email: '', password: ''})
+        if(this.props.action === 'add'){
+            this.account.register(this.state.email, this.state.password).then(
+                (val) => {
+                    if(typeof val.access_token !== 'undefined') {
+                        this.props.user(); 
+                        this.toggle();
+                        this.setState({email: '', password: ''})
+                    }
                 }
-            }
-        )
-
+            )
+        }
+        else{
+            this.user.update_user_profile(this.state.user_id, this.state.name, this.state.surname).then(
+                (val) => {
+                    if(val.ok && val.status === 204){
+                        this.props.user(); 
+                        this.toggle(); 
+                        this.setState({firstName: '', lastName: ''});
+                    }
+                }
+            )        
+        }
+      }
+      deleteUser(){
+          console.log(this.props.id);
       }
 
     render(){
         if(this.state.fetching){
             return(
                 <div></div>
-            )
-  ;      }
+            );      
+        }
         if(this.props.action === 'edit'){
             return(
                 <div>
                     <ButtonGroup size="sm">
                         <Button color="warning" size="sm" onClick={this.toggle}><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm"><i className="fa fa-minus"></i></Button>
+                        <Button color="danger" size="sm" onClick={this.deleteUser}><i className="fa fa-minus"></i></Button>
                     </ButtonGroup>
                     <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                         <ModalHeader toggle={this.toggle}>Edit {this.state.name} {this.state.surname}</ModalHeader>
@@ -96,11 +112,39 @@ class AdminUserForm extends Component{
                                     placeholder="Enter name" 
                                     value={this.state.name}/>
                             </FormGroup>
+                            <FormGroup>
+                                <Label for="surnameLabel">Surname</Label>
+                                <Input 
+                                    size='sm' 
+                                    type="text" 
+                                    onChange={this.handleFormChanges} 
+                                    name="surname" 
+                                    id="surnameLabel" 
+                                    placeholder="Enter surname" 
+                                    value={this.state.surname}/>
+                            </FormGroup>
+                            <FormGroup check>
+                                <Label check>
+                                    {this.state.admin ? 
+                                    <Input checked
+                                        type="checkbox"
+                                        name="isAdmin"
+                                        
+                                    />
+                                    : <Input 
+                                        type="checkbox" 
+                                        name="isAdmin"
+                                        />
+                                    }
+                                    {' '}
+                                     Admin?
+                                </Label>
+                            </FormGroup>
                         </Form>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-                            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                            <Button color="success" size="sm" onClick={() => this.handleFormSubmit()}>Save</Button>{' '}
+                            <Button color="danger" size="sm" onClick={this.toggle}>Cancel</Button>
                         </ModalFooter>
                     </Modal>
                 </div>

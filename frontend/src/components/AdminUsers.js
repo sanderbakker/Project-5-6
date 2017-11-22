@@ -54,7 +54,6 @@ class AdminUsers extends Component{
         return (
             <Col md={10}>
                 <AdminUserForm user={this.getAmountOfUsers} action='add'/>
-                
                 <Table>
                     <thead>
                     <tr>
@@ -83,7 +82,7 @@ class AdminUsers extends Component{
                                             {/* <Link to={'/admin/edit/user/' + item.id}>
                                                 <Button color="warning" size="sm"><i className="fa fa-edit"></i></Button>
                                             </Link> */}
-                                            <AdminUserForm id={item.id} action="edit"/>
+                                            <AdminUserForm user={this.getAmountOfUsers} id={item.id} action="edit"/>
                                             {/* <Button color="danger" size="sm"><i className="fa fa-minus"></i></Button> */}
                                         </ButtonGroup>
                                     </td>

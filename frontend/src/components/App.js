@@ -12,6 +12,7 @@ import Register from './Register.js';
 import Logout from './Logout.js'; 
 import Profile from './Profile.js';
 import UserAddress from './UserAddress.js'; 
+import ChatBox from './ChatBox.js'; 
 import jwt_decode from 'jwt-decode'; 
 import {Products} from '../classes/API/Products.js'; 
 import CategoryProducts from './CategoryProducts.js';
@@ -152,6 +153,7 @@ class App extends Component {
                         return (<NotFound/>); 
                     }}/>
                 </Switch>
+                <ChatBox />
               <Footer/>
           </div>  
         </BrowserRouter>

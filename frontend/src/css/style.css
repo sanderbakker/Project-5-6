@@ -211,3 +211,30 @@ footer a:hover{
 .col-md-2{
     height: 100%; 
 }
+
+.chatbox {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    z-index: 10001;
+    max-width: 100%;
+}
+
+.chatbox-header {
+    background: cornflowerblue; 
+    padding: 10px;
+    border-top-left-radius: 5px;
+    color: white;
+    cursor: pointer;    
+}
+
+.chatbox-content {
+    background: white;
+    border: 1px solid grey;
+    width: 400px;
+    height: 300px;
+}
+
+.display-none {
+    display: none;
+}

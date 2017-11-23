@@ -41,6 +41,9 @@ class AdminProductForm extends Component {
         else if(e.target.name === 'price'){
             this.setState({price: e.target.value}); 
         }
+        else if(e.target.name === 'images') {
+            this.setState({images: e.target.files});
+        }
     }
 
     handleSubmit(){
@@ -72,18 +75,24 @@ class AdminProductForm extends Component {
                     }
                 )  
             }
+
+            if(this.state.images && this.props.id) {
+                for (var i = 0; i < this.state.images.length; i++) {
+                    this.product.addImage(this.props.id, this.state.images[i]);
+                }
+            }
+
         }
         else{ 
             this.setState({failed: true}); 
         }
-    }
+    }    
 
     onDismiss(){
         this.setState({visible: false}); 
     }
     
     toggle() {
-        console.log('toggle triggered'); 
         this.setState({
           modal: !this.state.modal
         });

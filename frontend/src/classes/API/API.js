@@ -9,6 +9,9 @@ class API {
 		
 	} 
 
+	getApiUrl() {
+		return this.API_url;
+	}
 	
 
 	/**

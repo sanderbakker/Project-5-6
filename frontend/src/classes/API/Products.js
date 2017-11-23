@@ -65,4 +65,22 @@ export class Products extends API {
 	searchProductsPaginated(_search_string, _page){
 		return this.get('/products/search/' + _search_string + '/' + _page + '/9'); 
 	}
+
+	addImage(_id, _image) {
+		var data = new FormData();
+		data.append("data", _image);
+		
+		var url = this.getApiUrl();
+		return fetch(url + "/products/" + _id + "/image", {
+  			mode: "no-cors",			
+		      method: "POST",
+		      headers: {
+		        "Accept": "application/json",
+		        "type": "formData"
+		      },
+		      body: data
+		}).then(function(res) {
+			return
+		});
+	}	
 }

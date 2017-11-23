@@ -177,6 +177,7 @@ html {
 
 body {
     margin: 0 0 290px; /* bottom = footer height */
+    padding-bottom: 15px;
 }
 
 footer{

@@ -62,4 +62,7 @@ export class Products extends API {
 	searchProducts(_search_string) {
 		return this.get('/products/search/' + _search_string);
 	} 
+	searchProductsPaginated(_search_string, _page){
+		return this.get('/products/search/' + _search_string + '/' + _page + '/9'); 
+	}
 }

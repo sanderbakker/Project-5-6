@@ -61,7 +61,7 @@ class NavBar extends Component {
                                     <Input size='sm' type="text" id="search" name="search" placeholder="Search" list="suggestions" />
                                         <datalist id="suggestions">                                    
                                         {this.state.categories && this.state.categories.map(function(item, i){  
-                                                return <option value={item} />
+                                                return <option  key={item} value={item} />
                                         })}
                                         </datalist> 
                                 </FormGroup>

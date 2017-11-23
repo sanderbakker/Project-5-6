@@ -1,5 +1,5 @@
 import React, {Component} from 'react'; 
-import {Card, Col, CardBody, CardImg, CardSubtitle, CardText, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ButtonGroup} from 'reactstrap'; 
+import {Card, Col, CardBody, CardImg, CardSubtitle, CardText, Button, ButtonGroup} from 'reactstrap'; 
 import {Link} from 'react-router-dom';
 import AdminProductForm from './AdminProductForm.js'; 
 
@@ -28,27 +28,6 @@ class ProductCard extends Component{
                         </Link>   
                         <CardBody>
                             <CardSubtitle><b>{this.props.name}</b>
-                            {this.props.admin ? 
-                                <Dropdown className="float-right" size={"sm"}isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                                    <DropdownToggle 
-                                        tag="span"
-                                        onClick={this.toggle}
-                                        data-toggle="dropdown"
-                                        aria-expanded={this.state.dropdownOpen}>
-                                        <i className="fa fa-cog"/>
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-
-                                    {/* <Link to={'/admin/edit/product/' + this.props.id}> */}
-                                                                                
-                                    {/* </Link> */}
-
-                                    <DropdownItem onClick={() => {if(window.confirm('Delete this item?')) this.props.delete(this.props.id)}}>
-                                            Delete
-                                    </DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                            : "" }
                             </CardSubtitle>
                             <hr className="hr-margin-bottom"/>
                             <CardText>  
@@ -60,8 +39,20 @@ class ProductCard extends Component{
                                 
                                 {this.props.description}
                             </CardText>
+                            {this.props.admin ?
+                            <ButtonGroup className="float-left">
+                                <Button 
+                                    size="sm" 
+                                    color="danger"
+                                    onClick={() => {if(window.confirm('Delete this item?')) this.props.delete(this.props.id)}}>
+                                    <i className="fa fa-minus"/>    
+                                </Button>
+                            </ButtonGroup>
+                            : ""}
                             <ButtonGroup size="sm" className="float-right line-height-edit">
+                                {this.props.admin ? 
                                 <AdminProductForm id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
+                                : ""}
                                 <Button size="sm" color="success" className="float-right line-height-edit">
                                     <i className="fa fa-shopping-cart"/>
                                 </Button>

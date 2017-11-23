@@ -54,7 +54,7 @@ class AdminUsers extends Component{
         return (
             <Col md={10}>
                 <AdminUserForm user={this.getAmountOfUsers} action='add'/>
-                <Table>
+                <Table hover={true}>
                     <thead>
                     <tr>
                         <th>Name</th>

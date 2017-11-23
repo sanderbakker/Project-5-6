@@ -176,7 +176,7 @@ namespace API.Controllers
 
             var result = _unitOfWork.Products
                 .Find(p =>
-                p.Name.ToLower().Contains(searchString.ToLower()) || p.CategoryString == searchString )
+                p.Name.ToLower().Contains(searchString.ToLower()) || p.CategoryString.ToLower() == searchString.ToLower() )
                 .ToList(); 
 
             return Ok(result);
@@ -187,7 +187,7 @@ namespace API.Controllers
             
             var result = _unitOfWork.Products
                 .Find(p =>
-                p.Name.ToLower().Contains(searchString.ToLower()) || p.CategoryString == searchString )
+                p.Name.ToLower().Contains(searchString.ToLower()) || p.CategoryString.ToLower() == searchString.ToLower() )
                 .Skip((index - 1) * size)
                 .Take(size)
                 .ToList(); 

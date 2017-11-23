@@ -13,7 +13,8 @@ class NavBar extends Component {
         this.admin = this.props.admin; 
         this.toggle = this.toggle.bind(this);
         this.state = {
-          isOpen: false
+          isOpen: false,
+          loadingSuggestions: false
         }; 
         this.products = new Products();
     }
@@ -30,6 +31,23 @@ class NavBar extends Component {
         this.setState({
           isOpen: !this.state.isOpen
         });
+    }
+
+    loadSuggestions() {
+        let input = document.getElementById('search');
+        let datalist = document.getElementById('suggestions');
+
+        if(this.state.loadingSuggestions || input.value.length < 3) 
+            return;
+
+        this.setState({loadingSuggestions: true});
+
+        this.products.searchProducts(input.value).then(
+            (result) => {
+                this.setState({suggestionProducts: null})
+                this.setState({loadingSuggestions: false, suggestionProducts: result});
+            }
+        );
     }
 
     handleSearchForm(e) {
@@ -58,10 +76,17 @@ class NavBar extends Component {
                         <Nav className='mx-auto' navbar>
                             <Form onSubmit={this.handleSearchForm} action="" method="get" inline>
                                 <FormGroup>
-                                    <Input size='sm' type="text" id="search" name="search" placeholder="Search" list="suggestions" />
+                                    <Input onChange={f => this.loadSuggestions()} size='sm' type="text" id="search" name="search" placeholder="Search" list="suggestions" />
                                         <datalist id="suggestions">                                    
                                         {this.state.categories && this.state.categories.map(function(item, i){  
-                                                return <option  key={item} value={item} />
+                                                return <option key={item} value={item} />
+                                        })}
+
+                                        {this.state.suggestionProducts && this.state.suggestionProducts.map(function(item, i){
+                                                if(i == 10)
+                                                    return;
+
+                                                return <option key={item.name} value={item.name} />
                                         })}
                                         </datalist> 
                                 </FormGroup>

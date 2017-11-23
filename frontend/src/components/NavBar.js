@@ -83,8 +83,8 @@ class NavBar extends Component {
                                         })}
 
                                         {this.state.suggestionProducts && this.state.suggestionProducts.map(function(item, i){
-                                                if(i == 10)
-                                                    return;
+                                                if(i === 10)
+                                                    return "";
 
                                                 return <option key={item.name} value={item.name} />
                                         })}

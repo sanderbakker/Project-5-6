@@ -3,6 +3,7 @@ import {Container, Row, Col} from 'reactstrap';
 import {Products} from '../classes/API/Products.js'; 
 import ProductCard from './ProductCard.js'; 
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'; 
+import Loading from './Loading.js'; 
 
 class SearchResult extends Component {
 	constructor(props) {
@@ -36,8 +37,15 @@ class SearchResult extends Component {
             this.setState({total: Math.ceil(_total_amount_products/9)}, () => {
                 this.products.searchProductsPaginated(this.props.match.params.search, this.state.page).then(
 						
-                        (val) => this.setState({products: val, fetching: false}) 
-                        )
+					(val) => {
+						if(val.length !== 0){
+							this.setState({products: val, fetching: false}) 
+						}
+						else{
+							this.setState({product: null, fetching: false})
+						}
+					}	
+					)
             })}, 1000);  
 	}
 	
@@ -51,7 +59,22 @@ class SearchResult extends Component {
 	render() {
 		if(this.state.fetching){
 			return (
-				<div></div>
+				<Container className="content-container">
+				<Loading/>
+				</Container>
+			)
+		}
+		if(this.state.products === null){
+			return (
+				<Container className='content-container'>
+					<Row>
+						<Col md={3}>
+						</Col>
+						<Col md={9}>
+							No products found for query: {this.props.match.params.search}
+						</Col>
+					</Row>
+				</Container>
 			)
 		}
 		return (
@@ -76,6 +99,7 @@ class SearchResult extends Component {
 						</Row>
 					</Col>
 				</Row>
+				
 				<Row>
                     <Col md={12}>
                         <div className='float-right'>
@@ -86,7 +110,8 @@ class SearchResult extends Component {
                             />
                         </div>
                     </Col>
-                </Row> 
+				</Row> 
+				
 			</Container>
 	    );
     }

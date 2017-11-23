@@ -22,6 +22,9 @@
 .col-padding-left{
     padding-left: 0 !important; 
 }
+.modal-lg{
+    max-width: 1200px !important;
+}
 
 .animation {
     /* background-color: #fff; */
@@ -41,7 +44,7 @@
     margin-left: -25px;
     margin-top: -25px;
     position: absolute;
-    top: 50%;
+    top: 30%;
     width: 50px;
   }
   .loading::after {

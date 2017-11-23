@@ -1,7 +1,7 @@
 import React, {Component} from 'react'; 
 import {Card, Col, CardBody, CardImg, CardSubtitle, CardText, Button, ButtonGroup} from 'reactstrap'; 
-import {Link} from 'react-router-dom';
 import AdminProductForm from './AdminProductForm.js'; 
+import Product from './Product.js'; 
 
 class ProductCard extends Component{
     constructor(props) {
@@ -23,9 +23,7 @@ class ProductCard extends Component{
         return(
             <Col md={4}>
                     <Card>
-                        <Link to={'/product/' + this.props.id }>
-                            <CardImg top width="100%" height='130px' src="http://via.placeholder.com/300x130" alt="Placeholder image" />
-                        </Link>   
+                        <CardImg top width="100%" height='130px' src="http://via.placeholder.com/300x130" alt="Placeholder image" />   
                         <CardBody>
                             <CardSubtitle><b>{this.props.name}</b>
                             </CardSubtitle>
@@ -39,16 +37,19 @@ class ProductCard extends Component{
                                 
                                 {this.props.description}
                             </CardText>
-                            {this.props.admin ?
+                            
                             <ButtonGroup className="float-left">
-                                <Button 
-                                    size="sm" 
-                                    color="danger"
-                                    onClick={() => {if(window.confirm('Delete this item?')) this.props.delete(this.props.id)}}>
-                                    <i className="fa fa-minus"/>    
-                                </Button>
+                                <Product id={this.props.id}/>
+                                {this.props.admin ?
+                                    <Button 
+                                        size="sm" 
+                                        color="danger"
+                                        onClick={() => {if(window.confirm('Delete this item?')) this.props.delete(this.props.id)}}>
+                                        <i className="fa fa-minus"/>    
+                                    </Button>
+                                : ""}
                             </ButtonGroup>
-                            : ""}
+
                             <ButtonGroup size="sm" className="float-right line-height-edit">
                                 {this.props.admin ? 
                                 <AdminProductForm id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
@@ -56,8 +57,7 @@ class ProductCard extends Component{
                                 <Button size="sm" color="success" className="float-right line-height-edit">
                                     <i className="fa fa-shopping-cart"/>
                                 </Button>
-                            </ButtonGroup>
-                            
+                            </ButtonGroup>               
                         </CardBody>
                     </Card>
           

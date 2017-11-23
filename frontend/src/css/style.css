@@ -22,6 +22,9 @@
 .col-padding-left{
     padding-left: 0 !important; 
 }
+.modal-lg{
+    max-width: 1200px !important;
+}
 
 .animation {
     /* background-color: #fff; */

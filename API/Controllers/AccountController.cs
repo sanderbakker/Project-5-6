@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using API.Models;
 using API.Services;
+using System.Linq;
 
 namespace API.Controllers
 {
@@ -106,21 +107,21 @@ namespace API.Controllers
         public IActionResult Update(string userId, int id, [FromBody] UserAddress address)
         {
             var user = _unitOfWork.Users.Get(userId).Result;
-            
+
             if (user == null)
             {
                 return BadRequest();
             }
 
-            var userAddress = user.Addresses.Find(a => a.Id == id); 
+            var userAddress = user.Addresses.Find(a => a.Id == id);
             if (userAddress == null)
             {
                 return NotFound();
             }
 
             userAddress.City = address.City;
-            userAddress.Street = address.Street; 
-            userAddress.StreetNumber = address.StreetNumber; 
+            userAddress.Street = address.Street;
+            userAddress.StreetNumber = address.StreetNumber;
             userAddress.ZipCode = address.ZipCode;
             _unitOfWork.Complete();
 
@@ -145,6 +146,41 @@ namespace API.Controllers
             _unitOfWork.Complete();
 
             return new NoContentResult();
+        }
+
+        [HttpPost("users/{id}/cart")]
+        public IActionResult AddProductToCart(string id, [FromBody] Product product)
+        {
+            var user = _unitOfWork.Users.Get(id).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var shoppingCartId = user.ShoppingCart.Id;
+
+            var existingProduct = from p in user.ShoppingCart.Products
+                                  where p.ProductId == product.Id
+                                  select p;
+
+            if (existingProduct == null)
+            {
+                user.ShoppingCart.Products.Add(new ShoppingCartProduct
+                {
+                    ShoppingCart = user.ShoppingCart,
+                    ShoppingCartId = shoppingCartId,
+
+                    Product = product,
+                    ProductId = product.Id,
+
+                    Quantity = 1
+                });
+            }
+            else
+            {
+                existingProduct.First().Quantity += 1;
+            }
+
+            return Ok();
         }
 
         [HttpPost("register")]
@@ -183,7 +219,6 @@ namespace API.Controllers
         }
 
         [HttpGet("users/withpagination/{index}/{pagesize}")]
-
         public IActionResult GetPaginated(int index, int pagesize = 10){
             return Ok(_unitOfWork.Users.GetAllPaginated(index, pagesize)); 
         }

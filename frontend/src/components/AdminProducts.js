@@ -11,6 +11,7 @@ class AdminProducts extends Component {
         super(props);
         this.state = {
           page: 1,
+          products: null, 
           fetching: true,
           filter_name: '',
           filter_sort: ''
@@ -37,7 +38,14 @@ class AdminProducts extends Component {
             this.setState({total: Math.ceil(_total_amount_products/9)}, () => {
                 if(this.state.filter_name ===  ''){
                     this.product.getProductsPaginated(this.state.page).then(
-                        (val) => this.setState({products: val,  fetching: false}) 
+                        (val) => {
+                            if(val.length !== 0){
+                                    this.setState({products: val, fetching: false}) 
+                                }
+                            else{
+                            	this.setState({product: null, fetching: false})
+                            }
+                        } 
                         )
                 }
                 else{    
@@ -79,6 +87,30 @@ class AdminProducts extends Component {
             return(
                 <Col md={10}>
                     <Loading/>
+                </Col>
+            )
+        }
+        if(this.state.products === null){
+            return(
+                <Col md={{size: 10}}>
+                    <Row>
+                        <Col md={12}>
+                            
+                            <AdminProductForm action="add" updateProducts={this.getAmountOfProducts}/>
+                            <Col md={4} className="col-padding-left">
+                                <Input onChange={this.filterProducts} value={this.state.filter_name + ' ' + this.state.filter_sort} type="select">
+                                    <option value=''>Default</option>
+                                    <option selected value='price desc'>Price (High-Low)</option>
+                                    <option value='price asc'>Price (Low-High)</option>
+                                    <option value='addedAt desc'>Added At (First-Last)</option>
+                                    <option value='addedAt asc' >Added At (Last-First)</option>
+                                    <option value='name asc'>Name (A-Z)</option>
+                                    <option value='name desc'>Name (Z-A)</option>
+                                </Input>
+                            </Col>
+                            
+                        </Col>
+                    </Row>
                 </Col>
             )
         }

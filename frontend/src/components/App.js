@@ -12,8 +12,8 @@ import Register from './Register.js';
 import Logout from './Logout.js'; 
 import Profile from './Profile.js';
 import UserAddress from './UserAddress.js'; 
+import ChatBox from './ChatBox.js'; 
 import jwt_decode from 'jwt-decode'; 
-import {Products} from '../classes/API/Products.js'; 
 import CategoryProducts from './CategoryProducts.js';
 import {PropsRoute} from 'react-router-with-props'; 
 
@@ -33,8 +33,6 @@ class App extends Component {
     this.state = {admin: false, loggedIn: false}; 
     this.roles = null;
     this.handleLogout = this.handleLogout.bind(this); 
-    this.getAllCategories = this.getAllCategories.bind(this); 
-    this.createProductRoutes = this.createProductRoutes.bind(this); 
   }
 
   async handleLogout(){
@@ -43,7 +41,6 @@ class App extends Component {
   }
 
   componentWillMount(){
-      this.getAllCategories(); 
       if(sessionStorage.getItem('access_token') != null && sessionStorage.getItem('id_token') != null){
           this.setState({loggedIn: true}); 
           if(in_array(jwt_decode(sessionStorage.getItem('id_token'))['roles'], 'Administrator')){
@@ -54,30 +51,6 @@ class App extends Component {
           this.setState({loggedIn: false}); 
       } 
   }
-  getAllCategories(){
-      var products = new Products();
-      var categories_promise = products.getCategories(); 
-      categories_promise.then(
-          (val) => {
-              this.setState({categories: val}, function(){
-                  this.createProductRoutes(this.state.categories); 
-              }); 
-          }
-      );
-  }
-
-
-  createProductRoutes(_categories){
-      var routes = [];
-      for (var i=0; i < _categories.length; i++) {
-          routes.push(
-                <PropsRoute key={_categories[i]} exact path={"/categories/" + _categories[i].toLowerCase()} component={CategoryProducts} name={_categories[i]} />
-              );
-      }
-      this.setState({routes: routes});
-    
-  }
-
   render() {
     return (
         <BrowserRouter>
@@ -94,7 +67,7 @@ class App extends Component {
                     
                     {/* Renders routes for our categories */}
                     
-                    {this.state.routes}
+                    <Route exact path='/categories/:category' component={CategoryProducts}/>
 
                     {(this.state.loggedIn) ? 
                     <Route exact path='/logout' render={(props) => (<Logout logOutHandler={this.handleLogout} {...props}/>)} />                    
@@ -152,6 +125,7 @@ class App extends Component {
                         return (<NotFound/>); 
                     }}/>
                 </Switch>
+                <ChatBox />
               <Footer/>
           </div>  
         </BrowserRouter>

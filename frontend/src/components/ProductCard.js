@@ -1,6 +1,7 @@
 import React, {Component} from 'react'; 
-import {Card, Col, CardBody, CardImg, CardSubtitle, CardText, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'; 
-import {Link} from 'react-router-dom';
+import {Card, Col, CardBody, CardImg, CardSubtitle, CardText, Button, ButtonGroup} from 'reactstrap'; 
+import AdminProductForm from './AdminProductForm.js'; 
+import Product from './Product.js'; 
 
 class ProductCard extends Component{
     constructor(props) {
@@ -22,34 +23,9 @@ class ProductCard extends Component{
         return(
             <Col md={4}>
                     <Card>
-                        <Link to={'/product/' + this.props.id }>
-                            <CardImg top width="100%" height='130px' src="http://via.placeholder.com/300x130" alt="Placeholder image" />
-                        </Link>   
+                        <CardImg top width="100%" height='130px' src="http://via.placeholder.com/300x130" alt="Placeholder image" />   
                         <CardBody>
                             <CardSubtitle><b>{this.props.name}</b>
-                            {this.props.admin ? 
-                                <Dropdown className="float-right" size={"sm"}isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                                    <DropdownToggle 
-                                        tag="span"
-                                        onClick={this.toggle}
-                                        data-toggle="dropdown"
-                                        aria-expanded={this.state.dropdownOpen}>
-                                        <i className="fa fa-cog"/>
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-
-                                    <Link to={'/admin/edit/product/' + this.props.id}>
-                                        <DropdownItem>
-                                                Edit
-                                        </DropdownItem>
-                                    </Link>
-
-                                    <DropdownItem onClick={() => {if(window.confirm('Delete this item?')) this.props.delete(this.props.id)}}>
-                                            Delete
-                                    </DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                            : "" }
                             </CardSubtitle>
                             <hr className="hr-margin-bottom"/>
                             <CardText>  
@@ -61,9 +37,27 @@ class ProductCard extends Component{
                                 
                                 {this.props.description}
                             </CardText>
-                            <Button size="sm" color="success" className="float-right line-height-edit">
-                                <i className="fa fa-shopping-cart"/>
-                            </Button>
+                            
+                            <ButtonGroup className="float-left">
+                                <Product id={this.props.id}/>
+                                {this.props.admin ?
+                                    <Button 
+                                        size="sm" 
+                                        color="danger"
+                                        onClick={() => {if(window.confirm('Delete this item?')) this.props.delete(this.props.id)}}>
+                                        <i className="fa fa-minus"/>    
+                                    </Button>
+                                : ""}
+                            </ButtonGroup>
+
+                            <ButtonGroup size="sm" className="float-right line-height-edit">
+                                {this.props.admin ? 
+                                <AdminProductForm id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
+                                : ""}
+                                <Button size="sm" color="success" className="float-right line-height-edit">
+                                    <i className="fa fa-shopping-cart"/>
+                                </Button>
+                            </ButtonGroup>               
                         </CardBody>
                     </Card>
           

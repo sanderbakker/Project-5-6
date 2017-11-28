@@ -8,12 +8,12 @@ namespace API.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
         public string Description {get; set; }
-
         public float Price {get; set; }
-
         public DateTime AddedAt { get; set; }
+        public List<ShoppingCartProduct> ShoppingCarts { get; set; }
+        [NotMapped]
+        public Categories Category { get; set; }
 
         [Column("Category")]
         public string CategoryString
@@ -21,9 +21,6 @@ namespace API.Models
             get { return Category.ToString(); }
             private set { Category = value.ParseEnum<Categories>(); }
         }
-
-        [NotMapped]
-        public Categories Category { get; set; }
         
         public enum Categories
         {

@@ -11,8 +11,8 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    [Migration("20171026112140_InitialAddress")]
-    partial class InitialAddress
+    [Migration("20171128172131_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,14 +39,6 @@ namespace API.Migrations
                     b.Property<string>("FirstName");
 
                     b.Property<bool>("IsAdmin");
-
-                    b.Property<bool>("IsDisabled");
-
-                    b.Property<bool>("IsSeller");
-
-                    b.Property<bool>("IsSupport");
-
-                    b.Property<bool>("IsVerified");
 
                     b.Property<string>("LastName");
 
@@ -90,14 +82,50 @@ namespace API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("AddedAt");
+
                     b.Property<string>("CategoryString")
                         .HasColumnName("Category");
 
+                    b.Property<string>("Description");
+
                     b.Property<string>("Name");
+
+                    b.Property<float>("Price");
 
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("ShoppingCart");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
+                {
+                    b.Property<int>("ShoppingCartId");
+
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("ShoppingCartId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCartProduct");
                 });
 
             modelBuilder.Entity("API.Models.UserAddress", b =>
@@ -227,6 +255,26 @@ namespace API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("API.Models.ApplicationUser", "User")
+                        .WithOne("ShoppingCart")
+                        .HasForeignKey("API.Models.ShoppingCart", "UserId");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
+                {
+                    b.HasOne("API.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("ShoppingCarts")
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("API.Models.UserAddress", b =>

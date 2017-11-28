@@ -16,12 +16,6 @@ namespace API.Controllers
         public ProductsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-
-            if (_unitOfWork.Products.GetAll().Count() == 0)
-            {
-                _unitOfWork.Products.Add(new Product { Id = 1, Name = "Banaan", Category = Product.Categories.Other });
-                _unitOfWork.Complete();
-            }
         }
 
         [HttpGet]

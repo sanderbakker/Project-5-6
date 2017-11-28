@@ -56,6 +56,21 @@ namespace API.Controllers
             return new NoContentResult();
         }
 
+        [HttpPost("users/delete/{id}")]
+        public IActionResult DeleteUser(string id)
+        {
+            var user = _unitOfWork.Users.Get(id).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsDisabled = true;
+
+            _unitOfWork.Complete();
+            return Ok();
+        }
+
         [HttpGet("users/{id}/addresses")]
         public IActionResult GetAdresses(string id)
         {
@@ -180,6 +195,7 @@ namespace API.Controllers
                 existingProduct.First().Quantity += 1;
             }
 
+            _unitOfWork.Complete();
             return Ok();
         }
 

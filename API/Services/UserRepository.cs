@@ -63,6 +63,10 @@ namespace API.Services
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(Credentials.Email);
+                if (user.IsDisabled)
+                {
+                    return new JsonResult("Unable to sign in") { StatusCode = 401 };
+                }
                 return new JsonResult(new Dictionary<string, object>
                     {
                         // setup token for signed in user
@@ -148,6 +152,8 @@ namespace API.Services
             // include lists in ApplicationUser to eagerly load them
             return await _userManager.Users
                 .Include(u => u.Addresses)
+                .Include(u => u.ShoppingCart)
+                    .ThenInclude(s => s.Products)
                 .Where(u => u.Id == id)
                 .FirstOrDefaultAsync();
         }

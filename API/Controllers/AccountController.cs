@@ -163,11 +163,16 @@ namespace API.Controllers
             return new NoContentResult();
         }
 
-        [HttpPost("users/{id}/cart")]
-        public IActionResult AddProductToCart(string id, [FromBody] Product product)
+        [HttpPost("users/{userId}/cart/{productId}")]
+        public IActionResult AddProductToCart(string userId, int productId)
         {
-            var user = _unitOfWork.Users.Get(id).Result;
+            var user = _unitOfWork.Users.Get(userId).Result;
             if (user == null)
+            {
+                return NotFound();
+            }
+            var product = _unitOfWork.Products.Get(productId);
+            if (product == null)
             {
                 return NotFound();
             }

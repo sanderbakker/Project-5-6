@@ -71,6 +71,21 @@ namespace API.Controllers
             return Ok();
         }
 
+        [HttpPost("users/enable/{id}")]
+        public IActionResult EnableUser(string id)
+        {
+            var user = _unitOfWork.Users.Get(id).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsDisabled = false;
+
+            _unitOfWork.Complete();
+            return Ok();
+        }
+
         [HttpGet("users/{id}/addresses")]
         public IActionResult GetAdresses(string id)
         {
@@ -264,6 +279,16 @@ namespace API.Controllers
             _unitOfWork.Complete();
 
             return new ObjectResult(_unitOfWork.Users.MakeAdmin(id).Result);
+        }
+
+        [HttpPost("users/adminify/disable/{id}")]
+        public IActionResult DisableAdmin(string id)
+        {
+            var user = _unitOfWork.Users.Get(id).Result;
+            user.IsAdmin = false;
+            _unitOfWork.Complete();
+
+            return new ObjectResult(_unitOfWork.Users.DisableAdmin(id).Result);
         }
 
         [HttpGet("users/amount")]

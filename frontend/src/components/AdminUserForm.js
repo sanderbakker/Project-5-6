@@ -36,7 +36,7 @@ class AdminUserForm extends Component{
       getUser(){
         this.user.user_data(this.props.id).then(
             (val) => {
-                this.setState({user_id: val.id, name: val.firstName, surname: val.lastName, email: val.email, fetching: false, admin: val.isAdmin, adminState: val.isAdmin})
+                this.setState({user_id: val.id, name: val.firstName, surname: val.lastName, email: val.email, fetching: false, admin: val.isAdmin, adminState: val.isAdmin, disabled: val.isDisabled})
                 
             }
         )
@@ -79,6 +79,9 @@ class AdminUserForm extends Component{
                         if(this.state.admin === true && this.state.adminState === false){
                             this.user.adminifyUser(this.state.user_id); 
                         }
+                        if(this.state.admin === false && this.state.adminState === true){
+                            this.user.disableAdmin(this.state.user_id); 
+                        }
                         this.props.user(); 
                         this.toggle(); 
                         this.setState({firstName: '', lastName: ''});
@@ -89,6 +92,9 @@ class AdminUserForm extends Component{
       }
       deleteUser(){
           this.user.disableUser(this.state.user_id);
+          this.setState({
+            disabled: !this.state.disabled
+          });
           this.props.user();
       }
       
@@ -96,6 +102,14 @@ class AdminUserForm extends Component{
         this.setState({
             admin: !this.state.admin
           });      
+      }
+      enableUser(){
+          this.user.enableUser(this.state.user_id);
+          this.setState({
+                disabled: !this.state.disabled
+          });
+          
+          this.props.user(); 
       }
 
     render(){
@@ -109,7 +123,10 @@ class AdminUserForm extends Component{
                 <div>
                     <ButtonGroup size="sm">
                         <Button color="warning" size="sm" onClick={this.toggle}><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" onClick={() => {if(window.confirm('Disable this user?')) this.deleteUser()}}><i className="fa fa-minus"></i></Button>
+                        
+                        {!this.state.disabled 
+                        ? <Button color="danger" size="sm" onClick={() => {if(window.confirm('Disable this user?')) this.deleteUser()}}><i className="fa fa-minus"></i></Button>
+                        : <Button color="success" size="sm" onClick={() => {if(window.confirm('Enable this user?')) this.enableUser()}}><i className="fa fa-plus"></i></Button>}
                     </ButtonGroup>
                     <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                         <ModalHeader toggle={this.toggle}>Edit {this.state.name} {this.state.surname}</ModalHeader>

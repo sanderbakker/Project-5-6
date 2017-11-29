@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 using API.Models;
 using API.Services;
-using System.Linq;
 
 namespace API.Controllers
 {
@@ -176,6 +176,38 @@ namespace API.Controllers
             _unitOfWork.Complete();
 
             return new NoContentResult();
+        }
+
+        [HttpGet("users/{id}/cart")]
+        public IActionResult GetCart(string id)
+        {
+            var user = _unitOfWork.Users.Get(id).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var cartId = user.ShoppingCart.Id;
+            var cart = _unitOfWork.ShoppingCarts.Get(cartId);
+
+            var products = new List<Product>();
+            if (cart.Products == null)
+            {
+                return NoContent();
+            }
+
+            foreach (var product in cart.Products)
+            {
+                var existingProduct = _unitOfWork.Products.Find(
+                    p => p.Id == product.ProductId
+                ).FirstOrDefault();
+
+                if (existingProduct != null)
+                {
+                    products.Add(existingProduct);
+                }
+            }
+
+            return Ok(products);
         }
 
         [HttpPost("users/{userId}/cart/{productId}")]

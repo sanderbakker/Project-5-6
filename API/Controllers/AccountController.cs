@@ -186,8 +186,8 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            var cartId = user.ShoppingCart.Id;
-            var cart = _unitOfWork.ShoppingCarts.Get(cartId);
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
+            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
 
             var products = new List<Product>();
             if (cart.Products == null)
@@ -223,18 +223,17 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            var shoppingCartId = user.ShoppingCart.Id;
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
+            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
 
-            var existingProduct = from p in user.ShoppingCart.Products
-                                  where p.ProductId == product.Id
-                                  select p;
+            var existingProduct = cart.Products.Where(p => p.ProductId == productId).FirstOrDefault();
 
             if (existingProduct == null)
             {
-                user.ShoppingCart.Products.Add(new ShoppingCartProduct
+                cart.Products.Add(new ShoppingCartProduct
                 {
-                    ShoppingCart = user.ShoppingCart,
-                    ShoppingCartId = shoppingCartId,
+                    ShoppingCart = cart,
+                    ShoppingCartId = cart.Id,
 
                     Product = product,
                     ProductId = product.Id,
@@ -244,7 +243,7 @@ namespace API.Controllers
             }
             else
             {
-                existingProduct.First().Quantity += 1;
+                existingProduct.Quantity += 1;
             }
 
             _unitOfWork.Complete();

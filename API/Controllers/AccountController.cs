@@ -223,11 +223,10 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            var cart = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault();
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
+            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
 
-            var existingProduct = (from p in cart.Products
-                                  where p.ProductId == product.Id
-                                  select p).FirstOrDefault();
+            var existingProduct = cart.Products.Where(p => p.ProductId == productId).FirstOrDefault();
 
             if (existingProduct == null)
             {

@@ -71,7 +71,7 @@ class AdminProductForm extends Component {
                         if(val.ok && val.status === 204){
                             this.setState({visible: true});
                             this.toggle(); 
-                            this.notify("Edited product: " + this.state.name +  " (" + this.state.id + ")", "success")
+                            this.notify("Edited product: " + this.state.name +  " (" + this.props.id + ")", "success")
                             this.props.products(); 
                         }
                         else{
@@ -113,7 +113,7 @@ class AdminProductForm extends Component {
                 </div>
             ),
             type: _type,
-            autoDismiss: 2
+            autoDismiss: 3
         }
         this.refs.notify.notificationAlert(options);
     }

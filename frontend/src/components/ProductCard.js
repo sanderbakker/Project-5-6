@@ -66,7 +66,7 @@ class ProductCard extends Component{
                                 : ""}
                             </ButtonGroup>
 
-                            <ButtonGroup size="sm" className="float-right line-height-edit">
+                            <ButtonGroup size="sm" className="float-right ">
                                 {this.props.admin ? 
                                 <AdminProductForm id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
                                 : ""}

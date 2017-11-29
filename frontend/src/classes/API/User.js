@@ -1,4 +1,6 @@
 import {API} from './API.js';
+import jwt_decode from 'jwt-decode'; 
+
 
 class User extends API{
     user_data(_id){
@@ -45,5 +47,19 @@ class User extends API{
     getUsersPaginated(_page){
         return this.get('/account/users/withpagination/' + _page + '/10'); 
     }
+
+	addCartProduct(_product_id) {
+        return this.post('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _product_id);
+    }  
+    
+    adminifyUser(_user_id){
+        return this.post('/account/users/adminify/' + _user_id); 
+    }
+
+    disableUser(_user_id){
+        return this.post('/account/users/delete/' + _user_id); 
+    }
+
+    
 }
 export {User}; 

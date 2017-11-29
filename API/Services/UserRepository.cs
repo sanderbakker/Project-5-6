@@ -152,8 +152,6 @@ namespace API.Services
             // include lists in ApplicationUser to eagerly load them
             return await _userManager.Users
                 .Include(u => u.Addresses)
-                .Include(u => u.ShoppingCart)
-                    .ThenInclude(s => s.Products)
                 .Where(u => u.Id == id)
                 .FirstOrDefaultAsync();
         }

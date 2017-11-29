@@ -23,6 +23,7 @@ import UserEdit from './UserEdit.js';
 import AdminProductFrom from './AdminProductForm.js'; 
 import Product from './Product.js';
 import AdminUserForm from './AdminUserForm.js'; 
+import ShoppingCart from './ShoppingCart.js';
 
 import '../css/style.css'; 
 
@@ -117,7 +118,7 @@ class App extends Component {
 
                     {(this.state.loggedIn) ?
                     <PropsRoute action='edit' path ='/profile/edit/address/:id' component={UserAddress} />
-                    : null}
+                    : null}                   
 
                     <Route path='/product/:id' component={Product}/>
 

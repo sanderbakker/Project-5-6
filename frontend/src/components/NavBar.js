@@ -5,6 +5,8 @@ import {NavLink} from 'react-router-dom';
 import logo from '../assets/logo-white.png'; 
 import {Products} from '../classes/API/Products.js';  
 
+import ShoppingCart from './ShoppingCart.js';
+
 
 class NavBar extends Component {
     constructor(props) {
@@ -14,6 +16,7 @@ class NavBar extends Component {
         this.toggle = this.toggle.bind(this);
         this.state = {
           isOpen: false,
+          SCisOpen: false,
           loadingSuggestions: false
         }; 
         this.products = new Products();
@@ -50,6 +53,13 @@ class NavBar extends Component {
         );
     }
 
+    toggleShoppingCart() {
+        this.setState({
+            SCisOpen: !this.state.SCisOpen
+        });
+        console.log(this.state.SCisOpen);
+    }
+
     handleSearchForm(e) {
         e.preventDefault();
         var searchString = (document.getElementById("search").value);
@@ -59,6 +69,7 @@ class NavBar extends Component {
     render(){
         return(
             <div>
+                <ShoppingCart isOpen={this.state.SCisOpen} onHide={f => this.toggleShoppingCart()} />
                 <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'/>
                 <Navbar color="faded" light expand="md">
                     <NavLink className='navbar-brand' exact to='/'>
@@ -96,9 +107,9 @@ class NavBar extends Component {
                         <Nav className="ml-auto" navbar>
                             {(this.admin) ? 
                             <NavItem>
-                                <NavLink className='nav-link' exact to='/cart'>
-                                    <i className='fa fa-shopping-cart'></i>
-                                </NavLink>
+                                <span className='nav-link'>
+                                    <i className='fa fa-shopping-cart' onClick={f => this.toggleShoppingCart()} ></i>
+                                </span>
                             </NavItem>
                             : null}
                             {(this.admin) ?

@@ -61,6 +61,7 @@ class AdminUsers extends Component{
                         <th>Surname</th>
                         <th>Email</th>
                         <th>Admin</th>
+                        <th>Deleted</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -76,7 +77,8 @@ class AdminUsers extends Component{
                                     : <td>Not filled in</td>
                                 }
                                     <td>{item.email}</td>
-                                    <td>{item.isAdmin}</td>
+                                    {item.isAdmin ? <td><i className="fa fa-check check"/></td> : <td><i className="fa fa-times cross"/></td>} 
+                                    {item.isDisabled ? <td><i className="fa fa-check check"/></td> : <td><i className="fa fa-times cross"/></td>}
                                     <td>
                                         <ButtonGroup size="sm">
                                             {/* <Link to={'/admin/edit/user/' + item.id}>

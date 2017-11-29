@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {Col, Row, Modal, Button, ModalBody, ModalHeader} from 'reactstrap';
 import {Products} from '../classes/API/Products.js'; 
 import ProductCarousel from './ProductCarousel.js';
+import {User} from '../classes/API/User.js'; 
+
+import ShoppingCart from './ShoppingCart.js';
 
 class Product extends Component {
     constructor(props){
@@ -9,6 +12,8 @@ class Product extends Component {
         this.products = new Products();
         this.state = {fetching: true, modal: false}
         this.toggle = this.toggle.bind(this); 
+        this.showCart = false;
+        this.User = new User();
     }
 
     componentWillMount(){
@@ -22,12 +27,22 @@ class Product extends Component {
         });
       }
 
+    addProductToCart() {
+        this.User.addCartProduct(this.props.id);
+        this.setState({showCart: true, modal: false});
+    }
+    
+    toggleShoppingCart() {
+        this.setState({showCart: false});
+    }
+
     render(){
         if(this.state.fetching){
             return(<div></div>)
         }
         return(
             <div>
+                <ShoppingCart isOpen={this.state.showCart} onHide={f => this.toggleShoppingCart()} />
                 <Button size="sm" onClick={this.toggle}><i className="fa fa-eye"></i></Button>
                 <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}> {this.state.currentProduct.name} {this.state.name} {this.state.surname}</ModalHeader>
@@ -44,7 +59,7 @@ class Product extends Component {
                                     <i className="fa fa-check font-md check"></i>
                                     <p className="font-md"> Delivered within a week</p>
                                     <br/><br/>
-                                    <button className="btn btn-block btn-info btn-sm" onclick="">Add to shopping cart</button>
+                                    <button className="btn btn-block btn-info btn-sm" onClick={f => this.addProductToCart()} >Add to shopping cart</button>
                                     <hr/>
                                     <p className="font-md"><i className="fa fa-check font-md check"></i> Fastest delivery</p>
                                     <br/>

@@ -35,30 +35,25 @@ class ShoppingCart extends Component {
     }
 
     render() {
-        if(this.state.fetching){
-            return(
-                <Col md={10}>
-                    <Loading />
-                </Col>
-            )
-        }
         return (
             <Modal isOpen={this.props.isOpen} >
              <ModalHeader toggle={this.props.onHide}>Shopping cart</ModalHeader>            
              <ModalBody>
-                <Table hover={true}>
-                 <tbody>
-                 {this.state.products.map((item, i) => {
-                  return (<tr>
-                    <td>{item.name}</td>
-                    <td>€ {item.price}</td>
-                    <td><Input type="number" size="sm" className="sm-input" onChange={f => this.updateProduct(f, item.id)} /></td>                    
-                    <td><Button color="danger" size="sm" onClick={f => this.deleteProduct(1)}><i className="fa fa-minus"/></Button></td>
-                  </tr>)
-                 })
-                }
-                 </tbody>
-                </Table> 
+                {!this.state.fetching ? 
+                    <Table hover={true}>
+                    <tbody>
+                    {this.state.products.map((item, i) => {
+                    return (<tr>
+                        <td>{item.name}</td>
+                        <td>€ {item.price}</td>
+                        <td><Input type="number" size="sm" className="sm-input" onChange={f => this.updateProduct(f, item.id)} /></td>                    
+                        <td><Button color="danger" size="sm" onClick={f => this.deleteProduct(1)}><i className="fa fa-minus"/></Button></td>
+                    </tr>)
+                    })
+                    }
+                  </tbody>
+                 </Table> 
+                : null }
              </ModalBody>
              <ModalFooter>
                 <Button className="btn-block" color="info"><i className="fa fa-shopping-cart" /> Check out</Button>

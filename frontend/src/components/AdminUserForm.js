@@ -19,6 +19,7 @@ class AdminUserForm extends Component{
         this.account = new Account(); 
         this.handleClick = this.handleClick.bind(this); 
         this.deleteUser = this.deleteUser.bind(this); 
+        this.changeAdminState = this.changeAdminState.bind(this); 
       }
     
       componentWillMount(){
@@ -34,7 +35,10 @@ class AdminUserForm extends Component{
 
       getUser(){
         this.user.user_data(this.props.id).then(
-            (val) => this.setState({user_id: val.id, name: val.firstName, surname: val.lastName, email: val.email, fetching: false, admin: val.isAdmin})
+            (val) => {
+                this.setState({user_id: val.id, name: val.firstName, surname: val.lastName, email: val.email, fetching: false, admin: val.isAdmin, adminState: val.isAdmin})
+                
+            }
         )
       }
 
@@ -56,7 +60,7 @@ class AdminUserForm extends Component{
       handleClick(){
            
       }
-      handleFormSubmit(){
+      handleFormSubmit(e){
         if(this.props.action === 'add'){
             this.account.register(this.state.email, this.state.password).then(
                 (val) => {
@@ -68,20 +72,30 @@ class AdminUserForm extends Component{
                 }
             )
         }
-        else{
+        else{ 
             this.user.update_user_profile(this.state.user_id, this.state.name, this.state.surname).then(
                 (val) => {
-                    if(val.ok && val.status === 204){
+                    if(val.ok && val.status === 204){ 
+                        if(this.state.admin === true && this.state.adminState === false){
+                            this.user.adminifyUser(this.state.user_id); 
+                        }
                         this.props.user(); 
                         this.toggle(); 
                         this.setState({firstName: '', lastName: ''});
                     }
                 }
-            )        
+            )       
         }
       }
       deleteUser(){
-          console.log(this.props.id);
+          this.user.disableUser(this.state.user_id);
+          this.props.user();
+      }
+      
+      changeAdminState(){
+        this.setState({
+            admin: !this.state.admin
+          });      
       }
 
     render(){
@@ -95,7 +109,7 @@ class AdminUserForm extends Component{
                 <div>
                     <ButtonGroup size="sm">
                         <Button color="warning" size="sm" onClick={this.toggle}><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" onClick={this.deleteUser}><i className="fa fa-minus"></i></Button>
+                        <Button color="danger" size="sm" onClick={() => {if(window.confirm('Disable this user?')) this.deleteUser()}}><i className="fa fa-minus"></i></Button>
                     </ButtonGroup>
                     <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                         <ModalHeader toggle={this.toggle}>Edit {this.state.name} {this.state.surname}</ModalHeader>
@@ -129,11 +143,12 @@ class AdminUserForm extends Component{
                                     <Input checked
                                         type="checkbox"
                                         name="isAdmin"
-                                        
+                                        onClick={() => this.changeAdminState()}
                                     />
                                     : <Input 
                                         type="checkbox" 
                                         name="isAdmin"
+                                        onClick={() => this.changeAdminState()}
                                         />
                                     }
                                     {' '}
@@ -143,7 +158,7 @@ class AdminUserForm extends Component{
                         </Form>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="success" size="sm" onClick={() => this.handleFormSubmit()}>Save</Button>{' '}
+                            <Button color="success" size="sm" onClick={(e) => this.handleFormSubmit(e)}>Save</Button>{' '}
                             <Button color="danger" size="sm" onClick={this.toggle}>Cancel</Button>
                         </ModalFooter>
                     </Modal>

@@ -121,6 +121,9 @@
 .check {
     color: green; 
 }
+.cross {
+    color: red; 
+}
 .carousel {
     
         width: 100%;

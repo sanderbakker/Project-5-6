@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label, ButtonGroup} from 'reactstrap';
 import {User} from '../classes/API/User.js'; 
 import { Account } from '../classes/API/Account';
+import NotificationAlert from 'react-notification-alert'; 
 
 class AdminUserForm extends Component{
     constructor(props) {
@@ -17,9 +18,9 @@ class AdminUserForm extends Component{
         this.toggle = this.toggle.bind(this);
         this.user = new User();   
         this.account = new Account(); 
-        this.handleClick = this.handleClick.bind(this); 
         this.deleteUser = this.deleteUser.bind(this); 
         this.changeAdminState = this.changeAdminState.bind(this); 
+        this.notify = this.notify.bind(this); 
       }
     
       componentWillMount(){
@@ -57,8 +58,19 @@ class AdminUserForm extends Component{
         }
       }
 
-      handleClick(){
-           
+      notify(_message, _type){
+        
+        var options = {
+            place: 'tr',
+            message: (
+                <div>
+                    {_message}
+                </div>
+            ),
+            type: _type,
+            autoDismiss: 2
+        }
+        this.refs.notify.notificationAlert(options);
       }
       handleFormSubmit(e){
         if(this.props.action === 'add'){
@@ -67,6 +79,7 @@ class AdminUserForm extends Component{
                     if(typeof val.access_token !== 'undefined') {
                         this.props.user(); 
                         this.toggle();
+                        this.notify("Added user: " + this.state.email, "success"); 
                         this.setState({email: '', password: ''})
                     }
                 }
@@ -84,6 +97,7 @@ class AdminUserForm extends Component{
                         }
                         this.props.user(); 
                         this.toggle(); 
+                        this.notify("Edited user: " + this.state.email, "success"); 
                         this.setState({firstName: '', lastName: ''});
                     }
                 }
@@ -95,6 +109,7 @@ class AdminUserForm extends Component{
           this.setState({
             disabled: !this.state.disabled
           });
+          this.notify("Disabled user: " + this.state.email, "danger");
           this.props.user();
       }
       
@@ -108,7 +123,7 @@ class AdminUserForm extends Component{
           this.setState({
                 disabled: !this.state.disabled
           });
-          
+          this.notify("Enabled user: " + this.state.email, "success")
           this.props.user(); 
       }
 
@@ -121,6 +136,7 @@ class AdminUserForm extends Component{
         if(this.props.action === 'edit'){
             return(
                 <div>
+                    <NotificationAlert ref="notify" />
                     <ButtonGroup size="sm">
                         <Button color="warning" size="sm" onClick={this.toggle}><i className="fa fa-pencil"></i></Button>
                         
@@ -184,6 +200,7 @@ class AdminUserForm extends Component{
         }
         return(
             <div>
+            <NotificationAlert ref="notify" />
             <Button className="float-right" color="success" size="sm" onClick={this.toggle}><i className="fa fa-plus"></i> Add</Button>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>Add new user</ModalHeader>

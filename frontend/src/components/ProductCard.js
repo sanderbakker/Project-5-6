@@ -60,7 +60,7 @@ class ProductCard extends Component{
                                     <Button 
                                         size="sm" 
                                         color="danger"
-                                        onClick={() => {if(window.confirm('Delete this item?')) this.props.delete(this.props.id)}}>
+                                        onClick={() => {if(window.confirm('Delete this item?')) this.props.delete(this.props.id, this.props.name)}}>
                                         <i className="fa fa-minus"/>    
                                     </Button>
                                 : ""}

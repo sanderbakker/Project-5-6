@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ModalFooter, ModalHeader, Modal, ModalBody, Form, FormGroup, Input, Label, Button} from 'reactstrap'; 
 import {Products} from '../classes/API/Products.js'; 
-
+import NotificationAlert from 'react-notification-alert'; 
 class AdminProductForm extends Component {
     constructor(props){
         super(props);
@@ -11,6 +11,7 @@ class AdminProductForm extends Component {
         this.handleFormChanges = this.handleFormChanges.bind(this); 
         this.onDismiss = this.onDismiss.bind(this); 
         this.toggle = this.toggle.bind(this); 
+        this.notify = this.notify.bind(this); 
     }
 
     componentDidMount(){
@@ -55,9 +56,12 @@ class AdminProductForm extends Component {
                         if(val.id === undefined){
                             this.setState({failed: true});  
                         }
+                        this.toggle();
+                        this.notify("Added product: " + this.state.name, "success")
                         this.setState({visible: true, name: "", category: "", price: "", description: ""}); 
                         this.props.updateProducts();
-                        this.toggle();
+                        
+                        
                     }
                 )
             }
@@ -67,6 +71,7 @@ class AdminProductForm extends Component {
                         if(val.ok && val.status === 204){
                             this.setState({visible: true});
                             this.toggle(); 
+                            this.notify("Edited product: " + this.state.name +  " (" + this.state.id + ")", "success")
                             this.props.products(); 
                         }
                         else{
@@ -96,7 +101,22 @@ class AdminProductForm extends Component {
         this.setState({
           modal: !this.state.modal
         });
-      }
+    }
+
+    notify(_message, _type){
+        
+        var options = {
+            place: 'tr',
+            message: (
+                <div>
+                    {_message}
+                </div>
+            ),
+            type: _type,
+            autoDismiss: 2
+        }
+        this.refs.notify.notificationAlert(options);
+    }
 
     render(){
         if(this.state.fetching){
@@ -107,6 +127,7 @@ class AdminProductForm extends Component {
         if(this.props.action === 'edit'){
             return(
                 <div>
+                    <NotificationAlert ref="notify" />
                     <Button size="sm" color="warning" onClick={this.toggle}>
                         <i className="fa fa-pencil"></i>
                     </Button>
@@ -188,6 +209,7 @@ class AdminProductForm extends Component {
         
         return(
             <div>
+                <NotificationAlert ref="notify" />
                 <Button size="sm" className="pull-right" color="success" onClick={this.toggle}>
                     <i className="fa fa-plus"></i> Add
                 </Button>

@@ -5,6 +5,7 @@ import {Products} from '../classes/API/Products.js';
 import ProductCard from './ProductCard.js'; 
 import Loading from './Loading.js';        
 import AdminProductForm from './AdminProductForm.js'; 
+import NotificationAlert from 'react-notification-alert'; 
 
 class AdminProducts extends Component {
     constructor(props) {
@@ -22,6 +23,7 @@ class AdminProducts extends Component {
         this.deleteProduct = this.deleteProduct.bind(this); 
         this.getAmountOfProducts = this.getAmountOfProducts.bind(this); 
         this.filterProducts = this.filterProducts.bind(this); 
+        this.notify = this.notify.bind(this); 
       }
       componentDidMount(){
             this.getAmountOfProducts(); 
@@ -71,21 +73,37 @@ class AdminProducts extends Component {
         // this.setState({page: page});
       }
 
-      async deleteProduct(_id){ 
+    async deleteProduct(_id, _name){ 
         await this.product.deleteProduct(_id); 
         this.setState({fetching: true}); 
+        this.notify("Deleted product: " + _name + " (" + _id + ")", "danger");
         this.getAmountOfProducts();
-      }
+    }
 
-      filterProducts(e){        
-            this.setState({filter_name: e.target.value.split(" ")[0], filter_sort: e.target.value.split(" ")[1], fetching: true});
-            this.getAmountOfProducts(); 
-      }
+    filterProducts(e){        
+        this.setState({filter_name: e.target.value.split(" ")[0], filter_sort: e.target.value.split(" ")[1], fetching: true});
+        this.getAmountOfProducts(); 
+    }
+
+    notify(_message, _type){
+        var options = {
+            place: 'tr',
+            message: (
+                <div>
+                    {_message}
+                </div>
+            ),
+            type: _type,
+            autoDismiss: 3
+        }
+        this.refs.notify.notificationAlert(options);
+    }
 
     render(){
         if(this.state.fetching){
             return(
                 <Col md={10}>
+                    <NotificationAlert ref="notify" />
                     <Loading/>
                 </Col>
             )

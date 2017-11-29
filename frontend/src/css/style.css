@@ -248,3 +248,7 @@ footer a:hover{
 .display-none {
     display: none;
 }
+
+.sm-input {
+    width: 60px;
+}

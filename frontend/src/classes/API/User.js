@@ -48,6 +48,10 @@ class User extends API{
         return this.get('/account/users/withpagination/' + _page + '/10'); 
     }
 
+    getCart() {
+        return this.get('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart');
+    }
+
 	addCartProduct(_product_id) {
         return this.post('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _product_id);
     }  

@@ -69,7 +69,9 @@ class NavBar extends Component {
     render(){
         return(
             <div>
+                {this.loggedIn ?
                 <ShoppingCart isOpen={this.state.SCisOpen} onHide={f => this.toggleShoppingCart()} />
+                : null }
                 <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'/>
                 <Navbar color="faded" light expand="md">
                     <NavLink className='navbar-brand' exact to='/'>
@@ -105,7 +107,7 @@ class NavBar extends Component {
                             </Form>
                         </Nav>
                         <Nav className="ml-auto" navbar>
-                            {(this.admin) ? 
+                            {(this.loggedIn) ? 
                             <NavItem>
                                 <span className='nav-link'>
                                     <i className='fa fa-shopping-cart' onClick={f => this.toggleShoppingCart()} ></i>

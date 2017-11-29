@@ -37,6 +37,11 @@ namespace API.Services
             var user = await _userManager.FindByIdAsync(id);
             return await _userManager.AddToRoleAsync(user, "Administrator");
         }
+        public async Task<IdentityResult> DisableAdmin(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            return await _userManager.RemoveFromRoleAsync(user, "Administrator"); 
+        }
         
         public async Task<IActionResult> Register(Credentials Credentials)
         {

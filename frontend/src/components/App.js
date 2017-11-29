@@ -47,6 +47,9 @@ class App extends Component {
           if(in_array(jwt_decode(sessionStorage.getItem('id_token'))['roles'], 'Administrator')){
             this.setState({admin: true}); 
           }
+          else{
+            this.setState({admin: false}); 
+          }
       }
       else{
           this.setState({loggedIn: false}); 

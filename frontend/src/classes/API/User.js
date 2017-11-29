@@ -59,6 +59,14 @@ class User extends API{
     disableUser(_user_id){
         return this.post('/account/users/delete/' + _user_id); 
     }
+    
+    disableAdmin(_user_id){
+        return this.post('/account/users/adminify/disable/' + _user_id);
+    }
+    
+    enableUser(_user_id){
+        return this.post('/account/users/enable/' + _user_id); 
+    }
 
     
 }

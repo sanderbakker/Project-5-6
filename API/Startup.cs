@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authorization;
 
 using API.Services;
 using API.Models;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace API
 {
@@ -101,6 +103,11 @@ namespace API
             });
 
             services.AddMvc();
+
+            services.AddMvc().AddJsonOptions(options => {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

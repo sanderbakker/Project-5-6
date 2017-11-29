@@ -8,5 +8,10 @@ namespace API.Models
         public string Name { get; set; }
         public ApplicationUser User { get; set; }
         public List<ShoppingCartProduct> Products { get; set; }
+
+        public ShoppingCart()
+        {
+            Products = new List<ShoppingCartProduct>();
+        }
     }
 }

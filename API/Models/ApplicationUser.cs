@@ -11,5 +11,10 @@ namespace API.Models
         public List<UserAddress> Addresses { get; set; }
         public ShoppingCart ShoppingCart { get; set; }
         public bool IsDisabled { get; set; }
+
+        public ApplicationUser()
+        {
+            ShoppingCart = new ShoppingCart();
+        }
     }
 }

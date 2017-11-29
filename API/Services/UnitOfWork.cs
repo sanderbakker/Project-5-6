@@ -9,6 +9,7 @@ namespace API.Services
         private readonly WebshopContext _context;
 
         public IProductRepository Products { get; private set; }
+        public IShoppingCartRepository ShoppingCarts { get; set; }
         public UserRepository Users { get; private set; }
 
         public UnitOfWork(
@@ -20,6 +21,7 @@ namespace API.Services
             _context = context;
 
             Products = new ProductRepository(_context);
+            ShoppingCarts = new ShoppingCartRepository(_context);
             Users = new UserRepository(userManager, signInManager, optionsAccessor, _context);
         }
 

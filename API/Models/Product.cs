@@ -11,6 +11,7 @@ namespace API.Models
         public string Description {get; set; }
         public float Price {get; set; }
         public DateTime AddedAt { get; set; }
+        public List<OrderProduct> Orders {get;set;}
         public List<ShoppingCartProduct> ShoppingCarts { get; set; }
         [NotMapped]
         public Categories Category { get; set; }

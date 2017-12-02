@@ -11,7 +11,7 @@ class ShoppingCart extends Component {
         this.state = {products: false, fetching: true};
     }
 
-    componentWillMount() {
+    loadCart() {
         this.User.getCart().then(
             (val) => {
                 this.setState({products: val, fetching: false});
@@ -36,7 +36,8 @@ class ShoppingCart extends Component {
 
     render() {
         return (
-            <Modal isOpen={this.props.isOpen} >
+            <Modal isOpen={this.props.isOpen} onOpen={() => console.warn('onOpen')} >
+            {this.props.isOpen ? this.loadCart() : null}
              <ModalHeader toggle={this.props.onHide}>Shopping cart</ModalHeader>            
              <ModalBody>
                 {!this.state.fetching ? 

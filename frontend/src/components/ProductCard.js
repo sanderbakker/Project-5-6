@@ -17,7 +17,9 @@ class ProductCard extends Component{
         };
 
         this.User = new User();
+   
       }
+    
     
       toggle() {
         this.setState({

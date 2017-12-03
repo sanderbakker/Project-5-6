@@ -31,7 +31,9 @@ class API {
 			},
 			body: JSON.stringify(_data)
 		})
-		
+		if(response.status == 200){
+			return null; 
+		}
 		return response.json();
 	}
 

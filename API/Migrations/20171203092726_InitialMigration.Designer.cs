@@ -11,7 +11,7 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    [Migration("20171201191330_InitialMigration")]
+    [Migration("20171203092726_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,6 +77,38 @@ namespace API.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("API.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("StatusString")
+                        .HasColumnName("Status");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<string>("UserId1");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("API.Models.OrderProduct", b =>
+                {
+                    b.Property<int>("OrderId");
+
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("OrderId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProduct");
                 });
 
             modelBuilder.Entity("API.Models.Product", b =>
@@ -257,6 +289,26 @@ namespace API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("API.Models.Order", b =>
+                {
+                    b.HasOne("API.Models.ApplicationUser", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId1");
+                });
+
+            modelBuilder.Entity("API.Models.OrderProduct", b =>
+                {
+                    b.HasOne("API.Models.Order", "Order")
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("API.Models.ShoppingCart", b =>

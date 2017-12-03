@@ -22,6 +22,19 @@ namespace API.Services
 
             modelBuilder.Entity<ShoppingCartProduct>()
                 .HasKey(s => new { s.ShoppingCartId, s.ProductId });
+
+            modelBuilder.Entity<OrderProduct>()
+                .HasKey(o => new { o.OrderId, o.ProductId});
+            
+            modelBuilder.Entity<OrderProduct>()
+                .HasOne(o => o.Product)
+                .WithMany(o => o.Orders)
+                .HasForeignKey(p => p.ProductId);
+            
+            modelBuilder.Entity<OrderProduct>()
+                .HasOne(o => o.Order)
+                .WithMany(o => o.Products)
+                .HasForeignKey(p => p.OrderId);
         }
     }
 }

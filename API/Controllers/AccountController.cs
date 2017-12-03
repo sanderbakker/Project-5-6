@@ -189,25 +189,13 @@ namespace API.Controllers
             var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
             var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
 
-            var products = new List<Product>();
-            if (cart.Products == null)
-            {
-                return NoContent();
-            }
-
+            var products = new Dictionary<int, int>();
             foreach (var product in cart.Products)
             {
-                var existingProduct = _unitOfWork.Products.Find(
-                    p => p.Id == product.ProductId
-                ).FirstOrDefault();
-
-                if (existingProduct != null)
-                {
-                    products.Add(existingProduct);
-                }
+                products.Add(product.ProductId, product.Quantity);
             }
 
-            return Ok(products);
+            return new JsonResult(products);
         }
 
         [HttpPost("users/{userId}/cart/{productId}")]
@@ -218,11 +206,13 @@ namespace API.Controllers
             {
                 return NotFound();
             }
+
             var product = _unitOfWork.Products.Get(productId);
             if (product == null)
             {
                 return NotFound();
             }
+
             var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
             var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
 
@@ -232,12 +222,10 @@ namespace API.Controllers
             {
                 cart.Products.Add(new ShoppingCartProduct
                 {
-                    ShoppingCart = cart,
                     ShoppingCartId = cart.Id,
-
-                    Product = product,
+                    ShoppingCart = cart,
                     ProductId = product.Id,
-
+                    Product = product,
                     Quantity = 1
                 });
             }

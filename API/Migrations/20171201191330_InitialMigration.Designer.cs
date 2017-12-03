@@ -11,8 +11,8 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    [Migration("20171128183049_User.IsDisabled")]
-    partial class UserIsDisabled
+    [Migration("20171201191330_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,8 +105,6 @@ namespace API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
-
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -114,7 +112,7 @@ namespace API.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("ShoppingCart");
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
@@ -270,13 +268,13 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
                 {
-                    b.HasOne("API.Models.ShoppingCart", "ShoppingCart")
-                        .WithMany("Products")
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("ShoppingCarts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("API.Models.Product", "Product")
-                        .WithMany("ShoppingCarts")
+                    b.HasOne("API.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany("Products")
                         .HasForeignKey("ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

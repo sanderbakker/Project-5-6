@@ -34,6 +34,7 @@ namespace API.Migrations
                     EmailConfirmed = table.Column<bool>(type: "bool", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     IsAdmin = table.Column<bool>(type: "bool", nullable: false),
+                    IsDisabled = table.Column<bool>(type: "bool", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "bool", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "timestamptz", nullable: true),
@@ -175,19 +176,18 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShoppingCart",
+                name: "Carts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int4", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShoppingCart", x => x.Id);
+                    table.PrimaryKey("PK_Carts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ShoppingCart_AspNetUsers_UserId",
+                        name: "FK_Carts_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -222,21 +222,22 @@ namespace API.Migrations
                 columns: table => new
                 {
                     ShoppingCartId = table.Column<int>(type: "int4", nullable: false),
-                    ProductId = table.Column<int>(type: "int4", nullable: false)
+                    ProductId = table.Column<int>(type: "int4", nullable: false),
+                    Quantity = table.Column<int>(type: "int4", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ShoppingCartProduct", x => new { x.ShoppingCartId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_ShoppingCartProduct_ShoppingCart_ProductId",
+                        name: "FK_ShoppingCartProduct_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "ShoppingCart",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ShoppingCartProduct_Products_ShoppingCartId",
+                        name: "FK_ShoppingCartProduct_Carts_ShoppingCartId",
                         column: x => x.ShoppingCartId,
-                        principalTable: "Products",
+                        principalTable: "Carts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -279,8 +280,8 @@ namespace API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShoppingCart_UserId",
-                table: "ShoppingCart",
+                name: "IX_Carts_UserId",
+                table: "Carts",
                 column: "UserId",
                 unique: true);
 
@@ -322,10 +323,10 @@ namespace API.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ShoppingCart");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Carts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

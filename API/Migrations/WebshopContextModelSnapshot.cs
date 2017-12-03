@@ -104,8 +104,6 @@ namespace API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
-
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -113,7 +111,7 @@ namespace API.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Cart");
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
@@ -269,13 +267,13 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
                 {
-                    b.HasOne("API.Models.ShoppingCart", "ShoppingCart")
-                        .WithMany("Products")
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("ShoppingCarts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("API.Models.Product", "Product")
-                        .WithMany("ShoppingCarts")
+                    b.HasOne("API.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany("Products")
                         .HasForeignKey("ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

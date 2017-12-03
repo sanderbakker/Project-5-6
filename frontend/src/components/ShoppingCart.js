@@ -10,38 +10,36 @@ class ShoppingCart extends Component {
         super(props);
         this.User = new User();
         this.products = new Products(); 
-        this.state = {products: this.loadCart(), fetching: true};
+        this.state = {products: [], fetching: true};
     }
     
     
 
     loadCart() {
+        this.setState({products: []});
         this.User.getCart().then(
-            (val) => {
-            
-                var productsArray = []; 
-                var amountArray = []; 
-                for(var i in val) {
-                    amountArray.push(val); 
+            (val) => { 
+                var amountArray = [];
+                for(var i in val) { 
+                    amountArray.push(val[i]); 
                     this.products.getProduct(i).then(
                         (value) => {
+                            var productsArray = this.state.products;
                             productsArray.push(value); 
+                            this.setState({products: productsArray, fetching: false});
                         }
                     ) 
                 }
-                
-                this.setState({products: productsArray, amount: amountArray, fetching: false});
+                this.setState({amount: amountArray});
             }
         );
-
     }
 
     deleteProduct(product_id) {
         let bool = window.confirm("Are you sure you want to delete this product?"); 
         
-        if(bool) {
-                 
-            this.loadCart();       
+        if(bool) {                 
+            this.loadCart();
         }
     }
 
@@ -52,8 +50,7 @@ class ShoppingCart extends Component {
 
     render() {
         return (
-            <Modal isOpen={this.props.isOpen} >
-            {this.state.isOpen ? this.loadCart() : null}
+            <Modal isOpen={this.props.isOpen} onOpened={ f => this.loadCart()} >
             <ModalHeader toggle={this.props.onHide}>Shopping cart</ModalHeader>   
             <ModalBody>
                 {!this.state.fetching ? 
@@ -61,7 +58,7 @@ class ShoppingCart extends Component {
                     <tbody>
                     {this.state.products.map((item, i) => {
                         
-                    return (<tr>
+                    return (<tr key={i}>
                         <td>{item.name}</td>
                         <td>€ {item.price}</td>
                         <td><Input type="number" value={this.state.amount[i]} size="sm" className="sm-input" onChange={f => this.updateProduct(f, item.id)} /></td>                    

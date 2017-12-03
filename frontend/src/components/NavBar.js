@@ -57,7 +57,6 @@ class NavBar extends Component {
         this.setState({
             SCisOpen: !this.state.SCisOpen
         });
-        console.log(this.state.SCisOpen);
     }
 
     handleSearchForm(e) {

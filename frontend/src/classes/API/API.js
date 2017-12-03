@@ -31,10 +31,12 @@ class API {
 			},
 			body: JSON.stringify(_data)
 		})
-		if(response.status == 200){
-			return null; 
+
+		try {
+			return response.json();			
+		} catch (e) {
+			return null;			
 		}
-		return response.json();
 	}
 
 	async put(_endpoint, _data){

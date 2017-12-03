@@ -238,6 +238,37 @@ namespace API.Controllers
             return Ok();
         }
 
+        [HttpPut("users/{userId}/cart/{productId}/{quantity}")]
+        public IActionResult UpdateCartProduct(string userId, int productId, int quantity) {
+
+            var user = _unitOfWork.Users.Get(userId).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }  
+
+            var product = _unitOfWork.Products.Get(productId);
+            if (product == null)
+            {
+                return NotFound();
+            }   
+
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
+            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
+
+            var existingProduct = cart.Products.Where(p => p.ProductId == productId).FirstOrDefault();
+
+            if (existingProduct == null)
+            {
+                return NotFound();
+            }
+
+            existingProduct.Quantity = quantity;
+            _unitOfWork.Complete();
+            return Ok();            
+
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Credentials Credentials)
         {

@@ -21,11 +21,11 @@ class ShoppingCart extends Component {
             (val) => { 
                 var amountArray = [];
                 for(var i in val) { 
-                    amountArray.push(val[i]); 
+                    amountArray[i] = (val[i]); 
                     this.products.getProduct(i).then(
                         (value) => {
                             var productsArray = this.state.products;
-                            productsArray.push(value); 
+                            productsArray[value.id] = value; 
                             this.setState({products: productsArray, fetching: false});
                         }
                     ) 
@@ -44,8 +44,11 @@ class ShoppingCart extends Component {
     }
 
     updateProduct(e, product_id) {
-        if(e.target.value !== "") 
-            console.log(e.target.value);
+        if(e.target.value !== "") {
+            this.User.updateCartProduct(product_id, e.target.value).then(
+                this.loadCart()
+            );        
+        }
     }
 
     render() {
@@ -59,6 +62,7 @@ class ShoppingCart extends Component {
                     {this.state.products.map((item, i) => {
                         
                     return (<tr key={i}>
+                        <td>{item.id}</td>
                         <td>{item.name}</td>
                         <td>€ {item.price}</td>
                         <td><Input type="number" value={this.state.amount[i]} size="sm" className="sm-input" onChange={f => this.updateProduct(f, item.id)} /></td>                    

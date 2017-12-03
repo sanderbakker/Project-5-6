@@ -54,7 +54,11 @@ class User extends API{
 
 	addCartProduct(_product_id) {
         return this.post('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _product_id);
-    }  
+    }
+    
+    updateCartProduct(_product_id, _quantity) {
+        return this.put('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _product_id + '/' + _quantity);
+    }
     
     adminifyUser(_user_id){
         return this.post('/account/users/adminify/' + _user_id); 

@@ -37,8 +37,13 @@ class ShoppingCart extends Component {
     deleteProduct(product_id) {
         let bool = window.confirm("Are you sure you want to delete this product?"); 
         
-        if(bool) {                 
-            this.loadCart();
+        if(bool) {  
+            this.User.deleteCartProduct(product_id).then(
+                (value) => {
+                    this.setState({products: [], fetching: true});                    
+                    this.loadCart()
+                }
+            );
         }
     }
 
@@ -50,7 +55,7 @@ class ShoppingCart extends Component {
         if(e.target.value !== '') {
             this.User.updateCartProduct(product_id, e.target.value).then(
                 (value) => {
-                    this.loadCart()
+                    this.loadCart();
                 }
             ); 
         }
@@ -71,7 +76,7 @@ class ShoppingCart extends Component {
                         <td>{item.name}</td>
                         <td>€ {item.price * this.state.amount[i]}</td>
                         <td><Input type="number" pattern="[0-9]" value={this.state.amount[i]} size="sm" className="sm-input" onChange={f => this.handleInputChange(f, i, item.id)}/></td>                    
-                        <td><Button color="danger" size="sm" onClick={f => this.deleteProduct(1)}><i className="fa fa-minus"/></Button></td>
+                        <td><Button color="danger" size="sm" onClick={f => this.deleteProduct(i)}><i className="fa fa-minus"/></Button></td>
                     </tr>)
                     })
                     }

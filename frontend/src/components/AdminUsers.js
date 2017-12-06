@@ -13,6 +13,7 @@ class AdminUsers extends Component{
         this.getAmountOfUsers = this.getAmountOfUsers.bind(this); 
         this.calculateNumberOfPages = this.calculateNumberOfPages.bind(this); 
         this.onPageChange =  this.onPageChange.bind(this); 
+        this.highlightItem = this.highlightItem.bind(this); 
     }
 
     componentWillMount(){
@@ -42,6 +43,13 @@ class AdminUsers extends Component{
             (val) => this.setState({page: page, users: val})
         )
     }
+    highlightItem(itemId){
+        var item = document.getElementById(itemId);
+        item.style.boxShadow =  "10px 0px 78px -13px rgba(44,53,68,1)"; 
+        setTimeout(() => {
+            item.style.removeProperty("box-shadow")
+        }, 750);
+    }
 
     render(){
         if(this.state.fetching){
@@ -67,7 +75,7 @@ class AdminUsers extends Component{
                     </thead>
                     <tbody>
                     {this.state.users.map((item, i) => {
-                        return <tr key={i}>
+                        return <tr key={i} ref={item.id} id={item.id}>
                                 {
                                     item.firstName != null ? <td>{item.firstName}</td> 
                                     : <td>Not filled in</td> 
@@ -80,12 +88,8 @@ class AdminUsers extends Component{
                                     {item.isAdmin ? <td><i className="fa fa-check check"/></td> : <td><i className="fa fa-times cross"/></td>} 
                                     {item.isDisabled ? <td><i className="fa fa-check check"/></td> : <td><i className="fa fa-times cross"/></td>}
                                     <td>
-                                        <ButtonGroup size="sm">
-                                            {/* <Link to={'/admin/edit/user/' + item.id}>
-                                                <Button color="warning" size="sm"><i className="fa fa-edit"></i></Button>
-                                            </Link> */}
-                                            <AdminUserForm user={this.getAmountOfUsers} id={item.id} action="edit"/>
-                                            {/* <Button color="danger" size="sm"><i className="fa fa-minus"></i></Button> */}
+                                        <ButtonGroup size="sm">                                            
+                                            <AdminUserForm highlight={this.highlightItem} user={this.getAmountOfUsers} id={item.id} action="edit"/>
                                         </ButtonGroup>
                                     </td>
                               </tr>

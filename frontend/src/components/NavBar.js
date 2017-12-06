@@ -4,7 +4,7 @@ import { Collapse, Navbar, NavbarToggler, Nav, NavItem, Button, Form, FormGroup,
 import {NavLink} from 'react-router-dom'; 
 import logo from '../assets/logo-white.png'; 
 import {Products} from '../classes/API/Products.js';  
-
+import jwt_decode from 'jwt-decode'; 
 import ShoppingCart from './ShoppingCart.js';
 
 
@@ -23,6 +23,9 @@ class NavBar extends Component {
     }
 
     componentDidMount() {
+        if(this.loggedIn){
+        console.log();
+        }
         this.products.getCategories().then(
             (val) => {
                 this.setState({categories: val}); 
@@ -106,6 +109,14 @@ class NavBar extends Component {
                             </Form>
                         </Nav>
                         <Nav className="ml-auto" navbar>
+                        {(this.loggedIn) ?
+                            <NavItem>
+                                <div className="nav-link">
+                                Welcome, {jwt_decode(sessionStorage.getItem('id_token'))['email']}
+                                </div>
+                            </NavItem>
+                            : ""
+                            }
                             {(this.loggedIn) ? 
                             <NavItem>
                                 <span className='nav-link'>
@@ -142,7 +153,9 @@ class NavBar extends Component {
                                     <i className='fa fa-sign-in'></i>
                                 </NavLink>
                             </NavItem>
+                            
                             }
+                            
                         </Nav>
                     </Collapse>
                 </Navbar>

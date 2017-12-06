@@ -17,7 +17,7 @@ class ProductCard extends Component{
         };
 
         this.User = new User();
-   
+        this.highlightItem = this.highlightItem.bind(this); 
       }
     
     
@@ -35,11 +35,19 @@ class ProductCard extends Component{
     toggleShoppingCart() {
         this.setState({showCart: false});
     }
+    
+    highlightItem(itemId){
+        var item = document.getElementById(itemId);
+        item.style.boxShadow =  "10px 0px 78px -13px rgba(44,53,68,1)"; 
+        setTimeout(() => {
+            item.style.removeProperty("box-shadow")
+        }, 500);
+    }
 
     render(){
         return(
             <Col md={4}>
-                    <Card>
+                    <Card id={this.props.id}>
                         <ShoppingCart isOpen={this.state.showCart} onHide={f => this.toggleShoppingCart()} />                        
                         <CardImg top width="100%" height='130px' src="http://via.placeholder.com/300x130" alt="Placeholder image" />   
                         <CardBody>
@@ -70,7 +78,7 @@ class ProductCard extends Component{
 
                             <ButtonGroup size="sm" className="float-right ">
                                 {this.props.admin ? 
-                                <AdminProductForm id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
+                                <AdminProductForm highlight={this.highlightItem} id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
                                 : ""}
                                 <Button onClick={f => this.addProductToCart()} size="sm" color="success" className="float-right line-height-edit">
                                     <i className="fa fa-shopping-cart"/>

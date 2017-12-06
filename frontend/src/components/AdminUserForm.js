@@ -101,7 +101,8 @@ class AdminUserForm extends Component{
                         this.setState({firstName: '', lastName: ''});
                     }
                 }
-            )       
+            )  
+            this.props.highlight(this.props.id);  
         }
       }
       deleteUser(){

@@ -10,6 +10,7 @@ namespace API.Services
 
         public IProductRepository Products { get; private set; }
         public IShoppingCartRepository ShoppingCarts { get; set; }
+        public IOrderRepository Orders { get; set; }
         public UserRepository Users { get; private set; }
 
         public UnitOfWork(
@@ -22,6 +23,7 @@ namespace API.Services
 
             Products = new ProductRepository(_context);
             ShoppingCarts = new ShoppingCartRepository(_context);
+            Orders = new OrderRepository(_context);
             Users = new UserRepository(userManager, signInManager, optionsAccessor, _context);
         }
 

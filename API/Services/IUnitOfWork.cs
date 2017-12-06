@@ -6,6 +6,7 @@ namespace API.Services
     {
         IProductRepository Products { get; }
         IShoppingCartRepository ShoppingCarts { get; }
+        IOrderRepository Orders { get; }
         UserRepository Users { get; }
         int Complete();
     }

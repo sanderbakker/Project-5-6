@@ -17,7 +17,6 @@ namespace API.Services
             return WebshopContext.Carts.Where(c => c.Id == id)
                 .Include(c => c.Products)
                 .FirstOrDefault();
-                   
         }
 
         public WebshopContext WebshopContext

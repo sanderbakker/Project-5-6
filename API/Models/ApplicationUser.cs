@@ -16,6 +16,7 @@ namespace API.Models
         public ApplicationUser()
         {
             ShoppingCart = new ShoppingCart();
+            Orders = new List<Order>();
         }
     }
 }

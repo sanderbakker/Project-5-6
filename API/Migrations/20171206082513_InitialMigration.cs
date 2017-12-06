@@ -201,15 +201,14 @@ namespace API.Migrations
                     OrderId = table.Column<int>(type: "int4", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Status = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<int>(type: "int4", nullable: false),
-                    UserId1 = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Order_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Order_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -268,7 +267,8 @@ namespace API.Migrations
                 columns: table => new
                 {
                     OrderId = table.Column<int>(type: "int4", nullable: false),
-                    ProductId = table.Column<int>(type: "int4", nullable: false)
+                    ProductId = table.Column<int>(type: "int4", nullable: false),
+                    Quantity = table.Column<int>(type: "int4", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -331,9 +331,9 @@ namespace API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_UserId1",
+                name: "IX_Order_UserId",
                 table: "Order",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderProduct_ProductId",

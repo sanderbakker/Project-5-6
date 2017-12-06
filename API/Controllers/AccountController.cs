@@ -245,13 +245,13 @@ namespace API.Controllers
             if (user == null)
             {
                 return NotFound();
-            }  
+            }
 
             var product = _unitOfWork.Products.Get(productId);
             if (product == null)
             {
                 return NotFound();
-            }   
+            }
 
             var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
             var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
@@ -265,8 +265,57 @@ namespace API.Controllers
 
             existingProduct.Quantity = quantity;
             _unitOfWork.Complete();
-            return Ok();            
+            return Ok();
 
+        }
+
+        [HttpGet("users/{id}/orders")]
+        public IActionResult GetOrders(string id)
+        {
+            var user = _unitOfWork.Users.Get(id).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var orders = user.Orders;
+
+            _unitOfWork.Complete();
+            return Ok();
+        }
+
+        [HttpPost("users/{userId}/orders/{cartId}")]
+        public IActionResult AddOrder(string userId, int cartId)
+        {
+            var user = _unitOfWork.Users.Get(userId).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
+
+            user.Orders.Add(new Order());
+            var order = user.Orders.LastOrDefault();
+
+            foreach (var product in cart.Products)
+            {
+                if (order.Products == null)
+                {
+                    order.Products = new List<OrderProduct>();
+                }
+
+                order.Products.Add(new OrderProduct
+                {
+                    ProductId = product.ProductId,
+                    OrderId = order.OrderId,
+
+                    Quantity = product.Quantity
+                });
+            }
+
+            _unitOfWork.Orders.Add(order);
+
+            _unitOfWork.Complete();
+            return Ok();
         }
 
         [HttpPost("register")]

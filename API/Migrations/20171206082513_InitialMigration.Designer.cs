@@ -11,7 +11,7 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    [Migration("20171203092726_InitialMigration")]
+    [Migration("20171206082513_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,13 +87,11 @@ namespace API.Migrations
                     b.Property<string>("StatusString")
                         .HasColumnName("Status");
 
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("UserId1");
+                    b.Property<string>("UserId");
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -103,6 +101,8 @@ namespace API.Migrations
                     b.Property<int>("OrderId");
 
                     b.Property<int>("ProductId");
+
+                    b.Property<int>("Quantity");
 
                     b.HasKey("OrderId", "ProductId");
 
@@ -295,7 +295,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.ApplicationUser", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("API.Models.OrderProduct", b =>

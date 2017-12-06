@@ -227,6 +227,25 @@ namespace API.Controllers
             return new JsonResult(products);
         }
 
+        [HttpGet("users/{id}/cart/totalproducts")]
+        public IActionResult GetTotalProducts(string id) {
+            var user = _unitOfWork.Users.Get(id).Result;            
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
+            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
+
+            var total = 0;
+            foreach (var product in cart.Products)
+            {
+                total += product.Quantity;
+            }
+
+            return new JsonResult(total);
+        }
+
         [HttpPost("users/{userId}/cart/{productId}")]
         public IActionResult AddProductToCart(string userId, int productId)
         {
@@ -264,7 +283,7 @@ namespace API.Controllers
             }
 
             _unitOfWork.Complete();
-            return Ok();
+            return new JsonResult("ok");
         }
 
         [HttpPut("users/{userId}/cart/{productId}/{quantity}")]

@@ -218,32 +218,20 @@ namespace API.Controllers
             var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
             var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
 
-            var products = new Dictionary<int, int>();
+            var products = new Dictionary<int, Dictionary<string, string>>();
             foreach (var product in cart.Products)
             {
-                products.Add(product.ProductId, product.Quantity);
+                var productDetail = _unitOfWork.Products.Get(product.ProductId);
+                var productDetailDict = new Dictionary<string, string>();
+                    productDetailDict.Add("name", productDetail.Name);
+                    productDetailDict.Add("price", productDetail.Price.ToString());
+                    productDetailDict.Add("quantity", product.Quantity.ToString());
+
+
+                products.Add(product.ProductId, productDetailDict);
             }
 
             return new JsonResult(products);
-        }
-
-        [HttpGet("users/{id}/cart/totalproducts")]
-        public IActionResult GetTotalProducts(string id) {
-            var user = _unitOfWork.Users.Get(id).Result;            
-            if (user == null)
-            {
-                return NotFound();
-            }
-            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
-            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
-
-            var total = 0;
-            foreach (var product in cart.Products)
-            {
-                total += product.Quantity;
-            }
-
-            return new JsonResult(total);
         }
 
         [HttpPost("users/{userId}/cart/{productId}")]

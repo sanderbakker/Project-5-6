@@ -225,7 +225,7 @@ namespace API.Controllers
             foreach (var product in cart.Products)
             {
                 var productDetail = _unitOfWork.Products.Get(product.ProductId);
-                totalPrice      += productDetail.Price;
+                totalPrice      += productDetail.Price * product.Quantity;
                 totalQuantity   += product.Quantity;
 
                 var productDetailDict = new Dictionary<string, string>();

@@ -178,6 +178,35 @@ namespace API.Controllers
             return new NoContentResult();
         }
 
+        [HttpDelete("users/{userId}/cart/{productId}")]
+        public IActionResult DeleteProductFromCart(string userId, int productId) {
+            var user = _unitOfWork.Users.Get(userId).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var product = _unitOfWork.Products.Get(productId);
+            if (product == null)
+            {
+                return NotFound();
+            }            
+
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
+            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
+
+            var existingProduct = cart.Products.Where(p => p.ProductId == productId).FirstOrDefault();
+
+            if (existingProduct == null) {
+                return NotFound();
+            }
+
+            cart.Products.Remove(existingProduct);
+            _unitOfWork.Complete();
+
+            return new NoContentResult();
+        }
+
         [HttpGet("users/{id}/cart")]
         public IActionResult GetCart(string id)
         {

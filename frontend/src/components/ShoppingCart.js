@@ -15,8 +15,7 @@ class ShoppingCart extends Component {
     
     
 
-    loadCart() {
-        this.setState({products: []});
+    loadCart(initialLoad) {
         this.User.getCart().then(
             (val) => { 
                 var amountArray = [];
@@ -38,22 +37,33 @@ class ShoppingCart extends Component {
     deleteProduct(product_id) {
         let bool = window.confirm("Are you sure you want to delete this product?"); 
         
-        if(bool) {                 
-            this.loadCart();
+        if(bool) {  
+            this.User.deleteCartProduct(product_id).then(
+                (value) => {
+                    this.setState({products: [], fetching: true});                    
+                    this.loadCart()
+                }
+            );
         }
     }
 
-    updateProduct(e, product_id) {
-        if(e.target.value !== "") {
+    handleInputChange(e, i, product_id) {
+        var amountArray = this.state.amount;
+        amountArray[i] = e.target.value;
+        this.setState({amount: amountArray});
+        
+        if(e.target.value !== '') {
             this.User.updateCartProduct(product_id, e.target.value).then(
-                this.loadCart()
-            );        
+                (value) => {
+                    this.loadCart();
+                }
+            ); 
         }
-    }
+    } 
 
     render() {
         return (
-            <Modal isOpen={this.props.isOpen} onOpened={ f => this.loadCart()} >
+            <Modal isOpen={this.props.isOpen} onOpened={ f => this.loadCart(true)} >
             <ModalHeader toggle={this.props.onHide}>Shopping cart</ModalHeader>   
             <ModalBody>
                 {!this.state.fetching ? 
@@ -64,9 +74,9 @@ class ShoppingCart extends Component {
                     return (<tr key={i}>
                         <td>{item.id}</td>
                         <td>{item.name}</td>
-                        <td>€ {item.price}</td>
-                        <td><Input type="number" value={this.state.amount[i]} size="sm" className="sm-input" onChange={f => this.updateProduct(f, item.id)} /></td>                    
-                        <td><Button color="danger" size="sm" onClick={f => this.deleteProduct(1)}><i className="fa fa-minus"/></Button></td>
+                        <td>€ {item.price * this.state.amount[i]}</td>
+                        <td><Input type="number" pattern="[0-9]" value={this.state.amount[i]} size="sm" className="sm-input" onChange={f => this.handleInputChange(f, i, item.id)}/></td>                    
+                        <td><Button color="danger" size="sm" onClick={f => this.deleteProduct(i)}><i className="fa fa-minus"/></Button></td>
                     </tr>)
                     })
                     }

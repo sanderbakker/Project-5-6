@@ -218,10 +218,16 @@ namespace API.Controllers
             var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
             var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
 
+            var result = new Dictionary<string, dynamic>();
+            float totalPrice = 0;
+            float totalQuantity = 0;
             var products = new Dictionary<int, Dictionary<string, string>>();
             foreach (var product in cart.Products)
             {
                 var productDetail = _unitOfWork.Products.Get(product.ProductId);
+                totalPrice      += productDetail.Price;
+                totalQuantity   += product.Quantity;
+
                 var productDetailDict = new Dictionary<string, string>();
                     productDetailDict.Add("name", productDetail.Name);
                     productDetailDict.Add("price", productDetail.Price.ToString());
@@ -231,7 +237,11 @@ namespace API.Controllers
                 products.Add(product.ProductId, productDetailDict);
             }
 
-            return new JsonResult(products);
+            result.Add("total_price", totalPrice.ToString());
+            result.Add("total_quantity", totalQuantity.ToString());
+            result.Add("products", products);
+
+            return new JsonResult(result);
         }
 
         [HttpPost("users/{userId}/cart/{productId}")]

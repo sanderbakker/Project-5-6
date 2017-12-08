@@ -9,6 +9,26 @@ namespace API.Models
         public string UserId { get; set; }
         public ApplicationUser User { get;set; }
         public List<OrderProduct> Products { get;set; }
+        public float totalPrice { get;set; }
+
+        [NotMapped]
+        public ShippingProviders ShippingProvider { get; set; }
+
+        [Column("ShippingProvider")]
+        public string ShippingProviderString
+        {
+            get { return ShippingProvider.ToString(); }
+            private set { ShippingProvider = value.ParseEnum<ShippingProviders>(); }
+        }
+
+        [NotMapped]
+        public PaymentProviders PaymentProvider { get; set; }
+        [Column("PaymentProvider")]
+        public string PaymentProviderString
+        {
+            get { return PaymentProvider.ToString(); }
+            private set { PaymentProvider = value.ParseEnum<PaymentProviders>(); }
+        }         
 
         [NotMapped]
         public Statuses Status { get; set; }
@@ -25,6 +45,16 @@ namespace API.Models
             Delivery,
             Processing, 
             Received
+        }
+
+        public enum ShippingProviders {
+            UPS,
+            PostNL            
+        }
+
+        public enum PaymentProviders {
+            Bank,
+            Creditcard, 
         }
     }
     

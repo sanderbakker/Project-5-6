@@ -252,3 +252,9 @@ footer a:hover{
 .sm-input {
     width: 60px;
 }
+
+.order-overview {
+    background: #ebebeb;
+    padding: 10px;
+    border-radius: 5px;
+}

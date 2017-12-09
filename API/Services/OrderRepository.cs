@@ -1,4 +1,7 @@
 ﻿using API.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace API.Services
 {
@@ -14,5 +17,14 @@ namespace API.Services
         {
             get { return _context as WebshopContext; }
         }
+
+        public IEnumerable<string> GetPaymentProviders()
+        {
+            return Enum.GetNames(typeof(Order.PaymentProviders)).ToList();
+        }
+
+        public IEnumerable<string> GetShipmentProviders() {
+            return Enum.GetNames(typeof(Order.ShippingProviders)).ToList();
+        }        
     }
 }

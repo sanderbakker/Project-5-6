@@ -24,6 +24,7 @@ import AdminProductFrom from './AdminProductForm.js';
 import Product from './Product.js';
 import AdminUserForm from './AdminUserForm.js'; 
 import ShoppingCart from './ShoppingCart.js';
+import Order from './Order.js';
 
 import '../css/style.css'; 
 
@@ -121,7 +122,11 @@ class App extends Component {
 
                     {(this.state.loggedIn) ?
                     <PropsRoute action='edit' path ='/profile/edit/address/:id' component={UserAddress} />
-                    : null}                   
+                    : null}       
+
+                    {(this.state.loggedIn) ?
+                    <PropsRoute path='/order' component={Order} />
+                    : null }            
 
                     <Route path='/product/:id' component={Product}/>
 

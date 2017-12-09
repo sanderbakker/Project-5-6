@@ -71,13 +71,21 @@ class ShoppingCart extends Component {
                 ); 
             }
         }
-    } 
+    }
+    
+    goToOrders() {
+        window.location.href = "/order";
+    }
 
     render() {
+        console.log(this.state.products);
         return (
             <Modal isOpen={this.props.isOpen} onOpened={ f => this.loadCart(true)} >
             <ModalHeader toggle={this.props.onHide}>Shopping cart</ModalHeader>   
             <ModalBody>
+                {!this.state.fetching && this.state.products.length === 0 ?
+                    <p style={{textAlign:'center'}}>Shopping cart is empty, start shopping.</p>
+                : null}
                 {!this.state.fetching ? 
                     <Table hover={true}>
                     <tbody>
@@ -104,7 +112,10 @@ class ShoppingCart extends Component {
                 : null }
              </ModalBody>
             <ModalFooter>
-                <Button className="btn-block" color="info"><i className="fa fa-shopping-cart" /> Check out</Button>
+                {this.state.products.length === 0 ?
+                     <Button className="btn-block" color="info" disabled><i className="fa fa-shopping-cart" /> Check out</Button>
+                :    <Button className="btn-block" color="info" onClick={f => this.goToOrders()}><i className="fa fa-shopping-cart" /> Check out</Button>
+                }
             </ModalFooter>
             </Modal>        
         );

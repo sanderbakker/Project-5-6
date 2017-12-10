@@ -329,20 +329,40 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpPost("users/{userId}/orders/{cartId}")]
-        public IActionResult AddOrder(string userId, int cartId)
+        [HttpPost("users/{userId}/orders/add")]
+        public IActionResult AddOrder(string userId, [FromBody] Dictionary<string, string> providers)
         {
             var user = _unitOfWork.Users.Get(userId).Result;
             if (user == null)
             {
                 return NotFound();
             }
-            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
 
-            user.Orders.Add(new Order());
-            var order = user.Orders.LastOrDefault();
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;            
+            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
+            float total = 0;
 
             foreach (var product in cart.Products)
+            {
+                var productDetail = _unitOfWork.Products.Get(product.ProductId);
+                total += productDetail.Price * product.Quantity;
+            }
+
+            var PaymentProvider  = providers["paymentProvider"].ParseEnum<Order.PaymentProviders>();
+            var ShippingProvider = providers["shipmentProvider"].ParseEnum<Order.ShippingProviders>(); 
+            var Status = "Processing".ParseEnum<Order.Statuses>();
+
+            user.Orders.Add(new Order
+                {
+                    PaymentProvider = PaymentProvider,
+                    ShippingProvider = ShippingProvider,
+                    Status = Status,
+                    totalPrice = total
+                }
+            );
+            var order = user.Orders.LastOrDefault();
+
+            foreach (var product in cart.Products.ToList())
             {
                 if (order.Products == null)
                 {
@@ -356,12 +376,13 @@ namespace API.Controllers
 
                     Quantity = product.Quantity
                 });
+                cart.Products.Remove(product);                                
             }
 
             _unitOfWork.Orders.Add(order);
-
             _unitOfWork.Complete();
-            return Ok();
+
+            return new JsonResult("ok");
         }
 
         [HttpPost("register")]

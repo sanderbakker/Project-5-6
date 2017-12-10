@@ -63,6 +63,10 @@ class User extends API{
     deleteCartProduct(_product_id) {
         return this.delete('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _product_id); 
     }
+
+    cartToOrder(_data_array) {
+        return this.post('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/orders/add', _data_array);
+    }
     
     adminifyUser(_user_id){
         return this.post('/account/users/adminify/' + _user_id); 

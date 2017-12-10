@@ -11,17 +11,17 @@ import {Form, FormGroup, Label, Input, Button, Table, Card} from 'reactstrap';
 class Order extends Component {
     constructor(props){
         super(props);
-        this.state = {paymentProviders: [], shipmentProviders: [], products: []}
+        this.state = {paymentProviders: [], shipmentProviders: [], products: [], finished: false}
         this.Orders = new Orders();
         this.User = new User();
     }    
 
     componentWillMount() {
         this.Orders.getPaymentProviders().then(
-            (value) => { this.setState({paymentProviders: value})}
+            (value) => { this.setState({paymentProviders: value, payment: value[0]})}
         );
         this.Orders.getShipmentProviders().then(
-            (value) => { this.setState({shipmentProviders: value})}
+            (value) => { this.setState({shipmentProviders: value, shipment: value[0]})}
         );
         this.User.getCart().then(
             (value) => {
@@ -40,12 +40,20 @@ class Order extends Component {
     }
 
     submitForm() {
-
+        this.User.cartToOrder({
+            'paymentProvider': this.state.payment,
+            'shipmentProvider': this.state.shipment
+        }).then(
+            (value) => {
+                this.setState({finished: true});
+            }
+        );
     }
 
     render() {
         return ( 
         <Container className="content-container">
+        {this.state.finished ? <h2>Order created succesfully!</h2> :
             <Form>
             <FormGroup tag="fieldset">
                 <legend>Shipment</legend>
@@ -110,6 +118,7 @@ class Order extends Component {
             </Col>
             <Button color="info" onClick={f => this.submitForm()}>Place Order</Button>            
             </Form>
+        }
         </Container>
         )
     }

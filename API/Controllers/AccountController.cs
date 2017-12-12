@@ -326,7 +326,29 @@ namespace API.Controllers
             var orders = user.Orders;
 
             _unitOfWork.Complete();
-            return Ok();
+            return new JsonResult(orders);
+        }
+
+        [HttpGet("users/{id}/order/{orderId}")]
+        public IActionResult GetOrder(string id, int orderId)
+        {
+            var user = _unitOfWork.Users.Get(id).Result;
+            if(user == null) 
+            {
+                return NotFound();
+            }
+            var order = user.Orders.Find(o => o.OrderId == orderId);
+            var orderProducts = _unitOfWork.Orders.GetWithProducts(orderId);
+            
+
+            var returnArray = new Dictionary<string, object>();              
+            returnArray.Add("order_id", order.OrderId);
+            returnArray.Add("shipping_provider", order.ShippingProviderString);
+            returnArray.Add("payment_provider", order.PaymentProviderString);
+            returnArray.Add("total_price", order.totalPrice);
+            returnArray.Add("products", orderProducts);
+
+            return new JsonResult(returnArray);
         }
 
         [HttpPost("users/{userId}/orders/add")]

@@ -25,6 +25,14 @@ namespace API.Services
 
         public IEnumerable<string> GetShipmentProviders() {
             return Enum.GetNames(typeof(Order.ShippingProviders)).ToList();
-        }        
+        }
+
+        public IQueryable GetWithProducts(int orderId)
+        {
+            return (from orderProducts in WebshopContext.OrderProducts
+                    join product in WebshopContext.Products on orderProducts.ProductId equals product.Id
+                    where orderProducts.OrderId == orderId
+                    select new { id = product.Id, name = product.Name, price = product.Price, quantity = orderProducts.Quantity });
+        }                
     }
 }

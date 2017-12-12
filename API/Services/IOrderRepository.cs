@@ -9,6 +9,7 @@ namespace API.Services
     {
         IEnumerable<string> GetPaymentProviders();  
         IEnumerable<string> GetShipmentProviders();
+        IQueryable GetWithProducts(int orderId);
 
     }
 }

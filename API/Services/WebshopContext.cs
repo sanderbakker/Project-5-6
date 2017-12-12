@@ -9,7 +9,8 @@ namespace API.Services
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<ShoppingCart> Carts { get; set; }
-        
+        public DbSet<OrderProduct> OrderProducts { get; set;}
+
         public WebshopContext(DbContextOptions<WebshopContext> options)
             : base(options)
         {

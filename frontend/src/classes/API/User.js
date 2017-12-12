@@ -84,6 +84,14 @@ class User extends API{
         return this.post('/account/users/enable/' + _user_id); 
     }
 
+    getOrders() {
+        return this.get('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/orders');
+    }
+
+    getOrder(_order_id) {
+        return this.get('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/order/' + _order_id);
+    }
+
     
 }
 export {User}; 

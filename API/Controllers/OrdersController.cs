@@ -27,5 +27,15 @@ namespace API.Controllers
         public IActionResult GetShipmentProviders() {
             return new ObjectResult(_unitOfWork.Orders.GetShipmentProviders());
         }
+
+        [HttpGet("statuses")]
+        public IActionResult GetStatuses() {
+            return new ObjectResult(_unitOfWork.Orders.GetStatuses());
+        }
+
+        [HttpGet]
+        public IActionResult GetOrders() {
+            return new JsonResult(_unitOfWork.Orders.GetAll());
+        }
     }
 }

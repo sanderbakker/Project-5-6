@@ -27,6 +27,10 @@ namespace API.Services
             return Enum.GetNames(typeof(Order.ShippingProviders)).ToList();
         }
 
+        public IEnumerable<string> GetStatuses() {
+            return Enum.GetNames(typeof(Order.Statuses)).ToList();
+        }
+
         public IQueryable GetWithProducts(int orderId)
         {
             return (from orderProducts in WebshopContext.OrderProducts

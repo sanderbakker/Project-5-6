@@ -116,7 +116,7 @@ class OrderOverview extends Component {
                            <select name={item.orderId} onChange={f => this.changeStatus(f)}>
                             <option value={item.statusString}>{item.statusString}</option>
                             {this.state.statuses.map((item, i) => {
-                                return <option value={item}>{item}</option>
+                                return <option key={i} value={item}>{item}</option>
                             })}
                            </select>  
                          : <span>{item.statusString}</span>}

@@ -36,10 +36,6 @@ namespace API.Services
                 .HasOne(o => o.Order)
                 .WithMany(o => o.Products)
                 .HasForeignKey(p => p.OrderId);
-
-            modelBuilder.Entity<Product>().Property(p => p.Image1).HasColumnType("image");
-            modelBuilder.Entity<Product>().Property(p => p.Image2).HasColumnType("image");
-            modelBuilder.Entity<Product>().Property(p => p.Image3).HasColumnType("image");
         }
     }
 }

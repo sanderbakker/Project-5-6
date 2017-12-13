@@ -37,5 +37,18 @@ namespace API.Controllers
         public IActionResult GetOrders() {
             return new JsonResult(_unitOfWork.Orders.GetAll());
         }
+        [HttpPut("{id}/status/{status}")]
+        public IActionResult UpdateOrderStatus(int id, string status) {
+            var order = _unitOfWork.Orders.Find(o => o.OrderId == id).FirstOrDefault();
+
+            if(order == null) {
+                return NotFound();
+            }
+
+            order.Status = status.ParseEnum<Order.Statuses>(); 
+            _unitOfWork.Complete();
+            
+            return new JsonResult("ok");
+        }
     }
 }

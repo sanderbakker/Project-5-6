@@ -21,6 +21,11 @@ class AdminSideBar extends Component{
                         <i className={"fa fa-gavel"}/> Customizations
                     </Link>
                 </ListGroupItem>
+                <ListGroupItem>
+                    <Link to={'/admin/orders'}>
+                        <i className={"fa fa-pie-chart"}></i> Orders
+                    </Link>
+                </ListGroupItem>
             </ListGroup>
         )
     }

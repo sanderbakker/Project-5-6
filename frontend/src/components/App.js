@@ -94,9 +94,15 @@ class App extends Component {
                     : null}
 
                     {(this.state.admin) ?
-                    <PropsRoute type='custom' exact path ='/admin/customizations/' component={Admin} />
+                    
+                    <PropsRoute type='orders' exact path ='/admin/orders/' component={Admin} />
                     : null}
 
+                    {(this.state.admin) ?
+                    <PropsRoute type='custom' exact path ='/admin/customizations/' component={Admin} />
+                    : null 
+                    }
+                    
                     {(this.state.admin) ?
                     <PropsRoute action='add' exact path ='/admin/add/product' component={AdminProductFrom} />
                     : null}

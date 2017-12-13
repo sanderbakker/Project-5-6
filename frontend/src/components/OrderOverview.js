@@ -13,14 +13,32 @@ class OrderOverview extends Component {
         super(props);
         this.state = {orders: [], fetching: true}
         this.User = new User();
+        this.Orders = new Orders();
     }        
 
     componentWillMount() {
-        this.User.getOrders().then(
-            (value) => {
-                this.setState({orders: value, fetching: false, order_details: [], modal: false});
-            }
-        );
+        if(this.props.admin) {
+            this.setState({statuses: []});
+
+            this.Orders.getStatuses().then(
+                (value) => {
+                    console.log(value);
+                    this.setState({statuses: value});
+                }
+            );
+
+            this.Orders.getOrders().then(
+                (value) => {
+                    this.setState({orders: value, fetching: false, order_details:[], modal: false})
+                }
+            );
+        } else {
+            this.User.getOrders().then(
+                (value) => {
+                    this.setState({orders: value, fetching: false, order_details: [], modal: false});
+                }
+            );
+        }
     }
 
     showOverview(e) {
@@ -31,6 +49,12 @@ class OrderOverview extends Component {
                 this.setState({order_details: value, fetching_details: false});
             }
         );
+    }
+
+    changeStatus(e) {
+        this.Orders.updateStatus(e.target.name, e.target.value).then(
+            (value) => {}
+        )
     }
 
     hideOverview() {
@@ -86,7 +110,17 @@ class OrderOverview extends Component {
                     {this.state.orders.map((item, i) => {
                      return ( <tr key={i}>
                          <td>{item.orderId}</td>
-                         <td>{item.statusString}</td>
+                         <td>
+                         {this.props.admin ?            
+                           <select name={item.orderId} onChange={f => this.changeStatus(f)}>
+                            <option value={item.statusString}>{item.statusString}</option>
+                            {this.state.statuses.map((item, i) => {
+                                return <option key={i} value={item}>{item}</option>
+                            })}
+                           </select>  
+                         : <span>{item.statusString}</span>}
+                         </td>
+                         
                          <td>€ {item.totalPrice}</td>
                          <td><Button color='info' value={item.orderId} onClick={f => this.showOverview(f)}>Overview</Button></td>
                      </tr> );

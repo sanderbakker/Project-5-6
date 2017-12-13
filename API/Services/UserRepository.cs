@@ -170,7 +170,7 @@ namespace API.Services
         public IEnumerable<ApplicationUser> GetAllPaginated(int pageIndex, int pageSize = 10)
         {
             return _userManager.Users
-                .OrderBy(p => p.UserName)
+                .OrderBy(p => p.Email)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();

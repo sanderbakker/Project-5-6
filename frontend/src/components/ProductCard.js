@@ -41,7 +41,7 @@ class ProductCard extends Component{
         item.style.boxShadow =  "10px 0px 78px -13px rgba(44,53,68,1)"; 
         setTimeout(() => {
             item.style.removeProperty("box-shadow")
-        }, 500);
+        }, 750);
     }
 
     render(){

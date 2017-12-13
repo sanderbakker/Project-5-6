@@ -70,7 +70,6 @@ class AdminProducts extends Component {
                 (val) => this.setState({page: page, products: val})
             ) 
           }
-        // this.setState({page: page});
       }
 
     async deleteProduct(_id, _name){ 

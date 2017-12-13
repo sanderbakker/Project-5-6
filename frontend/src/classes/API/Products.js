@@ -27,13 +27,14 @@ export class Products extends API {
 	getProductsPaginated(_page_number){
 		return this.get('/products/paginated/' + _page_number + '/9')
 	}
-	addProduct(_price, _description, _category, _name){
+	addProduct(_price, _description, _category, _name, _stock){
 		return this.post('/products', 
 						{
 							"name": _name,
 							"price": _price,
 							"description": _description,
 							"category": _category,
+							"stock": _stock, 
 							"addedAt": new Date()
 						}
 					)
@@ -42,12 +43,13 @@ export class Products extends API {
 		return this.get("/products/withcategorypaginated/" + _category + "/" + _page_number + "/9")
 	}
 
-	updateProduct(_id, _description, _price, _category, _name){
+	updateProduct(_id, _description, _price, _category, _name, _stock){
 		return this.put("/products/" + _id, {
 			"description": _description,
 			"price": _price,
 			"name": _name,
 			"category": _category,
+			"stock": _stock, 
 			"id": _id
 		})
 	}

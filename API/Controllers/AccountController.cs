@@ -201,7 +201,10 @@ namespace API.Controllers
                 return NotFound();
             }
 
+            existingProduct.Product.Stock += existingProduct.Quantity; 
+            
             cart.Products.Remove(existingProduct);
+            
             _unitOfWork.Complete();
 
             return new NoContentResult();
@@ -264,22 +267,28 @@ namespace API.Controllers
 
             var existingProduct = cart.Products.Where(p => p.ProductId == productId).FirstOrDefault();
 
-            if (existingProduct == null)
+            if(product.Stock > 0)
             {
-                cart.Products.Add(new ShoppingCartProduct
+                if (existingProduct == null)
                 {
-                    ShoppingCartId = cart.Id,
-                    ShoppingCart = cart,
-                    ProductId = product.Id,
-                    Product = product,
-                    Quantity = 1
-                });
+                    
+                        cart.Products.Add(new ShoppingCartProduct
+                        {
+                            ShoppingCartId = cart.Id,
+                            ShoppingCart = cart,
+                            ProductId = product.Id,
+                            Product = product,
+                            Quantity = 1
+                        });
+                        product.Stock -= 1; 
+                    
+                }
+                else
+                {
+                    existingProduct.Quantity += 1;
+                    existingProduct.Product.Stock -= 1; 
+                }
             }
-            else
-            {
-                existingProduct.Quantity += 1;
-            }
-
             _unitOfWork.Complete();
             return new JsonResult("ok");
         }
@@ -309,7 +318,13 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            existingProduct.Quantity = quantity;
+            if(existingProduct.Product.Stock > 0 )
+            {
+                var substract = (quantity - existingProduct.Quantity);
+                existingProduct.Quantity = quantity;
+                existingProduct.Product.Stock -=  substract;
+            }
+
             _unitOfWork.Complete();
             return Ok();
 

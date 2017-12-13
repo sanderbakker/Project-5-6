@@ -89,16 +89,19 @@ class AdminUserForm extends Component{
             this.user.update_user_profile(this.state.user_id, this.state.name, this.state.surname).then(
                 (val) => {
                     if(val.ok && val.status === 204){ 
+                        console.log(this.state.admin, this.state.adminState);
                         if(this.state.admin === true && this.state.adminState === false){
                             this.user.adminifyUser(this.state.user_id); 
+                            console.log("Send call");
                         }
                         if(this.state.admin === false && this.state.adminState === true){
                             this.user.disableAdmin(this.state.user_id); 
+                            console.log("Send call 2");
                         }
                         this.props.user(); 
                         this.toggle(); 
                         this.notify("Edited user: " + this.state.email, "success"); 
-                        this.setState({firstName: '', lastName: ''});
+                        this.setState({firstName: '', lastName: '', adminState: !this.state.adminState});
                     }
                 }
             )  

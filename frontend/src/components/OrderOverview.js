@@ -25,11 +25,9 @@ class OrderOverview extends Component {
 
     showOverview(e) {
         this.setState({fetching_details: true, modal: true});
-        console.log(e.target.value);        
 
         this.User.getOrder(e.target.value).then(
             (value) => {
-                console.log(value);
                 this.setState({order_details: value, fetching_details: false});
             }
         );

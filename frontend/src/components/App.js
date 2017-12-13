@@ -94,7 +94,7 @@ class App extends Component {
                     : null}
 
                     {(this.state.admin) ?
-                    <PropsRoute type='stats' exact path ='/admin/statistics/' component={Admin} />
+                    <PropsRoute type='custom' exact path ='/admin/customizations/' component={Admin} />
                     : null}
 
                     {(this.state.admin) ?

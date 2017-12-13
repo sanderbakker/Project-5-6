@@ -45,7 +45,7 @@ class AdminProductForm extends Component {
         else if(e.target.name === 'images') {
             this.setState({images: e.target.files});
         }
-        else if(e.target.name == 'stock'){
+        else if(e.target.name === 'stock'){
             this.setState({stock: e.target.value}); 
         }
     }
@@ -305,7 +305,11 @@ class AdminProductForm extends Component {
                     </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="success" size="sm" onClick={() => this.handleSubmit()}>Add</Button>{' '}
+                        {this.state.name !== '' && this.state.category !== '' && this.state.price !== '' && this.state.description !== ''
+                        ? <Button color="success" size="sm" onClick={() => this.handleSubmit()}>Add</Button>
+                        : <Button color="success" size="sm" disabled={true}>Add</Button>
+                        }
+                        {' '}
                         <Button color="danger" size="sm" onClick={this.toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>

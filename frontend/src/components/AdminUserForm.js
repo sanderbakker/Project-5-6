@@ -12,7 +12,9 @@ class AdminUserForm extends Component{
           password: '',
           name: '',
           surname: '',
-          email: ''
+          email: '',
+          disableAdd: false,
+          disableEdit: false
         };
         this.handleFormChanges = this.handleFormChanges.bind(this); 
         this.toggle = this.toggle.bind(this);
@@ -74,34 +76,36 @@ class AdminUserForm extends Component{
       }
       handleFormSubmit(e){
         if(this.props.action === 'add'){
+            this.setState({disableAdd: true});
             this.account.register(this.state.email, this.state.password).then(
                 (val) => {
                     if(typeof val.access_token !== 'undefined') {
                         this.props.user(); 
                         this.toggle();
                         this.notify("Added user: " + this.state.email, "success"); 
-                        this.setState({email: '', password: ''})
+                        this.setState({email: '', password: '', disableAdd: false})
                     }
                 }
             )
         }
         else{ 
+            this.setState({disableEdit: true}); 
             this.user.update_user_profile(this.state.user_id, this.state.name, this.state.surname).then(
                 (val) => {
                     if(val.ok && val.status === 204){ 
-                        console.log(this.state.admin, this.state.adminState);
+                        
                         if(this.state.admin === true && this.state.adminState === false){
                             this.user.adminifyUser(this.state.user_id); 
-                            console.log("Send call");
+                            
                         }
                         if(this.state.admin === false && this.state.adminState === true){
                             this.user.disableAdmin(this.state.user_id); 
-                            console.log("Send call 2");
+                            
                         }
                         this.props.user(); 
                         this.toggle(); 
                         this.notify("Edited user: " + this.state.email, "success"); 
-                        this.setState({firstName: '', lastName: '', adminState: !this.state.adminState});
+                        this.setState({firstName: '', lastName: '', adminState: !this.state.adminState, disableEdit: false});
                     }
                 }
             )  
@@ -195,7 +199,16 @@ class AdminUserForm extends Component{
                         </Form>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="success" size="sm" onClick={(e) => this.handleFormSubmit(e)}>Save</Button>{' '}
+                            
+                            {(this.state.name !== null && this.state.name !== '') && (this.state.surname !== null && this.state.surname !== '')
+                            ?
+                            <Button disabled={this.state.disableEdit} color="success" size="sm" onClick={(e) => {
+                                this.handleFormSubmit(e)
+                                
+                            }}>Save</Button>
+                            : <Button color="success" size="sm" disabled={true}>Save</Button>
+                            }
+                            {' '}
                             <Button color="danger" size="sm" onClick={this.toggle}>Cancel</Button>
                         </ModalFooter>
                     </Modal>
@@ -235,7 +248,11 @@ class AdminUserForm extends Component{
                 </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="success" size="sm" onClick={() => this.handleFormSubmit()}>Add</Button>{' '}
+                    {this.state.email !== null && this.state.password !== null && this.state.email !== '' && this.state.password !== '' 
+                    ? <Button color="success" disabled={this.state.disableAdd} size="sm" onClick={() => this.handleFormSubmit()}>Add</Button>
+                    :   <Button color="success" size={"sm"} disabled={true}>Add</Button> 
+                    }
+                    {' '} 
                     <Button color="secondary" size="sm" onClick={this.toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>

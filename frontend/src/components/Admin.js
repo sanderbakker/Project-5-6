@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import AdminSideBar from './AdminSideBar.js'; 
 import {Row, Col, Container} from 'reactstrap'; 
 import AdminProducts from './AdminProducts.js'; 
-import AdminUsers from './AdminUsers.js'; 
+import AdminUsers from './AdminUsers.js';
+import AdminOrders from './AdminOrders.js'; 
 
 class Admin extends Component {
     render(){
@@ -15,7 +16,7 @@ class Admin extends Component {
                         {this.props.type === 'default' ? 
                             'default component'
                             : this.props.type === 'products' ? <AdminProducts/>
-                            : this.props.type === 'stats' ? 'stats component'
+                            : this.props.type === 'orders' ? <AdminOrders/>
                             : this.props.type === 'users' ? <AdminUsers/>
                             : ''
                         }

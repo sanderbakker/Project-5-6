@@ -30,7 +30,7 @@ namespace API.Controllers
             return Ok(_unitOfWork.Products.GetAmount());
         }
 
-        [HttpGet("{id}", Name = "GetProduct" )]
+        [HttpGet("{id}", Name = "GetProduct")]
         public IActionResult Get(int id)
         {
             var item = _unitOfWork.Products.Get(id);
@@ -55,7 +55,7 @@ namespace API.Controllers
 
         [HttpGet("category/{category}")]
         public IActionResult GetCategory(string category) {
-            if(!Enum.IsDefined(typeof(Product.Categories), category)) {
+            if (!Enum.IsDefined(typeof(Product.Categories), category)) {
                 return new ObjectResult(null);
             }
 
@@ -105,14 +105,14 @@ namespace API.Controllers
         [HttpGet("filter/{name}/{sort}/{index}/{size}")]
         public IActionResult GetFiltered(string name, string sort, int index, int size = 10)
         {
-            
+
             var result = _unitOfWork.Products.GetFiltered(name, sort, index, size);
 
-            if(result == null){
+            if (result == null) {
                 return NotFound();
             }
 
-            return Ok(result); 
+            return Ok(result);
         }
 
         [HttpPost]
@@ -127,6 +127,34 @@ namespace API.Controllers
             _unitOfWork.Complete();
 
             return CreatedAtRoute("GetProduct", new { id = item.Id }, item);
+        }
+
+        [HttpPost("{productId}/images/{imageId}")]
+        public IActionResult AddImage(int productId, int imageId, [FromBody] byte[] image)
+        {
+            var product = _unitOfWork.Products.Get(productId);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            switch (imageId)
+            {
+                case 1:
+                    product.Image1 = image;
+                    break;
+                case 2:
+                    product.Image2 = image;
+                    break;
+                case 3:
+                    product.Image3 = image;
+                    break;
+                default:
+                    return NotFound();
+            }
+
+            _unitOfWork.Complete();
+            return Ok();
         }
 
         [HttpPut("{id}")]

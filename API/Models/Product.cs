@@ -10,6 +10,9 @@ namespace API.Models
         public string Name { get; set; }
         public string Description {get; set; }
         public float Price {get; set; }
+        public byte[] Image1 { get; set; }
+        public byte[] Image2 { get; set; }
+        public byte[] Image3 { get; set; }
         public DateTime AddedAt { get; set; }
         public List<OrderProduct> Orders {get;set;}
         public List<ShoppingCartProduct> ShoppingCarts { get; set; }

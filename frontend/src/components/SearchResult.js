@@ -32,7 +32,6 @@ class SearchResult extends Component {
       }
 
 	calculateNumberOfPages(_total_amount_products){
-		console.log(_total_amount_products); 
 		setTimeout( () => {
             this.setState({total: Math.ceil(_total_amount_products/9)}, () => {
                 this.products.searchProductsPaginated(this.props.match.params.search, this.state.page).then(

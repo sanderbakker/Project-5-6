@@ -11,8 +11,6 @@ export default class ChatBox extends Component {
 
     toggle() {
         var content = document.getElementById("chatbox-toggle");
-        console.log(content.classList);
-
         if(this.state.toggled === false) {
             content.classList.remove("display-none");            
             this.setState({toggled: true});

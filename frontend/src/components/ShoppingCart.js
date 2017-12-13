@@ -18,7 +18,6 @@ class ShoppingCart extends Component {
     loadCart(initialLoad) {
         this.User.getCart().then(
             (val) => { 
-                console.log(val); 
                 var products = [];
                 for(var i in val.products){ 
                     var product = {
@@ -78,7 +77,6 @@ class ShoppingCart extends Component {
     }
 
     render() {
-        console.log(this.state.products);
         return (
             <Modal isOpen={this.props.isOpen} onOpened={ f => this.loadCart(true)} >
             <ModalHeader toggle={this.props.onHide}>Shopping cart</ModalHeader>   

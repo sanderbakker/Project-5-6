@@ -24,7 +24,6 @@ class NavBar extends Component {
 
     componentDidMount() {
         if(this.loggedIn){
-        console.log();
         }
         this.products.getCategories().then(
             (val) => {

@@ -13,6 +13,9 @@ namespace API.Models
         public DateTime AddedAt { get; set; }
         public List<OrderProduct> Orders {get;set;}
         public List<ShoppingCartProduct> ShoppingCarts { get; set; }
+        public List<Customization> Customizations {get; set;}
+        public int Stock {get; set;}
+        
         [NotMapped]
         public Categories Category { get; set; }
 

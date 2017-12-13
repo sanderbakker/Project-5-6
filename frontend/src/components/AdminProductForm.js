@@ -5,7 +5,7 @@ import NotificationAlert from 'react-notification-alert';
 class AdminProductForm extends Component {
     constructor(props){
         super(props);
-        this.state = {name: "", category: "", description: "", price: "", fetching: true, modal: false}
+        this.state = {name: "", category: "", description: "", price: "", fetching: true, modal: false, stock: 0}
         this.product = new Products(); 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFormChanges = this.handleFormChanges.bind(this); 
@@ -21,7 +21,7 @@ class AdminProductForm extends Component {
                 if(this.props.action === 'edit'){
                     this.product.getProduct(this.props.id).then(
                         (value) =>
-                            this.setState({name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false}) 
+                            this.setState({name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false, stock: value.stock}) 
                     )
                 }
             }
@@ -45,12 +45,15 @@ class AdminProductForm extends Component {
         else if(e.target.name === 'images') {
             this.setState({images: e.target.files});
         }
+        else if(e.target.name == 'stock'){
+            this.setState({stock: e.target.value}); 
+        }
     }
 
     handleSubmit(){
         if(this.state.name !== "" && this.state.price !== "" && this.state.description !== "" && this.state.category !== ""){
             if(this.props.action === 'add'){
-                this.product.addProduct(this.state.price, this.state.description, this.state.category, this.state.name)
+                this.product.addProduct(this.state.price, this.state.description, this.state.category, this.state.name, this.state.stock)
                 .then(
                     (val) => {
                         if(val.id === undefined){
@@ -58,15 +61,13 @@ class AdminProductForm extends Component {
                         }
                         this.toggle();
                         this.notify("Added product: " + this.state.name, "success")
-                        this.setState({visible: true, name: "", category: "", price: "", description: ""}); 
+                        this.setState({visible: true, name: "", category: "", price: "", description: "", stock: 0}); 
                         this.props.updateProducts();
-                        
-                        
                     }
                 )
             }
             else if(this.props.action === 'edit'){
-                this.product.updateProduct(this.props.id, this.state.description, this.state.price, this.state.category, this.state.name).then(
+                this.product.updateProduct(this.props.id, this.state.description, this.state.price, this.state.category, this.state.name, this.state.stock).then(
                     (val) => {
                         if(val.ok && val.status === 204){
                             this.setState({visible: true});
@@ -171,6 +172,17 @@ class AdminProductForm extends Component {
                                     value={this.state.price}/>
                             </FormGroup>
                             <FormGroup>
+                                <Label for="stockLabel">Stock</Label>
+                                <Input 
+                                    size='sm' 
+                                    type="number" 
+                                    onChange={this.handleFormChanges} 
+                                    name="stock" 
+                                    id="stockLabel" 
+                                    placeholder="Enter stock of product" 
+                                    value={this.state.stock}/>
+                            </FormGroup>
+                            <FormGroup>
                                 <Label for="categoryLabel">Category</Label>
                                 <Input 
                                     size='sm' 
@@ -252,6 +264,17 @@ class AdminProductForm extends Component {
                                 placeholder="Enter product price" 
                                 value={this.state.price}/>
                         </FormGroup>
+                        <FormGroup>
+                                <Label for="stockLabel">Stock</Label>
+                                <Input 
+                                    size='sm' 
+                                    type="number" 
+                                    onChange={this.handleFormChanges} 
+                                    name="stock" 
+                                    id="stockLabel" 
+                                    placeholder="Enter stock of product" 
+                                    value={this.state.stock}/>
+                            </FormGroup>
                         <FormGroup>
                             <Label for="categoryLabel">Category</Label>
                             <Input 

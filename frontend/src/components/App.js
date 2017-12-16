@@ -23,7 +23,6 @@ import UserEdit from './UserEdit.js';
 import AdminProductFrom from './AdminProductForm.js'; 
 import Product from './Product.js';
 import AdminUserForm from './AdminUserForm.js'; 
-import ShoppingCart from './ShoppingCart.js';
 import Order from './Order.js';
 
 import '../css/style.css'; 

@@ -86,6 +86,7 @@ class CategoryProducts extends Component{
                                             key={item.id} 
                                             id={item.id}
                                             name={item.name} 
+                                            quantity={item.stock}
                                             description={item.description}
                                             price={item.price} />
                             })}

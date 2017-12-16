@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {ModalFooter, ModalHeader, Modal, ModalBody, Input, Button, Table, Col} from 'reactstrap'; 
-import Loading from './Loading.js';
+import {ModalFooter, ModalHeader, Modal, ModalBody, Input, Button, Table} from 'reactstrap'; 
+// import Loading from './Loading.js';
 
 import {User} from '../classes/API/User.js';
 import {Products} from '../classes/API/Products.js'; 

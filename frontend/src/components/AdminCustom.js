@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Col, Row} from 'reactstrap'; 
 import Loading from './Loading.js';
-import UltimatePagination from 'react-ultimate-pagination-bootstrap-4';
+// import UltimatePagination from 'react-ultimate-pagination-bootstrap-4';
 import CustomCard from './CustomCard.js'; 
 
 

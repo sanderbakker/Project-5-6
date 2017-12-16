@@ -83,11 +83,13 @@ class SearchResult extends Component {
 					</Col>
 					<Col md={9}>
 						<Row>
-							{this.state.products && this.state.products.map(function(item, i){		
+							{this.state.products && this.state.products.map(function(item, i){	
+								
 								return <ProductCard 
 												key={item.id} 
 												id={item.id}
 												name={item.name} 
+												quantity={item.stock}
 												description={item.description}
 												price={item.price} />
 							})}

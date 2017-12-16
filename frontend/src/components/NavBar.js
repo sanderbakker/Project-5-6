@@ -40,7 +40,7 @@ class NavBar extends Component {
 
     loadSuggestions() {
         let input = document.getElementById('search');
-        let datalist = document.getElementById('suggestions');
+        // let datalist = document.getElementById('suggestions');
 
         if(this.state.loadingSuggestions || input.value.length < 3) 
             return;

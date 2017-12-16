@@ -5,6 +5,7 @@ import Product from './Product.js';
 import {User} from '../classes/API/User.js'; 
 
 import ShoppingCart from './ShoppingCart.js';
+import NotificationAlert from 'react-notification-alert'; 
 
 
 class ProductCard extends Component{
@@ -18,6 +19,7 @@ class ProductCard extends Component{
 
         this.User = new User();
         this.highlightItem = this.highlightItem.bind(this); 
+        this.notify = this.notify.bind(this);
       }
     
     
@@ -28,9 +30,24 @@ class ProductCard extends Component{
       }
 
     addProductToCart() {
+        this.notify("test", "success");
         this.User.addCartProduct(this.props.id);
         this.setState({showCart: true});
     }
+
+    notify(_message, _type){
+        var options = {
+            place: 'tr',
+            message: (
+                <div>
+                    {_message}
+                </div>
+            ),
+            type: _type,
+            autoDismiss: 2
+        }
+        this.refs.notify.notificationAlert(options);
+      }
     
     toggleShoppingCart() {
         this.setState({showCart: false});
@@ -47,6 +64,7 @@ class ProductCard extends Component{
     render(){
         return(
             <Col md={4}>
+                <NotificationAlert ref="notify" />
                     <Card id={this.props.id}>
                         <ShoppingCart isOpen={this.state.showCart} onHide={f => this.toggleShoppingCart()} />                        
                         <CardImg top width="100%" height='130px' src="http://via.placeholder.com/300x130" alt="Placeholder image" />   
@@ -80,9 +98,15 @@ class ProductCard extends Component{
                                 {this.props.admin ? 
                                 <AdminProductForm highlight={this.highlightItem} id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
                                 : ""}
+
+                                {this.props.quantity > 0 ? 
                                 <Button onClick={f => this.addProductToCart()} size="sm" color="success" className="float-right line-height-edit">
                                     <i className="fa fa-shopping-cart"/>
                                 </Button>
+                                : <Button onClick={() => this.notify(this.props.name + " is not in stock", "warning")} size="sm" color="success" className="float-right line-height-edit">
+                                    <i className="fa fa-shopping-cart"/>
+                                    </Button>
+                                }
                             </ButtonGroup>               
                         </CardBody>
                     </Card>

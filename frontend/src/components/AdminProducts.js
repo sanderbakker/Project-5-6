@@ -153,9 +153,11 @@ class AdminProducts extends Component {
                 </Row>
                 <Row className="margin-top-row">
                     {this.state.products && this.state.products.map((item, i) => {
+                        
                             return <ProductCard 
                                 key = {item.id}
                                 id = {item.id}
+                                quantity = {item.stock}
                                 name= {item.name}
                                 admin={true}
                                 description = {item.description}

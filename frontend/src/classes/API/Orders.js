@@ -17,7 +17,7 @@ export class Orders extends API {
         return this.get('/orders');
     }
     updateStatus(_order_id, _status) {
-        return this.put('/orders/' + _order_id + '/status' + '/' + _status);
+        return this.put('/orders/' + _order_id + '/status/' + _status);
     }
 
 }

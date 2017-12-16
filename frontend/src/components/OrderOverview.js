@@ -1,10 +1,10 @@
 import React, {Component} from 'react'; 
-import {Container, Row, Col, CardBody, Modal, ModalHeader, ModalBody} from 'reactstrap';
-import {Products} from '../classes/API/Products.js'; 
+import { CardBody, Modal, ModalHeader, ModalBody, Card, Table, Input, Button} from 'reactstrap';
+// import {Products} from '../classes/API/Products.js'; 
 import {Orders} from '../classes/API/Orders.js';
 import {User} from '../classes/API/User.js';
 
-import {Form, FormGroup, Label, Input, Button, Table, Card} from 'reactstrap'; 
+ 
 
 
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Row, Input} from 'reactstrap';
+import {Col, Row} from 'reactstrap';
 import OrderOverview from './OrderOverview.js'; 
 
 class AdminOrders extends Component {

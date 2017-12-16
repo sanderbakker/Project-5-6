@@ -1,6 +1,6 @@
 import React, {Component} from 'react'; 
-import {Container, Row, Col} from 'reactstrap';
-import {Products} from '../classes/API/Products.js'; 
+import {Container, Col} from 'reactstrap';
+// import {Products} from '../classes/API/Products.js'; 
 import {Orders} from '../classes/API/Orders.js';
 import {User} from '../classes/API/User.js';
 

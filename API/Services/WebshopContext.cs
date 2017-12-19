@@ -11,6 +11,8 @@ namespace API.Services
         public DbSet<ShoppingCart> Carts { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set;}
 
+        public DbSet<Customization> Customizations {get; set;}
+
         public WebshopContext(DbContextOptions<WebshopContext> options)
             : base(options)
         {

@@ -11,6 +11,7 @@ namespace API.Services
         public IProductRepository Products { get; private set; }
         public IShoppingCartRepository ShoppingCarts { get; set; }
         public IOrderRepository Orders { get; set; }
+        public ICustomizationRepository Customizations {get; set; }
         public UserRepository Users { get; private set; }
 
         public UnitOfWork(
@@ -25,6 +26,7 @@ namespace API.Services
             ShoppingCarts = new ShoppingCartRepository(_context);
             Orders = new OrderRepository(_context);
             Users = new UserRepository(userManager, signInManager, optionsAccessor, _context);
+            Customizations = new CustomizationRespository(_context); 
         }
 
         public int Complete()

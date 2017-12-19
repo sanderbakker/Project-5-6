@@ -217,5 +217,29 @@ namespace API.Controllers
             
             return Ok(result); 
         }
+
+        [HttpGet("customization/{index}/{size}")]
+        public IActionResult PaginatedCustomizations(int index, int size = 10){
+            var result = _unitOfWork.Customizations.GetAllPaginated(index, size);
+            if(result == null){
+                return NotFound(); 
+            }
+            return Ok(result); 
+        }
+
+        [HttpPost("customization")]
+        public IActionResult CreateCustomization([FromBody] Customization customization){
+            
+            if (customization == null)
+            {
+                return BadRequest();
+            }
+
+            _unitOfWork.Customizations.Add(customization);
+            _unitOfWork.Complete();
+
+            return Ok(); 
+        }
     }
+        
 }

@@ -130,12 +130,18 @@ namespace API.Controllers
         }
 
         [HttpPost("{productId}/images/{imageId}")]
-        public IActionResult AddImage(int productId, int imageId, [FromBody] byte[] image)
+        public IActionResult AddImage(int productId, int imageId)
         {
             var product = _unitOfWork.Products.Get(productId);
             if (product == null)
             {
                 return NotFound();
+            }
+
+            byte[] image = new byte[(int)Request.ContentLength];
+            for (int i = 0; i < Request.ContentLength; i++)
+            {
+                image[i] = (byte)Request.Body.ReadByte();
             }
 
             switch (imageId)

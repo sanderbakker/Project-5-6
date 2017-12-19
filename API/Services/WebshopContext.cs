@@ -10,7 +10,7 @@ namespace API.Services
         public DbSet<Product> Products { get; set; }
         public DbSet<ShoppingCart> Carts { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set;}
-
+        public DbSet<Auction> Auctions { get;set; }
         public DbSet<Customization> Customizations {get; set;}
 
         public WebshopContext(DbContextOptions<WebshopContext> options)

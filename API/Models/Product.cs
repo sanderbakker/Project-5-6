@@ -18,6 +18,7 @@ namespace API.Models
         public List<ShoppingCartProduct> ShoppingCarts { get; set; }
         public List<Customization> Customizations {get; set;}
         public int Stock {get; set;}
+        public bool Auction { get; set; } 
         
         [NotMapped]
         public Categories Category { get; set; }

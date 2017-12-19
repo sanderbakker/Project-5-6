@@ -246,6 +246,44 @@ namespace API.Controllers
 
             return Ok(); 
         }
+
+        [HttpPost("auction/add")]
+        public IActionResult addAuction([FromBody] Auction auction) {
+            var product = _unitOfWork.Products.Get(auction.ProductId);
+            if(product == null) {
+                return NotFound();
+            }
+
+            _unitOfWork.Auction.Add(auction);
+            _unitOfWork.Complete();            
+
+            return CreatedAtRoute("GetAuction", new { id = auction.AuctionId });
+            
+        }
+
+        [HttpGet("{id}", Name = "GetAuction")]
+        public IActionResult getAuction(int id) {
+            var auction = _unitOfWork.Auction.Get(id);
+            if(auction == null) {
+                return NotFound();
+            }
+
+            return new JsonResult(auction);
+
+        }
+
+        [HttpPost("auction/{id}/bid/add")]
+        public IActionResult addBid(int id, [FromBody] Bid bid) {
+            var auction = _unitOfWork.Auction.Get(id);
+
+            if(auction == null) {
+                return NotFound();
+            }
+
+            _unitOfWork.Bid.Add(bid);
+
+            return new JsonResult("ok"); 
+        }
     }
         
 }

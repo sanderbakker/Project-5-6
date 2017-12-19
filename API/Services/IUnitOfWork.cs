@@ -8,7 +8,8 @@ namespace API.Services
         IShoppingCartRepository ShoppingCarts { get; }
         IOrderRepository Orders { get; }
         UserRepository Users { get; }
-
+        IAuctionRepository Auction { get; }
+        IBidRepository Bid { get; }
         ICustomizationRepository Customizations {get; }
         int Complete();
     }

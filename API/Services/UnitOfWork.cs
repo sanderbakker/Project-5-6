@@ -11,6 +11,8 @@ namespace API.Services
         public IProductRepository Products { get; private set; }
         public IShoppingCartRepository ShoppingCarts { get; set; }
         public IOrderRepository Orders { get; set; }
+        public IBidRepository Bid { get;set; }
+        public IAuctionRepository Auction { get;set; }
         public ICustomizationRepository Customizations {get; set; }
         public UserRepository Users { get; private set; }
 
@@ -27,6 +29,8 @@ namespace API.Services
             Orders = new OrderRepository(_context);
             Users = new UserRepository(userManager, signInManager, optionsAccessor, _context);
             Customizations = new CustomizationRespository(_context); 
+            Auction = new AuctionRepository(_context);
+            Bid = new BidRepository(_context);
         }
 
         public int Complete()

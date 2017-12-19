@@ -11,8 +11,8 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    [Migration("20171026112140_InitialAddress")]
-    partial class InitialAddress
+    [Migration("20171213093149_AddImage")]
+    partial class AddImage
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,12 +41,6 @@ namespace API.Migrations
                     b.Property<bool>("IsAdmin");
 
                     b.Property<bool>("IsDisabled");
-
-                    b.Property<bool>("IsSeller");
-
-                    b.Property<bool>("IsSupport");
-
-                    b.Property<bool>("IsVerified");
 
                     b.Property<string>("LastName");
 
@@ -85,19 +79,125 @@ namespace API.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("API.Models.Customization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("AddedAt");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name");
+
+                    b.Property<float>("Price");
+
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Customization");
+                });
+
+            modelBuilder.Entity("API.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("PaymentProviderString")
+                        .HasColumnName("PaymentProvider");
+
+                    b.Property<string>("ShippingProviderString")
+                        .HasColumnName("ShippingProvider");
+
+                    b.Property<string>("StatusString")
+                        .HasColumnName("Status");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<float>("totalPrice");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("API.Models.OrderProduct", b =>
+                {
+                    b.Property<int>("OrderId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("OrderId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProducts");
+                });
+
             modelBuilder.Entity("API.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("AddedAt");
+
                     b.Property<string>("CategoryString")
                         .HasColumnName("Category");
 
+                    b.Property<string>("Description");
+
+                    b.Property<byte[]>("Image1");
+
+                    b.Property<byte[]>("Image2");
+
+                    b.Property<byte[]>("Image3");
+
                     b.Property<string>("Name");
+
+                    b.Property<float>("Price");
+
+                    b.Property<int>("Stock");
 
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
+                {
+                    b.Property<int>("ShoppingCartId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("ShoppingCartId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCartProduct");
                 });
 
             modelBuilder.Entity("API.Models.UserAddress", b =>
@@ -227,6 +327,54 @@ namespace API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("API.Models.Customization", b =>
+                {
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("Customizations")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("API.Models.Order", b =>
+                {
+                    b.HasOne("API.Models.ApplicationUser", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("API.Models.OrderProduct", b =>
+                {
+                    b.HasOne("API.Models.Order", "Order")
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("API.Models.ApplicationUser", "User")
+                        .WithOne("ShoppingCart")
+                        .HasForeignKey("API.Models.ShoppingCart", "UserId");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
+                {
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("ShoppingCarts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany("Products")
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("API.Models.UserAddress", b =>

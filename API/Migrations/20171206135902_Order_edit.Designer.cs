@@ -11,8 +11,8 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    [Migration("20171013155446_CustomIdentityUser")]
-    partial class CustomIdentityUser
+    [Migration("20171206135902_Order_edit")]
+    partial class Order_edit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,12 +41,6 @@ namespace API.Migrations
                     b.Property<bool>("IsAdmin");
 
                     b.Property<bool>("IsDisabled");
-
-                    b.Property<bool>("IsSeller");
-
-                    b.Property<bool>("IsSupport");
-
-                    b.Property<bool>("IsVerified");
 
                     b.Property<string>("LastName");
 
@@ -85,56 +79,44 @@ namespace API.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("API.Models.Country", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CountryCode");
-
-                    b.Property<string>("CountryName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Country");
-                });
-
             modelBuilder.Entity("API.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("UserAddressId");
+                    b.Property<string>("PaymentProviderString")
+                        .HasColumnName("PaymentProvider");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("ShippingProviderString")
+                        .HasColumnName("ShippingProvider");
 
-                    b.Property<string>("UserId1");
+                    b.Property<string>("StatusString")
+                        .HasColumnName("Status");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserId");
 
-                    b.HasIndex("UserAddressId");
+                    b.Property<float>("totalPrice");
 
-                    b.HasIndex("UserId1");
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
 
-            modelBuilder.Entity("API.Models.OrderStatus", b =>
+            modelBuilder.Entity("API.Models.OrderProduct", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
-
                     b.Property<int>("OrderId");
 
-                    b.Property<int>("StatusId");
+                    b.Property<int>("ProductId");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Quantity");
 
-                    b.HasIndex("OrderId");
+                    b.HasKey("OrderId", "ProductId");
 
-                    b.ToTable("OrderStatus");
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProduct");
                 });
 
             modelBuilder.Entity("API.Models.Product", b =>
@@ -142,11 +124,50 @@ namespace API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("AddedAt");
+
+                    b.Property<string>("CategoryString")
+                        .HasColumnName("Category");
+
+                    b.Property<string>("Description");
+
                     b.Property<string>("Name");
+
+                    b.Property<float>("Price");
 
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
+                {
+                    b.Property<int>("ShoppingCartId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("ShoppingCartId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCartProduct");
                 });
 
             modelBuilder.Entity("API.Models.UserAddress", b =>
@@ -154,44 +175,21 @@ namespace API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CountryId");
+                    b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("Number");
+                    b.Property<string>("City");
 
                     b.Property<string>("Street");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("StreetNumber");
 
-                    b.Property<string>("UserId1");
-
-                    b.Property<string>("zipCode");
+                    b.Property<string>("ZipCode");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId1");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("UserAddress");
-                });
-
-            modelBuilder.Entity("API.Models.Wishlist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("UserId1");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("Wishlist");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -303,41 +301,49 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Order", b =>
                 {
-                    b.HasOne("API.Models.UserAddress", "UserAddress")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserAddressId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("API.Models.ApplicationUser", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("API.Models.OrderStatus", b =>
+            modelBuilder.Entity("API.Models.OrderProduct", b =>
                 {
                     b.HasOne("API.Models.Order", "Order")
-                        .WithMany("OrderStatus")
+                        .WithMany("Products")
                         .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("API.Models.ApplicationUser", "User")
+                        .WithOne("ShoppingCart")
+                        .HasForeignKey("API.Models.ShoppingCart", "UserId");
+                });
+
+            modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
+                {
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("ShoppingCarts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany("Products")
+                        .HasForeignKey("ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("API.Models.UserAddress", b =>
                 {
-                    b.HasOne("API.Models.Country", "Country")
-                        .WithOne("Address")
-                        .HasForeignKey("API.Models.UserAddress", "CountryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.ApplicationUser", "User")
-                        .WithMany("Address")
-                        .HasForeignKey("UserId1");
-                });
-
-            modelBuilder.Entity("API.Models.Wishlist", b =>
-                {
-                    b.HasOne("API.Models.ApplicationUser", "User")
-                        .WithMany("Whislists")
-                        .HasForeignKey("UserId1");
+                    b.HasOne("API.Models.ApplicationUser")
+                        .WithMany("Addresses")
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

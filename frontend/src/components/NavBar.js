@@ -3,8 +3,9 @@ import React, {Component} from 'react';
 import { Collapse, Navbar, NavbarToggler, Nav, NavItem, Button, Form, FormGroup, Input } from 'reactstrap';
 import {NavLink} from 'react-router-dom'; 
 import logo from '../assets/logo-white.png'; 
-
-
+import {Products} from '../classes/API/Products.js';  
+import jwt_decode from 'jwt-decode'; 
+import ShoppingCart from './ShoppingCart.js';
 
 
 class NavBar extends Component {
@@ -14,8 +15,21 @@ class NavBar extends Component {
         this.admin = this.props.admin; 
         this.toggle = this.toggle.bind(this);
         this.state = {
-          isOpen: false
+          isOpen: false,
+          SCisOpen: false,
+          loadingSuggestions: false
         }; 
+        this.products = new Products();
+    }
+
+    componentDidMount() {
+        if(this.loggedIn){
+        }
+        this.products.getCategories().then(
+            (val) => {
+                this.setState({categories: val}); 
+            }
+        );         
     }
     
     toggle() {
@@ -23,10 +37,42 @@ class NavBar extends Component {
           isOpen: !this.state.isOpen
         });
     }
+
+    loadSuggestions() {
+        let input = document.getElementById('search');
+        // let datalist = document.getElementById('suggestions');
+
+        if(this.state.loadingSuggestions || input.value.length < 3) 
+            return;
+
+        this.setState({loadingSuggestions: true});
+
+        this.products.searchProducts(input.value).then(
+            (result) => {
+                this.setState({suggestionProducts: null})
+                this.setState({loadingSuggestions: false, suggestionProducts: result});
+            }
+        );
+    }
+
+    toggleShoppingCart() {
+        this.setState({
+            SCisOpen: !this.state.SCisOpen
+        });
+    }
+
+    handleSearchForm(e) {
+        e.preventDefault();
+        var searchString = (document.getElementById("search").value);
+        window.location.replace("/search/" + searchString);
+    }
     
     render(){
         return(
             <div>
+                {this.loggedIn ?
+                <ShoppingCart isOpen={this.state.SCisOpen} onHide={f => this.toggleShoppingCart()} />
+                : null }
                 <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'/>
                 <Navbar color="faded" light expand="md">
                     <NavLink className='navbar-brand' exact to='/'>
@@ -42,20 +88,41 @@ class NavBar extends Component {
                             </NavItem>
                         </Nav>
                         <Nav className='mx-auto' navbar>
-                            <Form inline>
+                            <Form onSubmit={this.handleSearchForm} action="" method="get" inline>
                                 <FormGroup>
-                                    <Input size='sm' type="text" name="search" placeholder="Search" />
+                                    <Input onChange={f => this.loadSuggestions()} size='sm' type="text" id="search" name="search" placeholder="Search" list="suggestions" />
+                                        <datalist id="suggestions">                                    
+                                        {this.state.categories && this.state.categories.map(function(item, i){  
+                                                return <option key={item} value={item} />
+                                        })}
+
+                                        {this.state.suggestionProducts && this.state.suggestionProducts.map(function(item, i){
+                                                if(i === 10)
+                                                    return "";
+
+                                                return <option key={item.name} value={item.name} />
+                                        })}
+                                        </datalist> 
                                 </FormGroup>
                                 <Button size='sm'><i className='fa fa-search'></i></Button>
                             </Form>
                         </Nav>
                         <Nav className="ml-auto" navbar>
-                        
+                        {(this.loggedIn) ?
                             <NavItem>
-                                <NavLink className='nav-link' exact to='/cart'>
-                                    <i className='fa fa-shopping-cart'></i>
-                                </NavLink>
+                                <div className="nav-link">
+                                Welcome, {jwt_decode(sessionStorage.getItem('id_token'))['email']}
+                                </div>
                             </NavItem>
+                            : ""
+                            }
+                            {(this.loggedIn) ? 
+                            <NavItem>
+                                <span className='nav-link'>
+                                    <i className='fa fa-shopping-cart' onClick={f => this.toggleShoppingCart()} ></i>
+                                </span>
+                            </NavItem>
+                            : null}
                             {(this.admin) ?
                             <NavItem>
                                 <NavLink className='nav-link' exact to='/admin'>
@@ -85,7 +152,9 @@ class NavBar extends Component {
                                     <i className='fa fa-sign-in'></i>
                                 </NavLink>
                             </NavItem>
+                            
                             }
+                            
                         </Nav>
                     </Collapse>
                 </Navbar>

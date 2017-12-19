@@ -58,12 +58,9 @@ class UserAddress extends Component{
                     }
                 )
             }
-            else if(this.props.action === 'edit'){
-                console.log(this.props.match.params.id);
-                
+            else if(this.props.action === 'edit'){                
                 this.user.update_user_address(this.id, this.state.city, this.state.street, this.state.streetNumber, this.state.zipcode, this.props.match.params.id).then(
                     (val) => {
-                        console.log(val);
                         if(val.ok && val.status === 200){
                             this.setState({visible: true});
                         }

@@ -37,6 +37,11 @@ namespace API.Services
             var user = await _userManager.FindByIdAsync(id);
             return await _userManager.AddToRoleAsync(user, "Administrator");
         }
+        public async Task<IdentityResult> DisableAdmin(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            return await _userManager.RemoveFromRoleAsync(user, "Administrator"); 
+        }
         
         public async Task<IActionResult> Register(Credentials Credentials)
         {
@@ -63,6 +68,10 @@ namespace API.Services
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(Credentials.Email);
+                if (user.IsDisabled)
+                {
+                    return new JsonResult("Unable to sign in") { StatusCode = 401 };
+                }
                 return new JsonResult(new Dictionary<string, object>
                     {
                         // setup token for signed in user
@@ -148,6 +157,7 @@ namespace API.Services
             // include lists in ApplicationUser to eagerly load them
             return await _userManager.Users
                 .Include(u => u.Addresses)
+                .Include(u => u.Orders)
                 .Where(u => u.Id == id)
                 .FirstOrDefaultAsync();
         }
@@ -160,10 +170,15 @@ namespace API.Services
         public IEnumerable<ApplicationUser> GetAllPaginated(int pageIndex, int pageSize = 10)
         {
             return _userManager.Users
-                .OrderBy(p => p.UserName)
+                .OrderBy(p => p.Email)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
+        }
+
+        public int GetAmount()
+        {
+            return _userManager.Users.Count();
         }
     }
 }

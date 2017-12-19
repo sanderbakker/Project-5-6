@@ -1,4 +1,6 @@
 import {API} from './API.js';
+import jwt_decode from 'jwt-decode'; 
+
 
 class User extends API{
     user_data(_id){
@@ -37,5 +39,59 @@ class User extends API{
             "zipCode": _zipcode
         })
     }
+
+    getAmountOfUsers(){
+        return this.get('/account/users/amount'); 
+    }
+    
+    getUsersPaginated(_page){
+        return this.get('/account/users/withpagination/' + _page + '/10'); 
+    }
+
+    getCart() {
+        return this.get('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart');
+    }
+
+	addCartProduct(_product_id) {
+        return this.post('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _product_id);
+    }
+    
+    updateCartProduct(_product_id, _quantity) {
+        return this.put('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _product_id + '/' + _quantity);
+    }
+
+    deleteCartProduct(_product_id) {
+        return this.delete('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _product_id); 
+    }
+
+    cartToOrder(_data_array) {
+        return this.post('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/orders/add', _data_array);
+    }
+    
+    adminifyUser(_user_id){
+        return this.post('/account/users/adminify/' + _user_id); 
+    }
+
+    disableUser(_user_id){
+        return this.post('/account/users/delete/' + _user_id); 
+    }
+    
+    disableAdmin(_user_id){
+        return this.post('/account/users/adminify/disable/' + _user_id);
+    }
+    
+    enableUser(_user_id){
+        return this.post('/account/users/enable/' + _user_id); 
+    }
+
+    getOrders() {
+        return this.get('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/orders');
+    }
+
+    getOrder(_order_id) {
+        return this.get('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/order/' + _order_id);
+    }
+
+    
 }
 export {User}; 

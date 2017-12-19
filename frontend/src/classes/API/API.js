@@ -5,10 +5,13 @@
 
 class API {
 	constructor() {
-		this.API_url = 'http://grwn.ddns.net:5000/api'
+		this.API_url = 'http://localhost:5000/api'
 		
 	} 
 
+	getApiUrl() {
+		return this.API_url;
+	}
 	
 
 	/**
@@ -28,8 +31,12 @@ class API {
 			},
 			body: JSON.stringify(_data)
 		})
-		
-		return response.json();
+
+		try {
+			return response.json();			
+		} catch (e) {
+			return null;			
+		}
 	}
 
 	async put(_endpoint, _data){

@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import {User} from '../classes/API/User.js'; 
 import logo from '../assets/logo.png'; 
 import UserAddressCard from './UserAddressCard.js'; 
+import OrderOverview from './OrderOverview.js';
 
 class Profile extends Component {
     constructor(props){
@@ -114,7 +115,13 @@ class Profile extends Component {
                                     </Row>
                                 </CardBody>
                             </Card>
-                        </Col>
+                            <Row>
+                             <Col md={12}>
+                             <h2>Order overview</h2>
+                                 <OrderOverview />
+                             </Col>
+                            </Row>                             
+                        </Col>                       
                     </Row>
                 </Container>
             </div>

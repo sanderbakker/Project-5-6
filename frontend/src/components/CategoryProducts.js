@@ -10,7 +10,8 @@ class CategoryProducts extends Component{
         this.state = {
             page: 1,
             fetching: true, 
-            products: null
+            products: null, 
+            category: this.props.match.params.category.charAt(0).toUpperCase() + this.props.match.params.category.slice(1)
           };
         this.products = new Products(); 
         this.calculateNumberOfPages = this.calculateNumberOfPages.bind(this);
@@ -18,7 +19,7 @@ class CategoryProducts extends Component{
     }
 
     componentDidMount(){
-        this.products.getProductsInCategory(this.props.name).then(
+        this.products.getProductsInCategory(this.state.category).then(
             (val) => {
                 this.calculateNumberOfPages(val.length); 
             }
@@ -27,26 +28,25 @@ class CategoryProducts extends Component{
 
     calculateNumberOfPages(_total_amount_products){
         this.setState({total: Math.ceil(_total_amount_products/9)}, () => {
-            this.products.getProductsByCategoryPaginated(this.props.name, 1).then(
+            this.products.getProductsByCategoryPaginated(this.state.category, 1).then(
                 (val) => this.setState({products: val,  fetching: false}) 
             )
         });  
     }
     onPageChange(page) {
-        this.products.getProductsByCategoryPaginated(this.props.name, page).then(
+        this.products.getProductsByCategoryPaginated(this.state.category, page).then(
             (val) => this.setState({page: page, products: val})
         )
       }
 
     render(){
         if(this.state.fetching){
-            console.log(this.state.fetching, this.state.products); 
             return (
                 
                 <Container className='content-container'> 
                 <Row>
                     <Col md={12}>
-                        <h4 className="mb-0">{this.props.name}</h4>
+                        <h4 className="mb-0">{this.state.category}</h4>
                         <hr></hr>
                     </Col>
                 </Row>
@@ -62,12 +62,11 @@ class CategoryProducts extends Component{
                             </Container>
             )
         }
-        console.log(this.state.fetching, this.state.products); 
         return(
             <Container className='content-container'> 
                 <Row>
                     <Col md={12}>
-                        <h4 className="mb-0">{this.props.name}</h4>
+                        <h4 className="mb-0">{this.state.category}</h4>
                         <hr></hr>
                     </Col>
                 </Row>
@@ -87,6 +86,7 @@ class CategoryProducts extends Component{
                                             key={item.id} 
                                             id={item.id}
                                             name={item.name} 
+                                            quantity={item.stock}
                                             description={item.description}
                                             price={item.price} />
                             })}

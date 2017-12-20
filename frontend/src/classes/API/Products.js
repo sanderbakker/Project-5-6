@@ -73,14 +73,13 @@ export class Products extends API {
 		data.append("data", _image);
 		
 		var url = this.getApiUrl();
-		return fetch(url + "/products/" + _id + "/image", {
+		return fetch(url + "/products/" + _id + "/images/1", {
   			mode: "no-cors",			
 		      method: "POST",
 		      headers: {
 		        "Accept": "application/json",
-		        "type": "formData"
 		      },
-		      body: data
+		      body: _image
 		}).then(function(res) {
 			return
 		});

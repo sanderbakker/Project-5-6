@@ -38,7 +38,7 @@ class AdminCustom extends Component{
                             this.setState({customizations: val, fetching: false}) 
                         }
                     else{
-                        this.setState({customizations: null, fetching: false})
+                        this.setState({customizations: null, fetching: false, total: 1})
                     }
                 } 
             )

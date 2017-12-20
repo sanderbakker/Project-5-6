@@ -49,7 +49,9 @@ class Product extends Component {
                         <ModalBody>
                             <Row>
                                 <Col md={6}>
-                                    <ProductCarousel/>
+                                    <ProductCarousel
+                                        id={this.props.id}
+                                    />
                                 </Col>
                                 <Col md={6}>
                                     <p className="font-md"><b>€ {this.state.currentProduct.price.toLocaleString(

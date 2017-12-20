@@ -88,6 +88,7 @@ class CategoryProducts extends Component{
                                             name={item.name} 
                                             quantity={item.stock}
                                             description={item.description}
+                                            image1={item.image1}
                                             price={item.price} />
                             })}
                         </Row>

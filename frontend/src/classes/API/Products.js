@@ -68,12 +68,12 @@ export class Products extends API {
 		return this.get('/products/search/' + _search_string + '/' + _page + '/9'); 
 	}
 
-	addImage(_id, _image) {
+	addImage(_id, _image, _number) {
 		var data = new FormData();
 		data.append("data", _image);
 		
 		var url = this.getApiUrl();
-		return fetch(url + "/products/" + _id + "/images/1", {
+		return fetch(url + "/products/" + _id + "/images/" + (_number + 1), {
   			mode: "no-cors",			
 		      method: "POST",
 		      headers: {

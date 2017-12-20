@@ -19,9 +19,7 @@ class ProductCard extends Component{
 
         this.User = new User();
         this.highlightItem = this.highlightItem.bind(this); 
-        this.notify = this.notify.bind(this);
-        console.log(this.props.image1);
-        
+        this.notify = this.notify.bind(this);    
     }
     
     

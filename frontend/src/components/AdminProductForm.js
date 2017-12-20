@@ -84,8 +84,9 @@ class AdminProductForm extends Component {
             }
 
             if(this.state.images && this.props.id) {
-                for (var i = 0; i < this.state.images.length; i++) {
-                    this.product.addImage(this.props.id, this.state.images[i]);
+                for (var i = 0; i < 3; i++) {
+                    this.product.addImage(this.props.id, this.state.images[i], i);
+                    console.log(i); 
                 }
             }
 

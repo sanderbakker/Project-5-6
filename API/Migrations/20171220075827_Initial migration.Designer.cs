@@ -11,8 +11,8 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    [Migration("20171213093149_AddImage")]
-    partial class AddImage
+    [Migration("20171220075827_Initial migration")]
+    partial class Initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,6 +79,42 @@ namespace API.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("API.Models.Auction", b =>
+                {
+                    b.Property<int>("AuctionId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<float>("startingPrice");
+
+                    b.HasKey("AuctionId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Auctions");
+                });
+
+            modelBuilder.Entity("API.Models.Bid", b =>
+                {
+                    b.Property<int>("BidId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("AuctionId");
+
+                    b.Property<float>("Price");
+
+                    b.Property<DateTime>("Time");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("BidId");
+
+                    b.HasIndex("AuctionId");
+
+                    b.ToTable("Bid");
+                });
+
             modelBuilder.Entity("API.Models.Customization", b =>
                 {
                     b.Property<int>("Id")
@@ -92,13 +128,24 @@ namespace API.Migrations
 
                     b.Property<float>("Price");
 
+                    b.HasKey("Id");
+
+                    b.ToTable("Customization");
+                });
+
+            modelBuilder.Entity("API.Models.CustomizationProduct", b =>
+                {
+                    b.Property<int>("CustomizationId");
+
                     b.Property<int>("ProductId");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Id");
+
+                    b.HasKey("CustomizationId", "ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Customization");
+                    b.ToTable("CustomizationProducts");
                 });
 
             modelBuilder.Entity("API.Models.Order", b =>
@@ -147,6 +194,8 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("AddedAt");
+
+                    b.Property<bool>("Auction");
 
                     b.Property<string>("CategoryString")
                         .HasColumnName("Category");
@@ -329,8 +378,28 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("API.Models.Customization", b =>
+            modelBuilder.Entity("API.Models.Auction", b =>
                 {
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("API.Models.Bid", b =>
+                {
+                    b.HasOne("API.Models.Auction")
+                        .WithMany("Biddings")
+                        .HasForeignKey("AuctionId");
+                });
+
+            modelBuilder.Entity("API.Models.CustomizationProduct", b =>
+                {
+                    b.HasOne("API.Models.Customization", "Customization")
+                        .WithMany("Products")
+                        .HasForeignKey("CustomizationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("API.Models.Product", "Product")
                         .WithMany("Customizations")
                         .HasForeignKey("ProductId")

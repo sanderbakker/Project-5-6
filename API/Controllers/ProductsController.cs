@@ -226,11 +226,12 @@ namespace API.Controllers
 
         [HttpGet("customization/{index}/{size}")]
         public IActionResult PaginatedCustomizations(int index, int size = 10){
-            var result = _unitOfWork.Customizations.GetAllPaginated(index, size);
-            if(result == null){
-                return NotFound(); 
-            }
-            return Ok(result); 
+            // var result = _unitOfWork.Customizations.GetAllPaginated(index, size);
+            // if(result == null){
+            //     return NotFound(); 
+            // }
+            // return Ok(result); 
+            return Ok(); 
         }
 
         [HttpPost("customization")]
@@ -261,7 +262,7 @@ namespace API.Controllers
             
         }
 
-        [HttpGet("{id}", Name = "GetAuction")]
+        [HttpGet("auction/{id}", Name = "GetAuction")]
         public IActionResult getAuction(int id) {
             var auction = _unitOfWork.Auction.Get(id);
             if(auction == null) {

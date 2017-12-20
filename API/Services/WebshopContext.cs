@@ -11,7 +11,7 @@ namespace API.Services
         public DbSet<ShoppingCart> Carts { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set;}
         public DbSet<Auction> Auctions { get;set; }
-        public DbSet<Customization> Customizations {get; set;}
+        public DbSet<CustomizationProduct> CustomizationProducts {get; set;}
 
         public WebshopContext(DbContextOptions<WebshopContext> options)
             : base(options)
@@ -28,6 +28,19 @@ namespace API.Services
 
             modelBuilder.Entity<OrderProduct>()
                 .HasKey(o => new { o.OrderId, o.ProductId});
+
+            modelBuilder.Entity<CustomizationProduct>()
+                .HasKey(c => new {c.CustomizationId, c.ProductId}); 
+
+            modelBuilder.Entity<CustomizationProduct>()
+                .HasOne(c => c.Product)
+                .WithMany(c => c.Customizations)
+                .HasForeignKey(p => p.ProductId);
+            
+            modelBuilder.Entity<CustomizationProduct>()
+                .HasOne(c => c.Customization)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CustomizationId); 
             
             modelBuilder.Entity<OrderProduct>()
                 .HasOne(o => o.Product)

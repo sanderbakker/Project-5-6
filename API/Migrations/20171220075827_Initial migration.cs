@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace API.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,16 +53,37 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Customization",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int4", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    AddedAt = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Price = table.Column<float>(type: "float4", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customization", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int4", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     AddedAt = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    Auction = table.Column<bool>(type: "bool", nullable: false),
                     Category = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
+                    Image1 = table.Column<byte[]>(type: "bytea", nullable: true),
+                    Image2 = table.Column<byte[]>(type: "bytea", nullable: true),
+                    Image3 = table.Column<byte[]>(type: "bytea", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    Price = table.Column<float>(type: "float4", nullable: false)
+                    Price = table.Column<float>(type: "float4", nullable: false),
+                    Stock = table.Column<int>(type: "int4", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -200,8 +221,11 @@ namespace API.Migrations
                 {
                     OrderId = table.Column<int>(type: "int4", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    PaymentProvider = table.Column<string>(type: "text", nullable: true),
+                    ShippingProvider = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    totalPrice = table.Column<float>(type: "float4", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -238,6 +262,51 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Auctions",
+                columns: table => new
+                {
+                    AuctionId = table.Column<int>(type: "int4", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    ProductId = table.Column<int>(type: "int4", nullable: false),
+                    startingPrice = table.Column<float>(type: "float4", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Auctions", x => x.AuctionId);
+                    table.ForeignKey(
+                        name: "FK_Auctions_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomizationProducts",
+                columns: table => new
+                {
+                    CustomizationId = table.Column<int>(type: "int4", nullable: false),
+                    ProductId = table.Column<int>(type: "int4", nullable: false),
+                    Id = table.Column<int>(type: "int4", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomizationProducts", x => new { x.CustomizationId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_CustomizationProducts_Customization_CustomizationId",
+                        column: x => x.CustomizationId,
+                        principalTable: "Customization",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CustomizationProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShoppingCartProduct",
                 columns: table => new
                 {
@@ -263,7 +332,7 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderProduct",
+                name: "OrderProducts",
                 columns: table => new
                 {
                     OrderId = table.Column<int>(type: "int4", nullable: false),
@@ -272,19 +341,41 @@ namespace API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderProduct", x => new { x.OrderId, x.ProductId });
+                    table.PrimaryKey("PK_OrderProducts", x => new { x.OrderId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_OrderProduct_Order_OrderId",
+                        name: "FK_OrderProducts_Order_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Order",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderProduct_Products_ProductId",
+                        name: "FK_OrderProducts_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bid",
+                columns: table => new
+                {
+                    BidId = table.Column<int>(type: "int4", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    AuctionId = table.Column<int>(type: "int4", nullable: true),
+                    Price = table.Column<float>(type: "float4", nullable: false),
+                    Time = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bid", x => x.BidId);
+                    table.ForeignKey(
+                        name: "FK_Bid_Auctions_AuctionId",
+                        column: x => x.AuctionId,
+                        principalTable: "Auctions",
+                        principalColumn: "AuctionId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -325,10 +416,25 @@ namespace API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Auctions_ProductId",
+                table: "Auctions",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bid_AuctionId",
+                table: "Bid",
+                column: "AuctionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Carts_UserId",
                 table: "Carts",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomizationProducts_ProductId",
+                table: "CustomizationProducts",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_UserId",
@@ -336,8 +442,8 @@ namespace API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderProduct_ProductId",
-                table: "OrderProduct",
+                name: "IX_OrderProducts_ProductId",
+                table: "OrderProducts",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -369,7 +475,13 @@ namespace API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "OrderProduct");
+                name: "Bid");
+
+            migrationBuilder.DropTable(
+                name: "CustomizationProducts");
+
+            migrationBuilder.DropTable(
+                name: "OrderProducts");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCartProduct");
@@ -381,13 +493,19 @@ namespace API.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Auctions");
+
+            migrationBuilder.DropTable(
+                name: "Customization");
+
+            migrationBuilder.DropTable(
                 name: "Order");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "Carts");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -224,14 +224,57 @@ namespace API.Controllers
             return Ok(result); 
         }
 
-        [HttpGet("customization/{index}/{size}")]
-        public IActionResult PaginatedCustomizations(int index, int size = 10){
-            // var result = _unitOfWork.Customizations.GetAllPaginated(index, size);
-            // if(result == null){
-            //     return NotFound(); 
-            // }
-            // return Ok(result); 
+        [HttpPost("customization/{productId}/{customizationId}")]
+        public IActionResult AddCustomizationToProduct(int productId, int customizationId){
+            var customization = _unitOfWork.Customizations.Get(customizationId);
+            var product = _unitOfWork.Products.Get(productId); 
+            
+            if(customization == null || product == null){
+                return NotFound(); 
+            }
+            
+            var customProduct = new CustomizationProduct {
+                Customization = customization,
+                CustomizationId = customizationId,
+                Product = product, 
+                ProductId = productId
+            }; 
+            if(product.Customizations == null)
+            {
+                product.Customizations = new List<CustomizationProduct>();                 
+            }            
+
+            product.Customizations.Add(customProduct);
+
+            if(customization.Products == null){
+                customization.Products = new List<CustomizationProduct>();
+            }
+            
+            customization.Products.Add(customProduct);
+
+            
+            _unitOfWork.Complete(); 
+            
             return Ok(); 
+        }
+
+        [HttpGet("customizations/{productId}")]
+        public IActionResult GetCustomizationsForProduct(int productId){
+            var result = new List<object>(); 
+            
+            var customizationProducts = _unitOfWork.Customizations.GetWithCustomizations(productId); 
+            
+            if(customizationProducts == null)
+            {
+                return NotFound(); 
+            }
+            
+            foreach (var productCustomization in customizationProducts)
+            {
+                result.Add(productCustomization); 
+            }
+            
+            return Ok(result); 
         }
 
         [HttpPost("customization")]
@@ -244,6 +287,23 @@ namespace API.Controllers
 
             _unitOfWork.Customizations.Add(customization);
             _unitOfWork.Complete();
+
+            return Ok(); 
+        }
+
+        [HttpPut("customization/{id}")]
+        public IActionResult UpdateCustomization(int customzationId, [FromBody] Customization item)
+        {
+            var customization = _unitOfWork.Customizations.Get(customzationId);
+            
+            if(customization == null)
+            {
+                return NotFound(); 
+            }
+            
+            customization.Description = item.Description; 
+            customization.Name = item.Name; 
+            customization.Price = item.Price; 
 
             return Ok(); 
         }

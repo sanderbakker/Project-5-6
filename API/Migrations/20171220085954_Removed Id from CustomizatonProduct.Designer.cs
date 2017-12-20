@@ -11,9 +11,10 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    partial class WebshopContextModelSnapshot : ModelSnapshot
+    [Migration("20171220085954_Removed Id from CustomizatonProduct")]
+    partial class RemovedIdfromCustomizatonProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

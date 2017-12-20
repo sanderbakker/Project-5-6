@@ -13,15 +13,17 @@ namespace API.Services
         {
 
         }
-        public IEnumerable<Customization> GetAllPaginated(int pageIndex, int pageSize){
-            return WebshopContext.Customizations
-                .Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize)
-                .ToList(); 
-        }
         public WebshopContext WebshopContext
         {
             get { return _context as WebshopContext; }
+        }
+
+        public IQueryable GetWithCustomizations(int productId)
+        {
+            return (from cP in WebshopContext.CustomizationProducts
+                    join c in WebshopContext.Customization on cP.CustomizationId equals c.Id
+                    where cP.ProductId == productId
+                    select new { id = c.Id, name = c.Name, price = c.Price, description = c.Description});
         }
     }
 }

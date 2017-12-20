@@ -1,4 +1,4 @@
-import React, {Component} from 'react'; 
+import React, {Component, Image} from 'react'; 
 import {Card, Col, CardBody, CardImg, CardSubtitle, CardText, Button, ButtonGroup} from 'reactstrap'; 
 import AdminProductForm from './AdminProductForm.js'; 
 import Product from './Product.js'; 
@@ -14,13 +14,15 @@ class ProductCard extends Component{
     
         this.toggle = this.toggle.bind(this);
         this.state = {
-          dropdownOpen: false
+          dropdownOpen: false,
         };
 
         this.User = new User();
         this.highlightItem = this.highlightItem.bind(this); 
         this.notify = this.notify.bind(this);
-      }
+        console.log(this.props.image1);
+        
+    }
     
     
       toggle() {
@@ -67,7 +69,7 @@ class ProductCard extends Component{
                 <NotificationAlert ref="notify" />
                     <Card id={this.props.id}>
                         <ShoppingCart isOpen={this.state.showCart} onHide={f => this.toggleShoppingCart()} />                        
-                        <CardImg top width="100%" height='130px' src="http://via.placeholder.com/300x130" alt="Placeholder image" />   
+                        <CardImg top width="100%" height='130px' src={"data:image/jpg;base64," + this.props.image1} alt="Placeholder image" /> 
                         <CardBody>
                             <CardSubtitle><b>{this.props.name}</b>
                             </CardSubtitle>

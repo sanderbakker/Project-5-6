@@ -85,4 +85,36 @@ export class Products extends API {
 			return
 		});
 	}	
+	getCustomizations(_page) {
+		return this.get('/products/customization/' + _page + '/9'); 
+	}
+
+	getAmountCustomizations(){
+		return this.get('/products/customizations/amount'); 
+	}
+
+	addCustomization(_price, _description, _name){
+		return this.post('/products/customization', 
+			{
+				"name": _name,
+				"price": _price,
+				"description": _description,
+				"addedAt": new Date()
+			}
+		)
+	}
+	getCustomization(_id){
+		return this.get('/products/customization/' + _id);
+	}
+
+	updateCustomization(_id, _name, _price, _description){
+		return this.put('/products/customization/' + _id, 
+			{
+				"name": _name,
+				"price": _price,
+				"description": _description,
+				"id": _id
+			}
+		)
+	}
 }

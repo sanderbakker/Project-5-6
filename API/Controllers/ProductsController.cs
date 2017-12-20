@@ -291,10 +291,16 @@ namespace API.Controllers
             return Ok(); 
         }
 
+        [HttpGet("customization/{index}/{size}")]
+        public IActionResult PaginatedCustomizations(int index, int size = 10){
+            var result = _unitOfWork.Customizations.GetAllPaginated(index, size);
+            return new ObjectResult(result); 
+        }
+
         [HttpPut("customization/{id}")]
-        public IActionResult UpdateCustomization(int customzationId, [FromBody] Customization item)
+        public IActionResult UpdateCustomization(int id, [FromBody] Customization item)
         {
-            var customization = _unitOfWork.Customizations.Get(customzationId);
+            var customization = _unitOfWork.Customizations.Get(id);
             
             if(customization == null)
             {
@@ -304,7 +310,9 @@ namespace API.Controllers
             customization.Description = item.Description; 
             customization.Name = item.Name; 
             customization.Price = item.Price; 
-
+            
+            _unitOfWork.Complete(); 
+            
             return Ok(); 
         }
 
@@ -344,6 +352,23 @@ namespace API.Controllers
             _unitOfWork.Bid.Add(bid);
 
             return new JsonResult("ok"); 
+        }
+
+        [HttpGet("customizations/amount")]
+        public IActionResult CountCustomizations(){
+            return Ok(_unitOfWork.Customizations.Amount()); 
+        }
+
+        [HttpGet("customization/{id}")]
+        public IActionResult GetCustomization(int id){
+            var result = _unitOfWork.Customizations.Get(id);
+            
+            if(result == null)
+            { 
+                return NotFound(); 
+            }
+
+            return Ok(result);
         }
     }
         

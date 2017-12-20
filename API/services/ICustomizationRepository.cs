@@ -8,6 +8,9 @@ namespace API.Services
 {
     public interface ICustomizationRepository : IRepository<Customization>
     {
-        IQueryable GetWithCustomizations(int productId);    
+        IQueryable GetWithCustomizations(int productId); 
+        IEnumerable<Customization> GetAllPaginated(int index, int size);
+
+        int Amount();    
     }
 }

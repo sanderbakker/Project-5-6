@@ -25,5 +25,16 @@ namespace API.Services
                     where cP.ProductId == productId
                     select new { id = c.Id, name = c.Name, price = c.Price, description = c.Description});
         }
+
+        public IEnumerable<Customization> GetAllPaginated(int index, int size){
+            return WebshopContext.Customization
+                .OrderBy(c => c.Name)
+                .Skip((index - 1) * size)
+                .Take(size)
+                .ToList();
+        }
+        public int Amount(){
+            return WebshopContext.Customization.Count(); 
+        }
     }
 }

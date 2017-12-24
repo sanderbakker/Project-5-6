@@ -36,5 +36,29 @@ namespace API.Services
         public int Amount(){
             return WebshopContext.Customization.Count(); 
         }
+
+        public IEnumerable<CustomizationProduct> CheckIfInTable(int productId, int customizationId){
+            var result = (from cP in WebshopContext.CustomizationProducts 
+                          where cP.ProductId == productId && cP.CustomizationId == customizationId
+                          select cP);
+            return result;  
+            
+        }
+
+        public bool RemoveCustomization(int productId, int customizationId){
+            var result = (from cP in WebshopContext.CustomizationProducts
+                          where cP.ProductId == productId && cP.CustomizationId == customizationId
+                          select cP);
+            
+            WebshopContext.CustomizationProducts.Remove(result.FirstOrDefault()); 
+            
+            try {
+                WebshopContext.SaveChanges();
+                return true; 
+            }
+            catch(Exception){
+                return false; 
+            }
+        }
     }
 }

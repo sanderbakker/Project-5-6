@@ -5,28 +5,40 @@ import NotificationAlert from 'react-notification-alert';
 class AdminProductForm extends Component {
     constructor(props){
         super(props);
-        this.state = {name: "", category: "", description: "", price: "", fetching: true, modal: false, stock: 0}
+        this.state = {listCustom: [], listCustomEdit:[], name: "", category: "", description: "", price: "", fetching: true, fetchingCustomizations: true, modal: false, stock: 0}
         this.product = new Products(); 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFormChanges = this.handleFormChanges.bind(this); 
         this.onDismiss = this.onDismiss.bind(this); 
         this.toggle = this.toggle.bind(this); 
         this.notify = this.notify.bind(this); 
+        this.handleCustomizations = this.handleCustomizations.bind(this); 
+        this.removeCustomization = this.removeCustomization.bind(this); 
     }
 
     componentDidMount(){
         this.product.getCategories().then(
             (val) =>{ 
+                this.product.getAllCustomizations().then(
+                    (val) => {
+                        this.setState({customizations: val, fetchingCustomizations: false}); 
+                    }
+                ); 
                 this.setState({categories: val, fetching: false}) 
                 if(this.props.action === 'edit'){
-                    this.product.getProduct(this.props.id).then(
-                        (value) =>
-                            this.setState({name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false, stock: value.stock}) 
-                    )
+                    this.product.getProductWithCustomizations(this.props.id).then(
+                        (value) => {
+                            var tempList = []; 
+                            value.customizations.forEach(element => {
+                                tempList[element.id] = element;  
+                            });
+                            this.setState({listCustom: tempList, listCustomEdit: tempList, name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false, stock: value.stock}) 
+                        })
                 }
             }
         );
         
+
     }
     
     handleFormChanges(e){
@@ -86,8 +98,13 @@ class AdminProductForm extends Component {
             if(this.state.images && this.props.id) {
                 for (var i = 0; i < 3; i++) {
                     this.product.addImage(this.props.id, this.state.images[i], i);
-                    console.log(i); 
                 }
+            }
+
+            if(this.state.listCustom.length !== 0){
+                this.state.listCustom.forEach(element => {
+                    this.product.addCustomizationToProduct(element.id, this.props.id); 
+                })
             }
 
         }
@@ -121,8 +138,41 @@ class AdminProductForm extends Component {
         this.refs.notify.notificationAlert(options);
     }
 
+    handleCustomizations(e){
+        var tempList = this.state.listCustom; 
+        var checkList = false; 
+        
+        tempList.forEach(element => {
+            if(element.id === e.id){
+                checkList = true; 
+            }
+        });
+        
+        if(checkList === false){
+            tempList[e.id] = e; 
+        }
+
+        this.setState({listCustom: tempList});
+    }
+
+    removeCustomization(itemId){
+        var confirm = window.confirm("Are you sure you want to delete this customization for this product?"); 
+        if(confirm){
+            var tempList = this.state.listCustom;
+
+            delete tempList[itemId]; 
+        
+            if(this.props.action === "edit"){
+                console.log(itemId);             
+                this.product.deleteCustomization(this.props.id, itemId);
+            }
+
+            this.setState({listCustom: tempList}); 
+        }
+    }
+
     render(){
-        if(this.state.fetching){
+        if(this.state.fetching || this.state.fetchingCustomizations){
             return(
                 <div></div>
             );      
@@ -199,6 +249,27 @@ class AdminProductForm extends Component {
                                         return <option key={item}>{item}</option> 
                                     })}
                                 </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="customziationLabel">Customizations</Label>
+                                <Input 
+                                    size="sm"
+                                    type="select"
+                                    name="customization"
+                                    id="customizationLabel"
+                                    placeholder="Select one or more customization"
+                                    onChange={this.handleCustomizations}
+                                    >
+                                    <option></option>
+                                    {this.state.customizations.map((item, i) => {
+                                        return <option onClick={() => this.handleCustomizations(item)} key={item.id}>{item.name}</option>
+                                    })}
+                                </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                {this.state.listCustom.map((item, i) => {
+                                    return <div key={item.id}>{item.name} <i onClick={() => this.removeCustomization(item.id)}className="fa fa-minus pull-right"></i></div>
+                                })}
                             </FormGroup>
                             <FormGroup>
                                 <Label for="imageLabel">Images</Label>

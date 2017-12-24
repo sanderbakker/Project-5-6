@@ -88,6 +88,10 @@ export class Products extends API {
 		return this.get('/products/customization/' + _page + '/9'); 
 	}
 
+	getAllCustomizations(){
+		return this.get("/products/customizations");
+	}
+
 	getAmountCustomizations(){
 		return this.get('/products/customizations/amount'); 
 	}
@@ -115,5 +119,21 @@ export class Products extends API {
 				"id": _id
 			}
 		)
+	}
+
+	addCustomizationToProduct(_customizationId, _productId){
+		return this.post("/products/customization/" + _productId + "/" + _customizationId); 
+	}
+
+	getCustomizationForProduct(_productId){
+		return this.get("/products/customizations/" + _productId); 
+	}
+
+	getProductWithCustomizations(_productId){
+		return this.get("/products/withcustomizations/" + _productId); 
+	}
+	deleteCustomization(_productId, _customizationId)
+	{
+		return this.delete("/products/customization/" + _productId + "/" + _customizationId); 
 	}
 }

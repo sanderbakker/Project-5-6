@@ -10,7 +10,9 @@ namespace API.Services
     {
         IQueryable GetWithCustomizations(int productId); 
         IEnumerable<Customization> GetAllPaginated(int index, int size);
+        int Amount(); 
+        IEnumerable<CustomizationProduct> CheckIfInTable(int productId, int customizationId);  
+        bool RemoveCustomization(int productId, int customizationId);   
 
-        int Amount();    
     }
 }

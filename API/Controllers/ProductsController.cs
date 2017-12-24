@@ -41,6 +41,42 @@ namespace API.Controllers
             return new ObjectResult(item);
         }
 
+        [HttpGet("withcustomizations/{id}")]
+        public IActionResult GetWithCustomizations(int id){
+            var item = _unitOfWork.Products.Get(id);
+            if (item == null){
+                return NotFound(); 
+            }
+            var product = new Dictionary<string, object>();  
+            
+            var result = new List<object>(); 
+
+            var customizationProducts = _unitOfWork.Customizations.GetWithCustomizations(id); 
+            
+            if(customizationProducts == null)
+            {
+                return NotFound(); 
+            }
+            
+            foreach (var productCustomization in customizationProducts)
+            {
+                result.Add(productCustomization); 
+            }
+             
+            product.Add("name", item.Name);
+            product.Add("description", item.Description);
+            product.Add("categoryString", item.CategoryString);
+            product.Add("price", item.Price);
+            product.Add("stock", item.Stock);
+            product.Add("id", item.Id);
+            product.Add("image1", item.Image1);
+            product.Add("image2", item.Image2);
+            product.Add("image3", item.Image3); 
+            product.Add("customizations", result);
+             
+            return new ObjectResult(product);
+        }
+
         [HttpGet("paginated/{index}/{pagesize?}")]
         public IActionResult GetPaginated(int index, int pagesize = 10)
         {
@@ -224,6 +260,30 @@ namespace API.Controllers
             return Ok(result); 
         }
 
+        [HttpDelete("customization/{productId}/{customizationId}")]
+        public IActionResult RemoveCustomizationFromProduct(int productId, int customizationId){
+            var customization = _unitOfWork.Customizations.Get(customizationId); 
+            var product = _unitOfWork.Products.Get(productId);
+
+            var customProduct = _unitOfWork.Customizations.CheckIfInTable(productId, customizationId); 
+
+            if(customization == null || product == null){
+                return NotFound(); 
+            }
+            
+            try{
+                if(!_unitOfWork.Customizations.RemoveCustomization(productId, customizationId)){
+                    return NotFound(); 
+                }
+            }
+            catch(ArgumentException){
+                
+            }
+            
+            _unitOfWork.Complete(); 
+            return Ok(); 
+        }
+
         [HttpPost("customization/{productId}/{customizationId}")]
         public IActionResult AddCustomizationToProduct(int productId, int customizationId){
             var customization = _unitOfWork.Customizations.Get(customizationId);
@@ -239,19 +299,21 @@ namespace API.Controllers
                 Product = product, 
                 ProductId = productId
             }; 
+             
             if(product.Customizations == null)
             {
                 product.Customizations = new List<CustomizationProduct>();                 
-            }            
-
-            product.Customizations.Add(customProduct);
+            }   
 
             if(customization.Products == null){
                 customization.Products = new List<CustomizationProduct>();
             }
             
-            customization.Products.Add(customProduct);
-
+            if(_unitOfWork.Customizations.CheckIfInTable(productId, customizationId).FirstOrDefault() == null)
+            {
+                customization.Products.Add(customProduct);
+                product.Customizations.Add(customProduct);
+            }
             
             _unitOfWork.Complete(); 
             
@@ -295,6 +357,12 @@ namespace API.Controllers
         public IActionResult PaginatedCustomizations(int index, int size = 10){
             var result = _unitOfWork.Customizations.GetAllPaginated(index, size);
             return new ObjectResult(result); 
+        }
+
+        [HttpGet("customizations")]
+        public IActionResult Customizations(){
+            var result = _unitOfWork.Customizations.GetAll();
+            return Ok(result); 
         }
 
         [HttpPut("customization/{id}")]

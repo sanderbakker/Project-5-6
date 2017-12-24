@@ -156,14 +156,13 @@ class AdminProductForm extends Component {
     }
 
     removeCustomization(itemId){
-        var confirm = window.confirm("Are you sure you want to delete this customization for this product?"); 
+        var confirm = window.confirm("Are you sure you want to delete this customization for this product? (It will be remove immediately)"); 
         if(confirm){
             var tempList = this.state.listCustom;
 
             delete tempList[itemId]; 
         
-            if(this.props.action === "edit"){
-                console.log(itemId);             
+            if(this.props.action === "edit"){             
                 this.product.deleteCustomization(this.props.id, itemId);
             }
 

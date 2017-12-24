@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Card, CardTitle, CardSubtitle, CardBody, Col, CardText, ButtonGroup} from 'reactstrap'
+import {Card, CardTitle, CardSubtitle, CardBody, Col, CardText, Button, ButtonGroup} from 'reactstrap'
 import AdminCustomForm from './AdminCustomForm.js';
 
 class CustomCard extends Component {
@@ -20,19 +20,23 @@ class CustomCard extends Component {
             <Col md={4}>
                 <Card>
                     <CardBody>
-                        <CardTitle>
+                        <CardTitle id={this.props.size === "small" ? "small-card" : ""}>
                             {this.props.name}
                         </CardTitle>
-                        <CardSubtitle className="mb-2 text-muted">
+                        
+                        <CardSubtitle id={this.props.size === "small" ? "small-price" : ""} className="mb-2 text-muted">
                             € {this.props.price} ,- 
                         </CardSubtitle>
-                        <CardText>
+                        <CardText id={this.props.size === "small" ? "small-desc" : ""}>
                             {this.props.description}
                         </CardText>
                         <ButtonGroup size="sm" className="float-right ">
                             {this.props.admin ? 
                             <AdminCustomForm id={this.props.id} highlight={this.highlightItem} customization={this.props.updateCustom} action="edit">Edit</AdminCustomForm>
                             : ""}  
+                            {this.props.product ? 
+                            <Button id="small-button" className="pull-right" size={"sm"}><i className="fa fa-plus"/></Button>                             
+                            : ""}
                         </ButtonGroup>   
                     </CardBody>
                 </Card>

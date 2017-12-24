@@ -5,6 +5,7 @@ import ProductCarousel from './ProductCarousel.js';
 import {User} from '../classes/API/User.js'; 
 
 import ShoppingCart from './ShoppingCart.js';
+import CustomCard from './CustomCard.js';
 
 class Product extends Component {
     constructor(props){
@@ -17,7 +18,7 @@ class Product extends Component {
     }
 
     componentWillMount(){
-        this.products.getProduct(this.props.id).then(
+        this.products.getProductWithCustomizations(this.props.id).then(
             (val) => this.setState({currentProduct: val, fetching: false})
         )
     }
@@ -83,6 +84,19 @@ class Product extends Component {
                                 </Col>
                                 <Col md={6}>
                                     <h5>Customizations</h5>
+                                    <Row>
+                                        {this.state.currentProduct.customizations.map((item, i) => {
+                                            return <CustomCard
+                                                    description={item.description}
+                                                    name={item.name}
+                                                    price={item.price}
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    size="small"
+                                                    product={true}
+                                                    />
+                                        })}
+                                    </Row>
                                 </Col>
                             </Row>
                     </ModalBody>

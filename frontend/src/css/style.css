@@ -19,6 +19,21 @@
     font-size: 14px;
 }
 
+#small-card {
+    font-size: 0.9em;
+}
+
+#small-desc{
+    font-size: 0.8em;
+}
+
+#small-price {
+    font-size: 0.8em;
+}
+
+#small-button {
+    font-size: 0.79em; 
+}
 .col-padding-left{
     padding-left: 0 !important; 
 }

@@ -72,6 +72,7 @@ namespace API.Controllers
             product.Add("image1", item.Image1);
             product.Add("image2", item.Image2);
             product.Add("image3", item.Image3); 
+            product.Add("auction", item.Auction);
             product.Add("customizations", result);
              
             return new ObjectResult(product);
@@ -217,6 +218,7 @@ namespace API.Controllers
             product.Description = item.Description; 
             product.Price = item.Price; 
             product.Stock = item.Stock; 
+            product.Auction = item.Auction;
             _unitOfWork.Complete();
 
             return new NoContentResult();
@@ -385,21 +387,25 @@ namespace API.Controllers
         }
 
         [HttpPost("auction/add")]
-        public IActionResult addAuction([FromBody] Auction auction) {
+        public IActionResult AddAuction([FromBody] Auction auction) {
             var product = _unitOfWork.Products.Get(auction.ProductId);
             if(product == null) {
                 return NotFound();
             }
 
+            var auctionCheck = _unitOfWork.Auction.Find(p => p.ProductId == auction.ProductId).FirstOrDefault();
+            if(auctionCheck != null)
+                return CreatedAtRoute("GetAuction", new { id = auction.AuctionId }, auction);
+
             _unitOfWork.Auction.Add(auction);
             _unitOfWork.Complete();            
 
-            return CreatedAtRoute("GetAuction", new { id = auction.AuctionId });
+            return CreatedAtRoute("GetAuction", new { id = auction.AuctionId }, auction);
             
         }
 
         [HttpGet("auction/{id}", Name = "GetAuction")]
-        public IActionResult getAuction(int id) {
+        public IActionResult GetAuction(int id) {
             var auction = _unitOfWork.Auction.Get(id);
             if(auction == null) {
                 return NotFound();

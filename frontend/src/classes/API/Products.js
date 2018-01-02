@@ -27,7 +27,7 @@ export class Products extends API {
 	getProductsPaginated(_page_number){
 		return this.get('/products/paginated/' + _page_number + '/9')
 	}
-	addProduct(_price, _description, _category, _name, _stock){
+	addProduct(_price, _description, _category, _name, _stock, _biddable){
 		return this.post('/products', 
 						{
 							"name": _name,
@@ -35,22 +35,32 @@ export class Products extends API {
 							"description": _description,
 							"category": _category,
 							"stock": _stock, 
-							"addedAt": new Date()
+							"addedAt": new Date(),
+							"auction": _biddable
 						}
 					)
 	}
+	addAuction(_productId, _startingPrice) {
+		return this.post('/products/auction/add', 
+			{
+				"ProductId": _productId, 
+			}
+		)
+	}
+
 	getProductsByCategoryPaginated(_category, _page_number){
 		return this.get("/products/withcategorypaginated/" + _category + "/" + _page_number + "/9")
 	}
 
-	updateProduct(_id, _description, _price, _category, _name, _stock){
+	updateProduct(_id, _description, _price, _category, _name, _stock, _biddable){
 		return this.put("/products/" + _id, {
 			"description": _description,
 			"price": _price,
 			"name": _name,
 			"category": _category,
 			"stock": _stock, 
-			"id": _id
+			"id": _id,
+			"auction": _biddable			
 		})
 	}
 

@@ -5,7 +5,7 @@ import NotificationAlert from 'react-notification-alert';
 class AdminProductForm extends Component {
     constructor(props){
         super(props);
-        this.state = {listCustom: [], listCustomEdit:[], name: "", category: "", description: "", price: "", fetching: true, fetchingCustomizations: true, modal: false, stock: 0}
+        this.state = {listCustom: [], listCustomEdit:[], name: "", category: "", description: "", price: "", biddable: false, biddableStart: 0, fetching: true, fetchingCustomizations: true, modal: false, stock: 0}
         this.product = new Products(); 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFormChanges = this.handleFormChanges.bind(this); 
@@ -32,7 +32,7 @@ class AdminProductForm extends Component {
                             value.customizations.forEach(element => {
                                 tempList[element.id] = element;  
                             });
-                            this.setState({listCustom: tempList, listCustomEdit: tempList, name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false, stock: value.stock}) 
+                            this.setState({listCustom: tempList, listCustomEdit: tempList, name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false, stock: value.stock, biddable: value.auction}) 
                         })
                 }
             }
@@ -59,18 +59,27 @@ class AdminProductForm extends Component {
         }
         else if(e.target.name === 'stock'){
             this.setState({stock: e.target.value}); 
+        } 
+        else if(e.target.name === 'biddable') {
+            if(!this.state.biddable)
+                this.setState({biddable: true})
+            else 
+                this.setState({biddable: false})
         }
     }
 
     handleSubmit(){
         if(this.state.name !== "" && this.state.price !== "" && this.state.description !== "" && this.state.category !== ""){
             if(this.props.action === 'add'){
-                this.product.addProduct(this.state.price, this.state.description, this.state.category, this.state.name, this.state.stock)
+                this.product.addProduct(this.state.price, this.state.description, this.state.category, this.state.name, this.state.stock, this.state.biddable)
                 .then(
                     (val) => {
                         if(val.id === undefined){
                             this.setState({failed: true});  
                         }
+                        if(this.state.biddable)
+                            this.product.addAuction(val.id).then(console.log('ok'));
+
                         this.toggle();
                         this.notify("Added product: " + this.state.name, "success")
                         this.setState({visible: true, name: "", category: "", price: "", description: "", stock: 0}); 
@@ -79,14 +88,19 @@ class AdminProductForm extends Component {
                 )
             }
             else if(this.props.action === 'edit'){
-                this.product.updateProduct(this.props.id, this.state.description, this.state.price, this.state.category, this.state.name, this.state.stock).then(
+                this.product.updateProduct(this.props.id, this.state.description, this.state.price, this.state.category, this.state.name, this.state.stock, this.state.biddable).then(
                     (val) => {
                         if(val.ok && val.status === 204){
                             this.setState({visible: true});
+
+
+                            if(this.state.biddable)
+                                 this.product.addAuction(this.props.id).then(console.log('ok'));   
+
                             this.toggle(); 
                             this.notify("Edited product: " + this.state.name +  " (" + this.props.id + ")", "success")
                             this.props.products(); 
-                            this.props.highlight(this.props.id); 
+                            this.props.highlight(this.props.id);                          
                         }
                         else{
                             this.setState({failed: true})
@@ -270,6 +284,16 @@ class AdminProductForm extends Component {
                                     return <div key={item.id}>{item.name} <i onClick={() => this.removeCustomization(item.id)}className="fa fa-minus pull-right"></i></div>
                                 })}
                             </FormGroup>
+                            <FormGroup check>
+                                <Label check>Open for bidding
+                                <Input 
+                                    type="checkbox"
+                                    name="biddable"
+                                    checked={this.state.biddable}
+                                    onChange={this.handleFormChanges}
+                                />                                                                
+                                </Label>                                
+                            </FormGroup>
                             <FormGroup>
                                 <Label for="imageLabel">Images</Label>
                                 <Input 
@@ -363,6 +387,16 @@ class AdminProductForm extends Component {
                                 })}
                             </Input>
                         </FormGroup>
+                        <FormGroup check>
+                                <Label check>Open for bidding
+                                <Input 
+                                    type="checkbox"
+                                    name="biddable"
+                                    checked={this.state.biddable}
+                                    onChange={this.handleFormChanges}
+                                />                                                                
+                                </Label>                                
+                            </FormGroup>                        
                         <FormGroup>
                             <Label for="imageLabel">Images</Label>
                             <Input 

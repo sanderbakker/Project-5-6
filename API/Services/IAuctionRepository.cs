@@ -7,6 +7,6 @@ namespace API.Services
 {
     public interface IAuctionRepository : IRepository<Auction>
     {
-
+        IQueryable GetWithBiddings(int auctionId);
     }
 }

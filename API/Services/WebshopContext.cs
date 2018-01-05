@@ -11,6 +11,7 @@ namespace API.Services
         public DbSet<ShoppingCart> Carts { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set;}
         public DbSet<Auction> Auctions { get;set; }
+        public DbSet<Bid> Bid { get;set; }
         public DbSet<CustomizationProduct> CustomizationProducts {get; set;}
         public DbSet<Customization> Customization {get;set;}
 

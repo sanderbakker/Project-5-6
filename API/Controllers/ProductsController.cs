@@ -411,7 +411,14 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return new JsonResult(auction);
+            var biddings = _unitOfWork.Bid.Find(a => a.AuctionId == id);
+
+            var result = new Dictionary<string, object>();
+
+            result.Add("productId", auction.ProductId);
+            result.Add("biddings", biddings);
+
+            return new JsonResult(result);
 
         }
 
@@ -424,6 +431,7 @@ namespace API.Controllers
             }
 
             _unitOfWork.Bid.Add(bid);
+            _unitOfWork.Complete();
 
             return new JsonResult("ok"); 
         }

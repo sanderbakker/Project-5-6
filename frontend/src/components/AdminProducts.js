@@ -166,6 +166,7 @@ class AdminProducts extends Component {
                                 category={item.category}
                                 delete={this.deleteProduct}
                                 updateProducts = {this.getAmountOfProducts}
+                                isAuction={item.auction}                                
                             />
                         })} 
                 </Row>

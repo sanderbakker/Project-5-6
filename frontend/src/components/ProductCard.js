@@ -98,14 +98,20 @@ class ProductCard extends Component{
                                 {this.props.admin ? 
                                 <AdminProductForm highlight={this.highlightItem} id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
                                 : ""}
-
-                                {this.props.quantity > 0 ? 
-                                <Button onClick={f => this.addProductToCart()} size="sm" color="success" className="float-right line-height-edit">
-                                    <i className="fa fa-shopping-cart"/>
-                                </Button>
-                                : <Button onClick={() => this.notify(this.props.name + " is not in stock", "warning")} size="sm" color="success" className="float-right line-height-edit">
-                                    <i className="fa fa-shopping-cart"/>
+                                {this.props.isAuction ? 
+                                    <Button onClick={this.toggle} size="sm" color="warning">                                        
+                                        <i className="fa fa-legal"/>
+                                    </Button>                            
+                                : [
+                                    (this.props.quantity > 0 ? 
+                                    <Button onClick={f => this.addProductToCart()} size="sm" color="success" className="float-right line-height-edit">
+                                        <i className="fa fa-shopping-cart"/>
                                     </Button>
+                                    : <Button onClick={() => this.notify(this.props.name + " is not in stock", "warning")} size="sm" color="success" className="float-right line-height-edit">
+                                        <i className="fa fa-shopping-cart"/>
+                                        </Button>
+                                    )
+                                 ]
                                 }
                             </ButtonGroup>               
                         </CardBody>

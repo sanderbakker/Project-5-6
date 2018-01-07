@@ -411,10 +411,11 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            var biddings = _unitOfWork.Bid.Find(a => a.AuctionId == id);
+            var biddings = _unitOfWork.Bid.withUserDetails(auction.AuctionId);
 
             var result = new Dictionary<string, object>();
 
+            result.Add("auctionId", auction.AuctionId);
             result.Add("productId", auction.ProductId);
             result.Add("biddings", biddings);
 
@@ -429,6 +430,8 @@ namespace API.Controllers
             if(auction == null) {
                 return NotFound();
             }
+
+            bid.Time = DateTime.Now;
 
             _unitOfWork.Bid.Add(bid);
             _unitOfWork.Complete();

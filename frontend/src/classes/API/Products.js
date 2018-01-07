@@ -1,5 +1,7 @@
 
 import {API} from '../API/API.js';
+import jwt_decode from 'jwt-decode'; 
+
 
 export class Products extends API {
 
@@ -48,8 +50,20 @@ export class Products extends API {
 		)
 	}
 
+	getAuction(_productId) {
+		return this.get('/products/auction/' + _productId);
+	}
+
 	getProductsByCategoryPaginated(_category, _page_number){
 		return this.get("/products/withcategorypaginated/" + _category + "/" + _page_number + "/9")
+	}
+
+	addBid(_auctionId, _price) {
+		return this.post("/products/auction/" + _auctionId + "/bid/add", {
+			"AuctionId": _auctionId,
+			"Price": _price,
+			"UserId": jwt_decode(sessionStorage.getItem('id_token'))['id']
+		});
 	}
 
 	updateProduct(_id, _description, _price, _category, _name, _stock, _biddable){

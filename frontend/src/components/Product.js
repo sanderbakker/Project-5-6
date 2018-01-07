@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {Col, Row, Modal, Button, ModalBody, ModalHeader} from 'reactstrap';
 import {Products} from '../classes/API/Products.js'; 
 import ProductCarousel from './ProductCarousel.js';
-import {User} from '../classes/API/User.js'; 
+import {User} from '../classes/API/User.js';
 
+import Auction from './Auction.js'; 
 import ShoppingCart from './ShoppingCart.js';
 import CustomCard from './CustomCard.js';
 
@@ -19,7 +20,10 @@ class Product extends Component {
 
     componentWillMount(){
         this.products.getProductWithCustomizations(this.props.id).then(
-            (val) => this.setState({currentProduct: val, fetching: false})
+            (val) => {
+                console.log(val);
+                this.setState({currentProduct: val, fetching: false})
+            }
         )
     }
     toggle() {
@@ -55,7 +59,15 @@ class Product extends Component {
                                     />
                                 </Col>
                                 <Col md={6}>
-                                    <p className="font-md"><b>€ {this.state.currentProduct.price.toLocaleString(
+                                {this.state.currentProduct.auction ? 
+                                    <Auction
+                                        productId={this.state.currentProduct.id}
+                                        name={this.state.currentProduct.name}
+                                        price={this.state.currentProduct.price}
+                                    />
+                            
+                                :                                
+                                    <div><p className="font-md"><b>€ {this.state.currentProduct.price.toLocaleString(
                                                                 undefined,
                                                                 { minimumFractionDigits: 2 }
                                                                 )} ,- </b></p>
@@ -74,7 +86,8 @@ class Product extends Component {
                                     <br/>
                                     <p className="font-md"><i className="fa fa-check font-md check"></i> HRO gets a 9 out of 10</p>
                                     <br/>
-                                    <p className="font-md"><i className="fa fa-check font-md check"></i> HRO is the best seller of luxury in 2017</p>
+                                    <p className="font-md"><i className="fa fa-check font-md check"></i> HRO is the best seller of luxury in 2017</p></div>
+                                }
                                 </Col>
                             </Row>
                             <hr/>

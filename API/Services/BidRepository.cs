@@ -13,5 +13,19 @@ namespace API.Services
         {
 
         }
+
+        public WebshopContext WebshopContext
+        {
+            get { return _context as WebshopContext; }
+        }    
+
+        public IQueryable withUserDetails(int auctionId) {
+            return (from b in WebshopContext.Bid 
+                    join u in WebshopContext.Users on b.UserId equals u.Id 
+                    where b.AuctionId == auctionId
+                    orderby b.Price ascending
+                    select new {BidId = b.BidId, Price = b.Price, Time = b.Time, FirstName = u.FirstName, LastName = u.LastName, Admin = u.IsAdmin}
+            );
+        }        
     }
 }

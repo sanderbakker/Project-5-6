@@ -7,6 +7,6 @@ namespace API.Services
 {
     public interface IBidRepository : IRepository<Bid>
     {
-
+        IQueryable withUserDetails(int auctionId);
     }
 }

@@ -17,8 +17,12 @@ export default class Auction extends Component{
     componentWillMount() {
         this.Product.getAuction(this.props.productId).then(
             (val) => {
-                this.setState({auction: val, fetching: false, highestBid: parseInt(val.biddings[val.biddings.length - 1].price)})
                 console.log(val);
+                if(val.biddings.length === 0) {
+                    this.setState({auction: val, fetching: false, hasBids: true, highestBid: val.price})
+                } else {
+                    this.setState({auction: val, fetching: false, hasBids: false, highestBid: parseInt(val.biddings[val.biddings.length - 1].price)})
+                }
             }
         );
     }
@@ -33,15 +37,16 @@ export default class Auction extends Component{
 
     placeBid(e) {
         if(this.state.bid < this.state.highestBid + 1) {
-            alert("Bid should be higher then " + (parseInt(this.state.highestBid) + 1));
+            alert("Bid should be higher then € " + (parseInt(this.state.highestBid) + 0.99));
         } else {
             this.Product.addBid(this.state.auction.auctionId, this.state.bid).then(
+                (val) => {
                 this.Product.getAuction(this.props.productId).then(
                     (val) => {
-                        console.log(val);                        
                         this.setState({bid: "", auction: val, fetching: false, highestBid: parseInt(val.biddings[val.biddings.length - 1].price)})                
                     }
                 )
+                }
             );
         }
     }
@@ -51,8 +56,9 @@ export default class Auction extends Component{
             <div>
                 {!this.state.fetching ?
                 <Card>
-                <Table>
-                 <tbody>
+                 <div style={{maxHeight: '350px', overflowY: 'scroll'}}>
+                  <Table>
+                    <tbody>
                     {this.state.auction.biddings.map((auction, i) => {
                         return (
                          <tr>
@@ -62,12 +68,18 @@ export default class Auction extends Component{
                         );
                     })
                     }
+
+                    </tbody>
+                  </Table>
+                 </div>
+                <Table>
+                 <tbody>  
                     <tr>
                         <td><Input onChange={this.handleBid} value={this.state.bid} type="number" id="bid" name="bid" min={this.state.highestBid + 1} placeholder={"Place bid > € " + this.state.highestBid}/></td>
                         <td><Button onClick={this.placeBid}>Place bid</Button></td>
                     </tr>
                  </tbody>
-                </Table>
+                </Table>                                  
                 </Card>
                 : null }
             </div>

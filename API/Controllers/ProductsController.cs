@@ -407,6 +407,7 @@ namespace API.Controllers
         [HttpGet("auction/{id}", Name = "GetAuction")]
         public IActionResult GetAuction(int id) {
             var auction = _unitOfWork.Auction.Find(p => p.ProductId == id).FirstOrDefault();
+            var product = _unitOfWork.Products.Get(id);
             if(auction == null) {
                 return NotFound();
             }
@@ -417,6 +418,7 @@ namespace API.Controllers
 
             result.Add("auctionId", auction.AuctionId);
             result.Add("productId", auction.ProductId);
+            result.Add("price", product.Price);
             result.Add("biddings", biddings);
 
             return new JsonResult(result);

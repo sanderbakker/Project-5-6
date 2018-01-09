@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Products} from '../classes/API/Products.js'; 
-import {Table, Card, Input, Button} from 'reactstrap'; 
+import {Table, Card, Input, Button, CardHeader} from 'reactstrap'; 
 
 import moment from 'moment';
 
@@ -13,12 +13,32 @@ export default class Auction extends Component{
 
         this.handleBid = this.handleBid.bind(this);
         this.placeBid = this.placeBid.bind(this);
+        this.calcTime = this.calcTime.bind(this);
+    }
+
+    calcTime(val) {
+        var totalDays = moment(val.closeOn).diff(moment(), 'days');        
+        var totalHours = moment(val.closeOn).diff(moment(), 'hours');
+        var totalMinutes = moment(val.closeOn).diff(moment(), 'minutes');
+        var clearHours = totalHours % 24;
+        var clearMinutes = (totalMinutes - 1) % 60;
+        if(totalDays != 0)
+            var text = totalDays + " days, " + clearHours + " hours and " + clearMinutes + " minutes ";
+        else if (totalHours != 0)
+            var text = clearHours + " hours and " + clearMinutes + " minutes ";        
+        else
+            var text = clearMinutes + " minutes ";
+
+        if(moment(val.closeOn) <= moment()) 
+            var text = "ALREADY ENDED"; 
+
+        return text;
     }
 
     componentWillMount() {
         this.Product.getAuction(this.props.productId).then(
             (val) => {
-                console.log(val);
+                this.interval = setInterval(() => this.setState({ time: this.calcTime(val)}), 1000)
                 if(val.biddings.length === 0) {
                     this.setState({auction: val, fetching: false, hasBids: true, highestBid: val.price})
                 } else {
@@ -27,6 +47,10 @@ export default class Auction extends Component{
             }
         );
     }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }    
 
     handleBid(e) {
         if(e.target.value < this.state.highestBid + 1) {
@@ -61,6 +85,11 @@ export default class Auction extends Component{
             <div>
                 {!this.state.fetching ?
                 <Card>
+                {this.state.time != null ?
+                 <CardHeader>
+                    <h4>Auction closes in {this.state.time}</h4>   
+                 </CardHeader>
+                : null }
                  <div style={{maxHeight: '350px', overflowY: 'scroll'}}>
                   <Table>
                     <tbody>

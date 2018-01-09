@@ -74,7 +74,7 @@ class AdminProductForm extends Component {
         } 
         else if(e.target.name === 'biddable') {
             if(!this.state.biddable)
-                this.setState({biddable: true, biddableDate: moment()})
+                this.setState({biddable: true, biddableDate: moment().add(1, 'd')})
             else 
                 this.setState({biddable: false})
         }

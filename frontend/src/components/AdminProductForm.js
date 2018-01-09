@@ -40,7 +40,7 @@ class AdminProductForm extends Component {
                             value.customizations.forEach(element => {
                                 tempList[element.id] = element;  
                             });
-                            this.setState({listCustom: tempList, listCustomEdit: tempList, name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false, stock: value.stock, biddable: value.auction}) 
+                            this.setState({listCustom: tempList, listCustomEdit: tempList, name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false, stock: value.stock, biddable: value.auction, biddableDate: moment()}) 
                         })
                 }
             }

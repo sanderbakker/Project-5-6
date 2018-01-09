@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic; 
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,6 +8,7 @@ namespace API.Models
     {
         public int AuctionId { get;set; }
         public int ProductId { get; set; }
+        public DateTime CloseOn { get; set; }
         public Product Product { get; set; }
         public float startingPrice { get;set; }
         public List<Bid> Biddings { get;set; }

@@ -416,8 +416,9 @@ namespace API.Controllers
 
             var result = new Dictionary<string, object>();
 
-            result.Add("auctionId", auction.AuctionId);
+            result.Add("auctionId", auction.AuctionId);            
             result.Add("productId", auction.ProductId);
+            result.Add("closeOn", auction.CloseOn);
             result.Add("price", product.Price);
             result.Add("biddings", biddings);
 

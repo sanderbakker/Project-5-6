@@ -21,10 +21,11 @@ namespace API.Services
 
         public IQueryable withUserDetails(int auctionId) {
             return (from b in WebshopContext.Bid 
+                    join a in WebshopContext.Auctions on b.AuctionId equals a.AuctionId
                     join u in WebshopContext.Users on b.UserId equals u.Id 
                     where b.AuctionId == auctionId
                     orderby b.Price ascending
-                    select new {BidId = b.BidId, Price = b.Price, Time = b.Time, FirstName = u.FirstName, LastName = u.LastName, Admin = u.IsAdmin}
+                    select new {BidId = b.BidId, Price = b.Price, CloseOn = a.CloseOn, Time = b.Time, FirstName = u.FirstName, LastName = u.LastName, Admin = u.IsAdmin}
             );
         }        
     }

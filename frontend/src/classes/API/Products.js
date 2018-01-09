@@ -42,10 +42,11 @@ export class Products extends API {
 						}
 					)
 	}
-	addAuction(_productId, _startingPrice) {
+	addAuction(_productId, _biddingDate) {
 		return this.post('/products/auction/add', 
 			{
 				"ProductId": _productId, 
+				"CloseOn": _biddingDate
 			}
 		)
 	}

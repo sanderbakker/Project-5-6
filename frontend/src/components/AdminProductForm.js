@@ -2,6 +2,13 @@ import React, {Component} from 'react';
 import {ModalFooter, ModalHeader, Modal, ModalBody, Form, FormGroup, Input, Label, Button} from 'reactstrap'; 
 import {Products} from '../classes/API/Products.js'; 
 import NotificationAlert from 'react-notification-alert'; 
+
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+ 
+import 'react-datepicker/dist/react-datepicker.css';
+
+
 class AdminProductForm extends Component {
     constructor(props){
         super(props);
@@ -14,6 +21,7 @@ class AdminProductForm extends Component {
         this.notify = this.notify.bind(this); 
         this.handleCustomizations = this.handleCustomizations.bind(this); 
         this.removeCustomization = this.removeCustomization.bind(this); 
+        this.handleDateChange = this.handleDateChange.bind(this);
     }
 
     componentDidMount(){
@@ -40,6 +48,10 @@ class AdminProductForm extends Component {
         
 
     }
+
+    handleDateChange(date) {
+        this.setState({biddableDate: date});
+    }
     
     handleFormChanges(e){
         if(e.target.name === 'category'){
@@ -62,7 +74,7 @@ class AdminProductForm extends Component {
         } 
         else if(e.target.name === 'biddable') {
             if(!this.state.biddable)
-                this.setState({biddable: true})
+                this.setState({biddable: true, biddableDate: moment()})
             else 
                 this.setState({biddable: false})
         }
@@ -78,7 +90,7 @@ class AdminProductForm extends Component {
                             this.setState({failed: true});  
                         }
                         if(this.state.biddable)
-                            this.product.addAuction(val.id).then(console.log('ok'));
+                            this.product.addAuction(val.id, this.state.biddableDate).then(console.log('ok'));
 
                         this.toggle();
                         this.notify("Added product: " + this.state.name, "success")
@@ -95,7 +107,7 @@ class AdminProductForm extends Component {
 
 
                             if(this.state.biddable)
-                                 this.product.addAuction(this.props.id).then(console.log('ok'));   
+                                 this.product.addAuction(this.props.id, this.state.biddableDate).then(console.log('ok'));   
 
                             this.toggle(); 
                             this.notify("Edited product: " + this.state.name +  " (" + this.props.id + ")", "success")
@@ -294,6 +306,14 @@ class AdminProductForm extends Component {
                                 />                                                                
                                 </Label>                                
                             </FormGroup>
+                            {this.state.biddable ?
+                            <FormGroup check>
+                                <DatePicker
+                                    selected={this.state.startDate}
+                                    onChange={this.handleDateChange}                                    
+                                />
+                            </FormGroup>                                
+                            : null}
                             <FormGroup>
                                 <Label for="imageLabel">Images</Label>
                                 <Input 
@@ -396,7 +416,16 @@ class AdminProductForm extends Component {
                                     onChange={this.handleFormChanges}
                                 />                                                                
                                 </Label>                                
-                            </FormGroup>                        
+                            </FormGroup>
+                        {this.state.biddable ?
+                        <FormGroup>
+                                <DatePicker
+                                    name="biddableDate"
+                                    selected={this.state.biddableDate}
+                                    onChange={this.handleDateChange}                                    
+                                />
+                        </FormGroup>                                
+                        : null}                                                    
                         <FormGroup>
                             <Label for="imageLabel">Images</Label>
                             <Input 

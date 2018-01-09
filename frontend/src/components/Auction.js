@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Products} from '../classes/API/Products.js'; 
 import {Table, Card, Input, Button} from 'reactstrap'; 
 
+import moment from 'moment';
 
 export default class Auction extends Component{
     constructor(props) {
@@ -52,6 +53,10 @@ export default class Auction extends Component{
     }
 
     render() {
+        if(!this.state.fetching && moment(this.state.auction.closeOn) <= moment()) {
+            return (<h3>Auction closed!</h3>)
+        }
+
         return (
             <div>
                 {!this.state.fetching ?

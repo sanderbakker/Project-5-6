@@ -15,7 +15,7 @@ class Admin extends Component {
                         <AdminSideBar />                        
                     </Col>
                         {this.props.type === 'default' ? 
-                            'default component'
+                            ''
                             : this.props.type === 'products' ? <AdminProducts/>
                             : this.props.type === 'orders' ? <AdminOrders/>
                             : this.props.type === 'users' ? <AdminUsers/>

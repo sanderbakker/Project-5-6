@@ -81,7 +81,7 @@ class App extends Component {
                     : null }
 
                     {(this.state.admin) ? 
-                    <Route exact path='/admin' type='default' component={Admin} />
+                    <PropsRoute exact path='/admin' type='products' component={Admin} />
                     : null }
 
                     {(this.state.admin) ?

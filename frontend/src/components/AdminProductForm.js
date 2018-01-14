@@ -298,13 +298,15 @@ class AdminProductForm extends Component {
                                 })}
                             </FormGroup>
                             <FormGroup check>
-                                <Label check>Open for bidding
+                                <Label check>
                                 <Input 
                                     type="checkbox"
                                     name="biddable"
                                     checked={this.state.biddable}
                                     onChange={this.handleFormChanges}
-                                />                                                                
+                                />
+                                {' '}
+                                Open for bidding                                                                
                                 </Label>                                
                             </FormGroup>
                             {this.state.biddable ?
@@ -409,14 +411,16 @@ class AdminProductForm extends Component {
                             </Input>
                         </FormGroup>
                         <FormGroup check>
-                                <Label check>Open for bidding
+                                <Label check>
                                 <Input 
                                     type="checkbox"
                                     name="biddable"
                                     checked={this.state.biddable}
                                     onChange={this.handleFormChanges}
                                 />                                                                
-                                </Label>                                
+                                </Label>   
+                                {' '}
+                                Open for bidding                               
                             </FormGroup>
                         {this.state.biddable ?
                         <FormGroup>

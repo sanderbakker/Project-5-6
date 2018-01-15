@@ -102,7 +102,7 @@ class ShoppingCart extends Component {
                 {!this.state.fetching ? 
                     <Table hover={true}>
                     <tbody>
-                    <h5>Products</h5>
+                    {this.state.products.length !== 0 ? <h5>Products</h5> : "" }
                     {this.state.products.map((item, i) => {
                     return (<tr key={i}>
                         <td>{item.id}</td>
@@ -114,7 +114,8 @@ class ShoppingCart extends Component {
                     )
                     })
                     }
-                    <br/><h5>Customizations</h5>
+                    <br/>
+                    {this.state.products.length !== 0 ? <h5>Customizations</h5> : "" }
                     {this.state.products.map((item, i) => {
                         
                         return Object.entries(item.customizations).map(([key, value]) => {

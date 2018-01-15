@@ -193,12 +193,20 @@ namespace API.Controllers
             }            
 
             var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
-            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
+            var cart = _unitOfWork.ShoppingCarts.GetWithProductsAndCustomizations(cartId);
 
             var existingProduct = cart.Products.Where(p => p.ProductId == productId).FirstOrDefault();
 
+            var customizations = cart.Customizations.Where(p => p.ProductId == productId && p.ShoppingCartId == cartId).ToArray(); 
+
             if (existingProduct == null) {
                 return NotFound();
+            }
+            
+            if(customizations != null){
+                foreach(var item in customizations){
+                    cart.Customizations.Remove(item); 
+                }
             }
 
             existingProduct.Product.Stock += existingProduct.Quantity; 

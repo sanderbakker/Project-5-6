@@ -83,6 +83,16 @@ class OrderOverview extends Component {
                         </tr>)
                         })
                         }
+                        {this.state.order_details.customizations.map((item, i) => {
+                            
+                            return (<tr key={i}>
+                                <td>{item.id}</td>
+                                <td>{item.name}</td>
+                                <td>€ {item.price}</td>
+                                <td></td>
+                            </tr>)
+                            })
+                            }
                         <tr>
                             <td><b>Total</b></td>
                             <td></td>

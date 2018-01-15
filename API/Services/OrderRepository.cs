@@ -1,5 +1,7 @@
 ﻿using API.Models;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+
 using System.Linq;
 using System;
 
@@ -37,6 +39,14 @@ namespace API.Services
                     join product in WebshopContext.Products on orderProducts.ProductId equals product.Id
                     where orderProducts.OrderId == orderId
                     select new { id = product.Id, name = product.Name, price = product.Price, quantity = orderProducts.Quantity });
-        }                
+        }
+        public IQueryable GetWithCustomizations (int orderId)
+        {
+            return (from OrderCustomization in WebshopContext.OrderCustomizations
+                    join customization in WebshopContext.Customization on OrderCustomization.CustomizationId equals customization.Id
+                    where OrderCustomization.OrderId == orderId
+                    select new { id = customization.Id, name = customization.Name, price = customization.Price});
+        
+        }
     }
 }

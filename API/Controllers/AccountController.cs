@@ -452,6 +452,7 @@ namespace API.Controllers
             }
             var order = user.Orders.Find(o => o.OrderId == orderId);
             var orderProducts = _unitOfWork.Orders.GetWithProducts(orderId);
+            var orderCustomizations = _unitOfWork.Orders.GetWithCustomizations(orderId);
             
 
             var returnArray = new Dictionary<string, object>();              
@@ -460,6 +461,7 @@ namespace API.Controllers
             returnArray.Add("payment_provider", order.PaymentProviderString);
             returnArray.Add("total_price", order.totalPrice);
             returnArray.Add("products", orderProducts);
+            returnArray.Add("customizations", orderCustomizations); 
 
             return new JsonResult(returnArray);
         }
@@ -474,13 +476,18 @@ namespace API.Controllers
             }
 
             var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;            
-            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
+            var cart = _unitOfWork.ShoppingCarts.GetWithProductsAndCustomizations(cartId);
             float total = 0;
 
             foreach (var product in cart.Products)
             {
                 var productDetail = _unitOfWork.Products.Get(product.ProductId);
                 total += productDetail.Price * product.Quantity;
+            }
+
+            foreach(var customization in cart.Customizations){
+                var details = _unitOfWork.Customizations.Get(customization.CustomizationId);
+                total += details.Price;  
             }
 
             var PaymentProvider  = providers["paymentProvider"].ParseEnum<Order.PaymentProviders>();
@@ -504,6 +511,22 @@ namespace API.Controllers
                     order.Products = new List<OrderProduct>();
                 }
 
+                var customizations = cart.Customizations.Where(c => c.ProductId == product.ProductId).ToList();
+
+                foreach(var customization in customizations){
+                    if(order.Customizations == null){
+
+                        order.Customizations = new List<OrderCustomization>();
+                    }
+
+                    order.Customizations.Add( new OrderCustomization {
+                        OrderId = order.OrderId,
+                        ProductId = product.ProductId,
+                        CustomizationId = customization.CustomizationId
+                    });
+
+                    cart.Customizations.Remove(customization); 
+                }
                 order.Products.Add(new OrderProduct
                 {
                     ProductId = product.ProductId,

@@ -9,8 +9,12 @@ namespace API.Services
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<ShoppingCart> Carts { get; set; }
+
+        public DbSet<Order> Orders {get;set;}
         public DbSet<ShoppingCartCustomizations> ShoppingCartCustomizations {get; set;}
         public DbSet<OrderProduct> OrderProducts { get; set;}
+
+        public DbSet<OrderCustomization> OrderCustomizations {get;set;}
         public DbSet<Auction> Auctions { get;set; }
         public DbSet<Bid> Bid { get;set; }
         public DbSet<CustomizationProduct> CustomizationProducts {get; set;}
@@ -35,6 +39,9 @@ namespace API.Services
 
             modelBuilder.Entity<OrderProduct>()
                 .HasKey(o => new { o.OrderId, o.ProductId});
+
+            modelBuilder.Entity<OrderCustomization>()
+                .HasKey(o => new {o.OrderId, o.ProductId, o.CustomizationId}); 
 
             modelBuilder.Entity<CustomizationProduct>()
                 .HasKey(c => new {c.CustomizationId, c.ProductId}); 

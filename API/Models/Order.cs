@@ -9,6 +9,7 @@ namespace API.Models
         public string UserId { get; set; }
         public ApplicationUser User { get;set; }
         public List<OrderProduct> Products { get;set; }
+        public List<OrderCustomization> Customizations {get;set;}
         public float totalPrice { get;set; }
 
         [NotMapped]

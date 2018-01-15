@@ -9,10 +9,12 @@ namespace API.Services
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<ShoppingCart> Carts { get; set; }
+        public DbSet<ShoppingCartCustomizations> ShoppingCartCustomizations {get; set;}
         public DbSet<OrderProduct> OrderProducts { get; set;}
         public DbSet<Auction> Auctions { get;set; }
         public DbSet<Bid> Bid { get;set; }
         public DbSet<CustomizationProduct> CustomizationProducts {get; set;}
+
         public DbSet<Customization> Customization {get;set;}
 
         public WebshopContext(DbContextOptions<WebshopContext> options)
@@ -27,6 +29,9 @@ namespace API.Services
 
             modelBuilder.Entity<ShoppingCartProduct>()
                 .HasKey(s => new { s.ShoppingCartId, s.ProductId });
+
+            modelBuilder.Entity<ShoppingCartCustomizations>()
+                .HasKey(s => new {s.CustomizationId, s.ProductId, s.ShoppingCartId}); 
 
             modelBuilder.Entity<OrderProduct>()
                 .HasKey(o => new { o.OrderId, o.ProductId});

@@ -7,6 +7,7 @@ namespace API.Models
     {
         public int Id { get; set; }
         public List<CustomizationProduct> Products {get;set;}
+        public List<ShoppingCartCustomizations> ShoppingCarts {get;set;}
         public string Name {get;set;}
         public float Price {get; set;}
         public string Description{get; set;}

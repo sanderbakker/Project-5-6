@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-
+using System;
 using API.Models;
 using API.Services;
 
@@ -291,6 +291,44 @@ namespace API.Controllers
             }
             _unitOfWork.Complete();
             return new JsonResult("ok");
+        }
+        [HttpPost("users/{userId}/cart/{productId}/{customizationId}")]
+        public IActionResult AddCustomizationToProductInCart(string userId, int productId, int customizationId){
+            var user = _unitOfWork.Users.Get(userId).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
+            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);            
+            var shoppingCartProduct = cart.Products.Where(x => x.ProductId == productId).FirstOrDefault(); 
+
+            if(shoppingCartProduct == null){
+                return NotFound(); 
+            }
+            var product = _unitOfWork.Products.Get(shoppingCartProduct.ProductId); 
+
+            var customization = _unitOfWork.Customizations.Get(customizationId); 
+            if(customization == null){
+                return NotFound(); 
+            }
+
+            if(cart.Customizations == null){
+                cart.Customizations = new List<ShoppingCartCustomizations>(); 
+            }
+
+            cart.Customizations.Add( new ShoppingCartCustomizations {
+                Product = product,
+                ProductId = productId,
+                Customization = customization,
+                CustomizationId = customizationId,
+                ShoppingCart = cart,
+                ShoppingCartId = cartId
+            }); 
+
+            _unitOfWork.Complete();
+            return Ok(); 
         }
 
         [HttpPut("users/{userId}/cart/{productId}/{quantity}")]

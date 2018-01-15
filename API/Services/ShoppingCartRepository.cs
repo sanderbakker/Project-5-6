@@ -19,6 +19,12 @@ namespace API.Services
                 .FirstOrDefault();
         }
 
+        public ShoppingCart GetWithProductsAndCustomizations(int id){
+            return WebshopContext.Carts.Where(c => c.Id == id)
+                .Include(c => c.Products)
+                .Include(c => c.Customizations)
+                .FirstOrDefault();
+        }
         public WebshopContext WebshopContext
         {
             get { return _context as WebshopContext; }

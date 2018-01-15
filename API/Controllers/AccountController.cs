@@ -331,6 +331,36 @@ namespace API.Controllers
             return Ok(); 
         }
 
+        [HttpDelete("users/{userId}/cart/{productId}/{customizationId}")]
+        public IActionResult RemoveCustomizationFromProductInShoppingCart(string userId, int productId, int customizationId){
+            var user = _unitOfWork.Users.Get(userId).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var customization = _unitOfWork.Customizations.Get(customizationId);
+            if (customization == null)
+            {
+                return NotFound();
+            }            
+
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
+            var cart = _unitOfWork.ShoppingCarts.GetWithProductsAndCustomizations(cartId);
+            Console.WriteLine(cart.Customizations); 
+            var existingCustomization = cart.Customizations.Where(p => p.CustomizationId == customizationId).FirstOrDefault();
+
+            if (existingCustomization == null) {
+                return NotFound();
+            }
+            
+            cart.Customizations.Remove(existingCustomization);
+            
+            _unitOfWork.Complete();
+
+            return Ok();
+        }
+
         [HttpPut("users/{userId}/cart/{productId}/{quantity}")]
         public IActionResult UpdateCartProduct(string userId, int productId, int quantity) {
 

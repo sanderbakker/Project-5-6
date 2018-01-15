@@ -22,7 +22,6 @@ class OrderOverview extends Component {
 
             this.Orders.getStatuses().then(
                 (value) => {
-                    console.log(value);
                     this.setState({statuses: value});
                 }
             );

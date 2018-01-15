@@ -134,7 +134,6 @@ export default class Auction extends Component{
                     <tr>
                         <td><Input size="sm" onChange={this.handleBid} value={this.state.bid} type="number" id="bid" name="bid" min={this.state.highestBid + 1} placeholder={"Place bid > € " + this.state.highestBid}/></td>
                         <td>
-                            {console.log(this.state.bid)}
                             <Button size={"sm"} disabled={this.state.bid === "" ? true : false} onClick={this.placeBid}>Place bid</Button>
                         </td>
                     </tr>

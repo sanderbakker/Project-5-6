@@ -11,6 +11,7 @@ class ShoppingCart extends Component {
         this.User = new User();
         this.products = new Products(); 
         this.state = {products: [], fetching: true};
+        this.deleteCustomization = this.deleteCustomization.bind(this); 
     }
     
     
@@ -24,7 +25,8 @@ class ShoppingCart extends Component {
                         "id": i, 
                         "name": val.products[i]["name"],
                         "quantity": val.products[i]["quantity"],
-                        "price": val.products[i]["price"]
+                        "price": val.products[i]["price"],
+                        "customizations": val.products[i]["customizations"]
                     }
                     products[i] = product; 
                 }
@@ -42,6 +44,19 @@ class ShoppingCart extends Component {
                 (value) => {
                     this.setState({products: [], fetching: true});                    
                     this.loadCart()
+                }
+            );
+        }
+    }
+
+    deleteCustomization(productId, customizationId, productName){
+        let bool = window.confirm("Are you sure you want to remove this customization from " + productName);
+
+        if(bool) {
+            this.User.deleteCartCustomization(customizationId, productId).then(
+                (value) => {
+                    this.setState({products: [], fetching: true});
+                    this.loadCart(); 
                 }
             );
         }
@@ -87,17 +102,36 @@ class ShoppingCart extends Component {
                 {!this.state.fetching ? 
                     <Table hover={true}>
                     <tbody>
+                    <h5>Products</h5>
                     {this.state.products.map((item, i) => {
-                        
                     return (<tr key={i}>
                         <td>{item.id}</td>
                         <td>{item.name}</td>
                         <td>€ {item.price * item.quantity}</td>
                         <td><Input type="number" pattern="[0-9]" value={item.quantity} size="sm" className="sm-input" onChange={f => this.handleInputChange(f, i, item.id)}/></td>                    
                         <td><Button color="danger" size="sm" onClick={f => this.deleteProduct(i)}><i className="fa fa-minus"/></Button></td>
-                    </tr>)
+                        </tr>
+                    )
                     })
                     }
+                    <br/><h5>Customizations</h5>
+                    {this.state.products.map((item, i) => {
+                        
+                        return Object.entries(item.customizations).map(([key, value]) => {
+                        return (
+                        <tr>
+                            <td>{key}</td>
+                            <td>{item.id}</td>
+                            <td>{item.customizations[key].name}</td>
+                            <td>€ {item.customizations[key].price}</td>
+                            <td><Button color="danger" size="sm" onClick={f => this.deleteCustomization(item.id, key, item.name)}><i className="fa fa-minus"/></Button></td>
+                            
+                        </tr>)
+                        })
+                    
+                })}
+                        
+                    
                     <tr>
                         <td><b>Total</b></td>
                         <td></td>

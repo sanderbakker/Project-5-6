@@ -30,7 +30,6 @@ class ProductCard extends Component{
       }
 
     addProductToCart() {
-        this.notify("test", "success");
         this.User.addCartProduct(this.props.id);
         this.setState({showCart: true});
     }

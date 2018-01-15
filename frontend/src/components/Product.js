@@ -21,7 +21,6 @@ class Product extends Component {
     componentWillMount(){
         this.products.getProductWithCustomizations(this.props.id).then(
             (val) => {
-                console.log(val);
                 this.setState({currentProduct: val, fetching: false})
             }
         )
@@ -101,6 +100,7 @@ class Product extends Component {
                                         {this.state.currentProduct.customizations.map((item, i) => {
                                             return <CustomCard
                                                     description={item.description}
+                                                    productId={this.state.currentProduct.id}
                                                     name={item.name}
                                                     price={item.price}
                                                     key={item.id}

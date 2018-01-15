@@ -64,6 +64,15 @@ class User extends API{
         return this.delete('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _product_id); 
     }
 
+    addCartCustomization(_customizationId, _productId){
+        return this.post('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _productId + "/" + _customizationId); 
+    }
+
+    deleteCartCustomization(_customizationId, _productId){
+        return this.delete('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/cart/' + _productId + "/" + _customizationId); 
+        
+    }
+    
     cartToOrder(_data_array) {
         return this.post('/account/users/' + jwt_decode(sessionStorage.getItem('id_token'))['id'] + '/orders/add', _data_array);
     }

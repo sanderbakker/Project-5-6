@@ -25,7 +25,17 @@ class Order extends Component {
         );
         this.User.getCart().then(
             (value) => {
-                let products = Object.keys(value.products).map(function (key) { return value.products[key]; });
+                var products = [];
+                for(var i in value.products){ 
+                    var product = {
+                        "id": i, 
+                        "name": value.products[i]["name"],
+                        "quantity": value.products[i]["quantity"],
+                        "price": value.products[i]["price"],
+                        "customizations": value.products[i]["customizations"]
+                    }
+                    products[i] = product; 
+                }
                 this.setState({products: products, fetching: false, total_price: value.total_price, total_products: value.total_quantity});             
             }
         );
@@ -99,18 +109,33 @@ class Order extends Component {
                     {this.state.products.map((item, i) => {
                         
                     return (<tr key={i}>
+                        {console.log(item)}
                         <td>{item.id}</td>
                         <td>{item.name}</td>
-                        <td>€ {item.price * item.quantity}</td>
                         <td><Input type="number" pattern="[0-9]" value={item.quantity} size="sm" className="sm-input"/></td>                    
+                        <td>€ {item.price * item.quantity}</td>
                     </tr>)
                     })
                     }
+                    <br/>
+                    {this.state.products.map((item, i) => {
+                        
+                        return Object.entries(item.customizations).map(([key, value]) => {
+                        return (
+                        <tr>
+                            <td>{key}</td>
+                            <td>{item.name}</td>
+                            <td>{item.customizations[key].name}</td>
+                            <td>€ {item.customizations[key].price}</td>                            
+                        </tr>)
+                        })
+                    
+                    })}
                     <tr>
                         <td><b>Total</b></td>
                         <td></td>
-                        <td>€ {this.state.total_price}</td>
                         <td></td>
+                        <td>€ {this.state.total_price}</td>                        
                     </tr>
                   </tbody>
                  </Table>                 

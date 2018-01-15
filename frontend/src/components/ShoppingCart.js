@@ -121,7 +121,7 @@ class ShoppingCart extends Component {
                         return (
                         <tr>
                             <td>{key}</td>
-                            <td>{item.id}</td>
+                            <td>{item.name}</td>
                             <td>{item.customizations[key].name}</td>
                             <td>€ {item.customizations[key].price}</td>
                             <td><Button color="danger" size="sm" onClick={f => this.deleteCustomization(item.id, key, item.name)}><i className="fa fa-minus"/></Button></td>
@@ -129,7 +129,7 @@ class ShoppingCart extends Component {
                         </tr>)
                         })
                     
-                })}
+                    })}
                         
                     
                     <tr>

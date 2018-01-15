@@ -107,8 +107,8 @@ class ShoppingCart extends Component {
                     return (<tr key={i}>
                         <td>{item.id}</td>
                         <td>{item.name}</td>
-                        <td>€ {item.price * item.quantity}</td>
                         <td><Input type="number" pattern="[0-9]" value={item.quantity} size="sm" className="sm-input" onChange={f => this.handleInputChange(f, i, item.id)}/></td>                    
+                        <td>€ {item.price * item.quantity}</td>
                         <td><Button color="danger" size="sm" onClick={f => this.deleteProduct(i)}><i className="fa fa-minus"/></Button></td>
                         </tr>
                     )
@@ -135,8 +135,8 @@ class ShoppingCart extends Component {
                     <tr>
                         <td><b>Total</b></td>
                         <td></td>
-                        <td>€ {this.state.total_price}</td>
                         <td></td>
+                        <td>€ {this.state.total_price}</td>
                         <td></td>
                     </tr>
                   </tbody>

@@ -1,4 +1,4 @@
-import React, {Component, Image} from 'react'; 
+import React, {Component} from 'react'; 
 import {Card, Col, CardBody, CardImg, CardSubtitle, CardText, Button, ButtonGroup} from 'reactstrap'; 
 import AdminProductForm from './AdminProductForm.js'; 
 import Product from './Product.js'; 

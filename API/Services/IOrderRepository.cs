@@ -11,6 +11,7 @@ namespace API.Services
         IEnumerable<string> GetShipmentProviders();
         IEnumerable<string> GetStatuses();
         IQueryable GetWithProducts(int orderId);
+        IQueryable GetWithCustomizations(int orderId);
 
     }
 }

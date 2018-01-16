@@ -2,31 +2,55 @@ import React, {Component} from 'react';
 import {ModalFooter, ModalHeader, Modal, ModalBody, Form, FormGroup, Input, Label, Button} from 'reactstrap'; 
 import {Products} from '../classes/API/Products.js'; 
 import NotificationAlert from 'react-notification-alert'; 
+
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+ 
+import 'react-datepicker/dist/react-datepicker.css';
+
+
 class AdminProductForm extends Component {
     constructor(props){
         super(props);
-        this.state = {name: "", category: "", description: "", price: "", fetching: true, modal: false, stock: 0}
+        this.state = {listCustom: [], listCustomEdit:[], name: "", category: "", description: "", price: "", biddable: false, biddableStart: 0, fetching: true, fetchingCustomizations: true, modal: false, stock: 0}
         this.product = new Products(); 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFormChanges = this.handleFormChanges.bind(this); 
         this.onDismiss = this.onDismiss.bind(this); 
         this.toggle = this.toggle.bind(this); 
         this.notify = this.notify.bind(this); 
+        this.handleCustomizations = this.handleCustomizations.bind(this); 
+        this.removeCustomization = this.removeCustomization.bind(this); 
+        this.handleDateChange = this.handleDateChange.bind(this);
     }
 
     componentDidMount(){
         this.product.getCategories().then(
             (val) =>{ 
+                this.product.getAllCustomizations().then(
+                    (val) => {
+                        this.setState({customizations: val, fetchingCustomizations: false}); 
+                    }
+                ); 
                 this.setState({categories: val, fetching: false}) 
                 if(this.props.action === 'edit'){
-                    this.product.getProduct(this.props.id).then(
-                        (value) =>
-                            this.setState({name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false, stock: value.stock}) 
-                    )
+                    this.product.getProductWithCustomizations(this.props.id).then(
+                        (value) => {
+                            var tempList = []; 
+                            value.customizations.forEach(element => {
+                                tempList[element.id] = element;  
+                            });
+                            this.setState({listCustom: tempList, listCustomEdit: tempList, name: value.name, category: value.categoryString, price: value.price, description: value.description, fetching: false, stock: value.stock, biddable: value.auction, biddableDate: moment()}) 
+                        })
                 }
             }
         );
         
+
+    }
+
+    handleDateChange(date) {
+        this.setState({biddableDate: date});
     }
     
     handleFormChanges(e){
@@ -47,18 +71,27 @@ class AdminProductForm extends Component {
         }
         else if(e.target.name === 'stock'){
             this.setState({stock: e.target.value}); 
+        } 
+        else if(e.target.name === 'biddable') {
+            if(!this.state.biddable)
+                this.setState({biddable: true, biddableDate: moment().add(1, 'd')})
+            else 
+                this.setState({biddable: false})
         }
     }
 
     handleSubmit(){
         if(this.state.name !== "" && this.state.price !== "" && this.state.description !== "" && this.state.category !== ""){
             if(this.props.action === 'add'){
-                this.product.addProduct(this.state.price, this.state.description, this.state.category, this.state.name, this.state.stock)
+                this.product.addProduct(this.state.price, this.state.description, this.state.category, this.state.name, this.state.stock, this.state.biddable)
                 .then(
                     (val) => {
                         if(val.id === undefined){
                             this.setState({failed: true});  
                         }
+                        if(this.state.biddable)
+                            this.product.addAuction(val.id, this.state.biddableDate).then(console.log('ok'));
+
                         this.toggle();
                         this.notify("Added product: " + this.state.name, "success")
                         this.setState({visible: true, name: "", category: "", price: "", description: "", stock: 0}); 
@@ -67,14 +100,20 @@ class AdminProductForm extends Component {
                 )
             }
             else if(this.props.action === 'edit'){
-                this.product.updateProduct(this.props.id, this.state.description, this.state.price, this.state.category, this.state.name, this.state.stock).then(
+                this.product.updateProduct(this.props.id, this.state.description, this.state.price, this.state.category, this.state.name, this.state.stock, this.state.biddable).then(
                     (val) => {
                         if(val.ok && val.status === 204){
                             this.setState({visible: true});
+
+
+                            if(this.state.biddable)
+                                 this.product.addAuction(this.props.id, this.state.biddableDate).then(console.log('ok'));   
+
                             this.toggle(); 
                             this.notify("Edited product: " + this.state.name +  " (" + this.props.id + ")", "success")
                             this.props.products(); 
-                            this.props.highlight(this.props.id); 
+                            this.props.highlight(this.props.id);  
+                            this.props.updateProducts();                        
                         }
                         else{
                             this.setState({failed: true})
@@ -84,9 +123,15 @@ class AdminProductForm extends Component {
             }
 
             if(this.state.images && this.props.id) {
-                for (var i = 0; i < this.state.images.length; i++) {
-                    this.product.addImage(this.props.id, this.state.images[i]);
+                for (var i = 0; i < 3; i++) {
+                    this.product.addImage(this.props.id, this.state.images[i], i);
                 }
+            }
+
+            if(this.state.listCustom.length !== 0){
+                this.state.listCustom.forEach(element => {
+                    this.product.addCustomizationToProduct(element.id, this.props.id); 
+                })
             }
 
         }
@@ -120,8 +165,40 @@ class AdminProductForm extends Component {
         this.refs.notify.notificationAlert(options);
     }
 
+    handleCustomizations(e){
+        var tempList = this.state.listCustom; 
+        var checkList = false; 
+        
+        tempList.forEach(element => {
+            if(element.id === e.id){
+                checkList = true; 
+            }
+        });
+        
+        if(checkList === false){
+            tempList[e.id] = e; 
+        }
+
+        this.setState({listCustom: tempList});
+    }
+
+    removeCustomization(itemId){
+        var confirm = window.confirm("Are you sure you want to delete this customization for this product? (It will be remove immediately)"); 
+        if(confirm){
+            var tempList = this.state.listCustom;
+
+            delete tempList[itemId]; 
+        
+            if(this.props.action === "edit"){             
+                this.product.deleteCustomization(this.props.id, itemId);
+            }
+
+            this.setState({listCustom: tempList}); 
+        }
+    }
+
     render(){
-        if(this.state.fetching){
+        if(this.state.fetching || this.state.fetchingCustomizations){
             return(
                 <div></div>
             );      
@@ -198,6 +275,27 @@ class AdminProductForm extends Component {
                                         return <option key={item}>{item}</option> 
                                     })}
                                 </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="customziationLabel">Customizations</Label>
+                                <Input 
+                                    size="sm"
+                                    type="select"
+                                    name="customization"
+                                    id="customizationLabel"
+                                    placeholder="Select one or more customization"
+                                    onChange={this.handleCustomizations}
+                                    >
+                                    <option></option>
+                                    {this.state.customizations.map((item, i) => {
+                                        return <option onClick={() => this.handleCustomizations(item)} key={item.id}>{item.name}</option>
+                                    })}
+                                </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                {this.state.listCustom.map((item, i) => {
+                                    return <div key={item.id}>{item.name} <i onClick={() => this.removeCustomization(item.id)}className="fa fa-minus pull-right"></i></div>
+                                })}
                             </FormGroup>
                             <FormGroup>
                                 <Label for="imageLabel">Images</Label>
@@ -292,6 +390,27 @@ class AdminProductForm extends Component {
                                 })}
                             </Input>
                         </FormGroup>
+                        <FormGroup check>
+                                <Label check>
+                                <Input 
+                                    type="checkbox"
+                                    name="biddable"
+                                    checked={this.state.biddable}
+                                    onChange={this.handleFormChanges}
+                                />                                                                
+                                </Label>   
+                                {' '}
+                                Open for bidding                               
+                            </FormGroup>
+                        {this.state.biddable ?
+                        <FormGroup>
+                                <DatePicker
+                                    name="biddableDate"
+                                    selected={this.state.biddableDate}
+                                    onChange={this.handleDateChange}                                    
+                                />
+                        </FormGroup>                                
+                        : null}                                                    
                         <FormGroup>
                             <Label for="imageLabel">Images</Label>
                             <Input 

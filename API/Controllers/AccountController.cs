@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-
+using System;
 using API.Models;
 using API.Services;
 
@@ -193,12 +193,20 @@ namespace API.Controllers
             }            
 
             var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
-            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
+            var cart = _unitOfWork.ShoppingCarts.GetWithProductsAndCustomizations(cartId);
 
             var existingProduct = cart.Products.Where(p => p.ProductId == productId).FirstOrDefault();
 
+            var customizations = cart.Customizations.Where(p => p.ProductId == productId && p.ShoppingCartId == cartId).ToArray(); 
+
             if (existingProduct == null) {
                 return NotFound();
+            }
+            
+            if(customizations != null){
+                foreach(var item in customizations){
+                    cart.Customizations.Remove(item); 
+                }
             }
 
             existingProduct.Product.Stock += existingProduct.Quantity; 
@@ -219,25 +227,43 @@ namespace API.Controllers
                 return NotFound();
             }
             var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
-            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
+            var cart = _unitOfWork.ShoppingCarts.GetWithProductsAndCustomizations(cartId);
 
             var result = new Dictionary<string, dynamic>();
             float totalPrice = 0;
             float totalQuantity = 0;
-            var products = new Dictionary<int, Dictionary<string, string>>();
+            var products = new Dictionary<int, Dictionary<string, dynamic>>();
             foreach (var product in cart.Products)
             {
                 var productDetail = _unitOfWork.Products.Get(product.ProductId);
+                var customizations = cart.Customizations.Where(p => p.ProductId == product.ProductId);
+                var customizationsDict = new Dictionary<int, Dictionary<string, string>>();  
+
                 totalPrice      += productDetail.Price * product.Quantity;
                 totalQuantity   += product.Quantity;
 
-                var productDetailDict = new Dictionary<string, string>();
+                foreach(var customization in customizations){
+                    var currentCustomizaton = _unitOfWork.Customizations.Get(customization.CustomizationId); 
+                    
+                    var customizationDetails = new Dictionary<string, string>();                 
+                    
+                    customizationDetails.Add("name", currentCustomizaton.Name);
+                    customizationDetails.Add("price", currentCustomizaton.Price.ToString());
+                    
+                    customizationsDict.Add(currentCustomizaton.Id, customizationDetails); 
+
+                    totalPrice += currentCustomizaton.Price; 
+                }
+
+                var productDetailDict = new Dictionary<string, dynamic>();
                     productDetailDict.Add("name", productDetail.Name);
                     productDetailDict.Add("price", productDetail.Price.ToString());
                     productDetailDict.Add("quantity", product.Quantity.ToString());
-
-
+                    productDetailDict.Add("customizations", customizationsDict); 
+                    
+                
                 products.Add(product.ProductId, productDetailDict);
+                
             }
 
             result.Add("total_price", totalPrice.ToString());
@@ -291,6 +317,78 @@ namespace API.Controllers
             }
             _unitOfWork.Complete();
             return new JsonResult("ok");
+        }
+        [HttpPost("users/{userId}/cart/{productId}/{customizationId}")]
+        public IActionResult AddCustomizationToProductInCart(string userId, int productId, int customizationId){
+            var user = _unitOfWork.Users.Get(userId).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
+            var cart = _unitOfWork.ShoppingCarts.GetWithProductsAndCustomizations(cartId);            
+            var shoppingCartProduct = cart.Products.Where(x => x.ProductId == productId).FirstOrDefault(); 
+
+            if(shoppingCartProduct == null){
+                return NotFound(); 
+            }
+            var product = _unitOfWork.Products.Get(shoppingCartProduct.ProductId); 
+
+            var customization = _unitOfWork.Customizations.Get(customizationId); 
+            if(customization == null){
+                return NotFound(); 
+            }
+
+            if(cart.Customizations == null){
+                cart.Customizations = new List<ShoppingCartCustomizations>(); 
+            }
+
+            var existingCustomization = cart.Customizations.Where(p => p.CustomizationId == customizationId).FirstOrDefault();
+            
+            if(existingCustomization == null) {
+                cart.Customizations.Add( new ShoppingCartCustomizations {
+                    Product = product,
+                    ProductId = productId,
+                    Customization = customization,
+                    CustomizationId = customizationId,
+                    ShoppingCart = cart,
+                    ShoppingCartId = cartId
+                }); 
+            }
+
+            _unitOfWork.Complete();
+            return Ok(); 
+        }
+
+        [HttpDelete("users/{userId}/cart/{productId}/{customizationId}")]
+        public IActionResult RemoveCustomizationFromProductInShoppingCart(string userId, int productId, int customizationId){
+            var user = _unitOfWork.Users.Get(userId).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var customization = _unitOfWork.Customizations.Get(customizationId);
+            if (customization == null)
+            {
+                return NotFound();
+            }            
+
+            var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;
+            var cart = _unitOfWork.ShoppingCarts.GetWithProductsAndCustomizations(cartId);
+
+            var existingCustomization = cart.Customizations.Where(p => p.CustomizationId == customizationId).FirstOrDefault();
+
+            if (existingCustomization == null) {
+                return NotFound();
+            }
+            
+            cart.Customizations.Remove(existingCustomization);
+            
+            _unitOfWork.Complete();
+
+            return Ok();
         }
 
         [HttpPut("users/{userId}/cart/{productId}/{quantity}")]
@@ -354,6 +452,7 @@ namespace API.Controllers
             }
             var order = user.Orders.Find(o => o.OrderId == orderId);
             var orderProducts = _unitOfWork.Orders.GetWithProducts(orderId);
+            var orderCustomizations = _unitOfWork.Orders.GetWithCustomizations(orderId);
             
 
             var returnArray = new Dictionary<string, object>();              
@@ -362,6 +461,7 @@ namespace API.Controllers
             returnArray.Add("payment_provider", order.PaymentProviderString);
             returnArray.Add("total_price", order.totalPrice);
             returnArray.Add("products", orderProducts);
+            returnArray.Add("customizations", orderCustomizations); 
 
             return new JsonResult(returnArray);
         }
@@ -376,13 +476,18 @@ namespace API.Controllers
             }
 
             var cartId = _unitOfWork.ShoppingCarts.Find(s => s.User.Id == user.Id).FirstOrDefault().Id;            
-            var cart = _unitOfWork.ShoppingCarts.GetWithProducts(cartId);
+            var cart = _unitOfWork.ShoppingCarts.GetWithProductsAndCustomizations(cartId);
             float total = 0;
 
             foreach (var product in cart.Products)
             {
                 var productDetail = _unitOfWork.Products.Get(product.ProductId);
                 total += productDetail.Price * product.Quantity;
+            }
+
+            foreach(var customization in cart.Customizations){
+                var details = _unitOfWork.Customizations.Get(customization.CustomizationId);
+                total += details.Price;  
             }
 
             var PaymentProvider  = providers["paymentProvider"].ParseEnum<Order.PaymentProviders>();
@@ -406,6 +511,22 @@ namespace API.Controllers
                     order.Products = new List<OrderProduct>();
                 }
 
+                var customizations = cart.Customizations.Where(c => c.ProductId == product.ProductId).ToList();
+
+                foreach(var customization in customizations){
+                    if(order.Customizations == null){
+
+                        order.Customizations = new List<OrderCustomization>();
+                    }
+
+                    order.Customizations.Add( new OrderCustomization {
+                        OrderId = order.OrderId,
+                        ProductId = product.ProductId,
+                        CustomizationId = customization.CustomizationId
+                    });
+
+                    cart.Customizations.Remove(customization); 
+                }
                 order.Products.Add(new OrderProduct
                 {
                     ProductId = product.ProductId,

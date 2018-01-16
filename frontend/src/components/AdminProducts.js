@@ -161,10 +161,12 @@ class AdminProducts extends Component {
                                 name= {item.name}
                                 admin={true}
                                 description = {item.description}
+                                image1= {item.image1}
                                 price={item.price}
                                 category={item.category}
                                 delete={this.deleteProduct}
                                 updateProducts = {this.getAmountOfProducts}
+                                isAuction={item.auction}                                
                             />
                         })} 
                 </Row>

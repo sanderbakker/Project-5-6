@@ -7,5 +7,6 @@ namespace API.Models
         public int Id { get; set; }
         public ApplicationUser User { get; set; }
         public List<ShoppingCartProduct> Products { get; set; }
+        public List<ShoppingCartCustomizations> Customizations {get; set;}
     }
 }

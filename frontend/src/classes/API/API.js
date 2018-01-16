@@ -31,7 +31,6 @@ class API {
 			},
 			body: JSON.stringify(_data)
 		})
-
 		try {
 			return response.json();			
 		} catch (e) {

@@ -14,13 +14,13 @@ class ProductCard extends Component{
     
         this.toggle = this.toggle.bind(this);
         this.state = {
-          dropdownOpen: false
+          dropdownOpen: false,
         };
 
         this.User = new User();
         this.highlightItem = this.highlightItem.bind(this); 
-        this.notify = this.notify.bind(this);
-      }
+        this.notify = this.notify.bind(this);    
+    }
     
     
       toggle() {
@@ -30,7 +30,6 @@ class ProductCard extends Component{
       }
 
     addProductToCart() {
-        this.notify("test", "success");
         this.User.addCartProduct(this.props.id);
         this.setState({showCart: true});
     }
@@ -67,7 +66,7 @@ class ProductCard extends Component{
                 <NotificationAlert ref="notify" />
                     <Card id={this.props.id}>
                         <ShoppingCart isOpen={this.state.showCart} onHide={f => this.toggleShoppingCart()} />                        
-                        <CardImg top width="100%" height='130px' src="http://via.placeholder.com/300x130" alt="Placeholder image" />   
+                        <CardImg top width="100%" height='130px' src={"data:image/jpg;base64," + this.props.image1} alt="Placeholder image" /> 
                         <CardBody>
                             <CardSubtitle><b>{this.props.name}</b>
                             </CardSubtitle>
@@ -98,14 +97,20 @@ class ProductCard extends Component{
                                 {this.props.admin ? 
                                 <AdminProductForm highlight={this.highlightItem} id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
                                 : ""}
-
-                                {this.props.quantity > 0 ? 
-                                <Button onClick={f => this.addProductToCart()} size="sm" color="success" className="float-right line-height-edit">
-                                    <i className="fa fa-shopping-cart"/>
-                                </Button>
-                                : <Button onClick={() => this.notify(this.props.name + " is not in stock", "warning")} size="sm" color="success" className="float-right line-height-edit">
-                                    <i className="fa fa-shopping-cart"/>
+                                {this.props.isAuction ? 
+                                    <Button onClick={this.toggle} size="sm" color="warning">                                        
+                                        <i className="fa fa-legal"/>
+                                    </Button>                            
+                                : [
+                                    (this.props.quantity > 0 ? 
+                                    <Button onClick={f => this.addProductToCart()} size="sm" color="success" className="float-right line-height-edit">
+                                        <i className="fa fa-shopping-cart"/>
                                     </Button>
+                                    : <Button onClick={() => this.notify(this.props.name + " is not in stock", "warning")} size="sm" color="success" className="float-right line-height-edit">
+                                        <i className="fa fa-shopping-cart"/>
+                                        </Button>
+                                    )
+                                 ]
                                 }
                             </ButtonGroup>               
                         </CardBody>

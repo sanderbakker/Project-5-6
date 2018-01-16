@@ -11,9 +11,10 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    partial class WebshopContextModelSnapshot : ModelSnapshot
+    [Migration("20171220075827_Initial migration")]
+    partial class Initialmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,8 +84,6 @@ namespace API.Migrations
                     b.Property<int>("AuctionId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CloseOn");
-
                     b.Property<int>("ProductId");
 
                     b.Property<float>("startingPrice");
@@ -101,7 +100,7 @@ namespace API.Migrations
                     b.Property<int>("BidId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AuctionId");
+                    b.Property<int?>("AuctionId");
 
                     b.Property<float>("Price");
 
@@ -140,6 +139,8 @@ namespace API.Migrations
 
                     b.Property<int>("ProductId");
 
+                    b.Property<int>("Id");
+
                     b.HasKey("CustomizationId", "ProductId");
 
                     b.HasIndex("ProductId");
@@ -169,24 +170,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("API.Models.OrderCustomization", b =>
-                {
-                    b.Property<int>("OrderId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<int>("CustomizationId");
-
-                    b.HasKey("OrderId", "ProductId", "CustomizationId");
-
-                    b.HasIndex("CustomizationId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderCustomizations");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("API.Models.OrderProduct", b =>
@@ -248,23 +232,6 @@ namespace API.Migrations
                         .IsUnique();
 
                     b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("API.Models.ShoppingCartCustomizations", b =>
-                {
-                    b.Property<int>("CustomizationId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<int>("ShoppingCartId");
-
-                    b.HasKey("CustomizationId", "ProductId", "ShoppingCartId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ShoppingCartId");
-
-                    b.ToTable("ShoppingCartCustomizations");
                 });
 
             modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>
@@ -423,8 +390,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.Auction")
                         .WithMany("Biddings")
-                        .HasForeignKey("AuctionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AuctionId");
                 });
 
             modelBuilder.Entity("API.Models.CustomizationProduct", b =>
@@ -447,24 +413,6 @@ namespace API.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("API.Models.OrderCustomization", b =>
-                {
-                    b.HasOne("API.Models.Customization", "Customization")
-                        .WithMany()
-                        .HasForeignKey("CustomizationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.Order", "Order")
-                        .WithMany("Customizations")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("API.Models.OrderProduct", b =>
                 {
                     b.HasOne("API.Models.Order", "Order")
@@ -483,24 +431,6 @@ namespace API.Migrations
                     b.HasOne("API.Models.ApplicationUser", "User")
                         .WithOne("ShoppingCart")
                         .HasForeignKey("API.Models.ShoppingCart", "UserId");
-                });
-
-            modelBuilder.Entity("API.Models.ShoppingCartCustomizations", b =>
-                {
-                    b.HasOne("API.Models.Customization", "Customization")
-                        .WithMany("ShoppingCarts")
-                        .HasForeignKey("CustomizationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.Product", "Product")
-                        .WithMany("ShoppingCartCustomizations")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.ShoppingCart", "ShoppingCart")
-                        .WithMany("Customizations")
-                        .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("API.Models.ShoppingCartProduct", b =>

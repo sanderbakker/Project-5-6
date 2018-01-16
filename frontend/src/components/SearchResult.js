@@ -91,7 +91,11 @@ class SearchResult extends Component {
 												name={item.name} 
 												quantity={item.stock}
 												description={item.description}
-												price={item.price} />
+												image1={item.image1}
+												price={item.price} 
+												isAuction={item.auction}
+												
+												/>
 							})}
 							{this.state.products && this.state.products.length === 0 ?
 								<p>Product not found</p>

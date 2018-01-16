@@ -11,8 +11,8 @@ using System;
 namespace API.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    [Migration("20171206082513_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20180109141157_Added closeOn to bidding")]
+    partial class AddedcloseOntobidding
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,15 +79,92 @@ namespace API.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("API.Models.Auction", b =>
+                {
+                    b.Property<int>("AuctionId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CloseOn");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<float>("startingPrice");
+
+                    b.HasKey("AuctionId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Auctions");
+                });
+
+            modelBuilder.Entity("API.Models.Bid", b =>
+                {
+                    b.Property<int>("BidId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AuctionId");
+
+                    b.Property<float>("Price");
+
+                    b.Property<DateTime>("Time");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("BidId");
+
+                    b.HasIndex("AuctionId");
+
+                    b.ToTable("Bid");
+                });
+
+            modelBuilder.Entity("API.Models.Customization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("AddedAt");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name");
+
+                    b.Property<float>("Price");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customization");
+                });
+
+            modelBuilder.Entity("API.Models.CustomizationProduct", b =>
+                {
+                    b.Property<int>("CustomizationId");
+
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("CustomizationId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CustomizationProducts");
+                });
+
             modelBuilder.Entity("API.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("PaymentProviderString")
+                        .HasColumnName("PaymentProvider");
+
+                    b.Property<string>("ShippingProviderString")
+                        .HasColumnName("ShippingProvider");
+
                     b.Property<string>("StatusString")
                         .HasColumnName("Status");
 
                     b.Property<string>("UserId");
+
+                    b.Property<float>("totalPrice");
 
                     b.HasKey("OrderId");
 
@@ -108,7 +185,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProduct");
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("API.Models.Product", b =>
@@ -118,14 +195,24 @@ namespace API.Migrations
 
                     b.Property<DateTime>("AddedAt");
 
+                    b.Property<bool>("Auction");
+
                     b.Property<string>("CategoryString")
                         .HasColumnName("Category");
 
                     b.Property<string>("Description");
 
+                    b.Property<byte[]>("Image1");
+
+                    b.Property<byte[]>("Image2");
+
+                    b.Property<byte[]>("Image3");
+
                     b.Property<string>("Name");
 
                     b.Property<float>("Price");
+
+                    b.Property<int>("Stock");
 
                     b.HasKey("Id");
 
@@ -289,6 +376,35 @@ namespace API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("API.Models.Auction", b =>
+                {
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("API.Models.Bid", b =>
+                {
+                    b.HasOne("API.Models.Auction")
+                        .WithMany("Biddings")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("API.Models.CustomizationProduct", b =>
+                {
+                    b.HasOne("API.Models.Customization", "Customization")
+                        .WithMany("Products")
+                        .HasForeignKey("CustomizationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany("Customizations")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("API.Models.Order", b =>

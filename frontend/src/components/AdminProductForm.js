@@ -297,26 +297,6 @@ class AdminProductForm extends Component {
                                     return <div key={item.id}>{item.name} <i onClick={() => this.removeCustomization(item.id)}className="fa fa-minus pull-right"></i></div>
                                 })}
                             </FormGroup>
-                            <FormGroup check>
-                                <Label check>
-                                <Input 
-                                    type="checkbox"
-                                    name="biddable"
-                                    checked={this.state.biddable}
-                                    onChange={this.handleFormChanges}
-                                />
-                                {' '}
-                                Open for bidding                                                                
-                                </Label>                                
-                            </FormGroup>
-                            {this.state.biddable ?
-                            <FormGroup check>
-                                <DatePicker
-                                    selected={this.state.startDate}
-                                    onChange={this.handleDateChange}                                    
-                                />
-                            </FormGroup>                                
-                            : null}
                             <FormGroup>
                                 <Label for="imageLabel">Images</Label>
                                 <Input 

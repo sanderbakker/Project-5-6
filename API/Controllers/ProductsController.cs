@@ -442,6 +442,55 @@ namespace API.Controllers
             return new JsonResult("ok"); 
         }
 
+        [HttpGet("auctions/update")]
+        public IActionResult updateAuctions() {
+            var auctions = _unitOfWork.Auction.GetAll();
+
+            foreach (var auction in auctions)
+            {
+                if(auction.CloseOn >= DateTime.Now) {
+                    // select highest bidding
+                    if(auction.Biddings == null) {
+                        continue;
+                    }
+
+                    var winner = auction.Biddings.OrderByDescending((b) => b.Price).Take(1).FirstOrDefault();
+                    var user = _unitOfWork.Users.Get(winner.UserId).Result;
+
+                    var PaymentProvider  = "PostNL".ParseEnum<Order.PaymentProviders>();
+                    var ShippingProvider = "Bank".ParseEnum<Order.ShippingProviders>(); 
+                    var Status = "Processing".ParseEnum<Order.Statuses>();
+
+                    user.Orders.Add(new Order
+                        {
+                            PaymentProvider = PaymentProvider,
+                            ShippingProvider = ShippingProvider,
+                            Status = Status,
+                            totalPrice = winner.Price
+                        }
+                    );
+                    var order = user.Orders.LastOrDefault();
+
+                    if (order.Products == null)
+                    {
+                        order.Products = new List<OrderProduct>();
+                    }
+
+                    order.Products.Add(new OrderProduct
+                    {
+                        ProductId = auction.ProductId,
+                        OrderId = order.OrderId,
+                        Quantity = 1
+                    });                    
+
+                    _unitOfWork.Orders.Add(order);
+                    _unitOfWork.Complete();                              
+                }
+            }
+
+            return Ok();           
+        }
+
         [HttpGet("customizations/amount")]
         public IActionResult CountCustomizations(){
             return Ok(_unitOfWork.Customizations.Amount()); 

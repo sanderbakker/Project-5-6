@@ -113,7 +113,6 @@ class AdminProductForm extends Component {
                             this.notify("Edited product: " + this.state.name +  " (" + this.props.id + ")", "success")
                             this.props.products(); 
                             this.props.highlight(this.props.id);  
-                            this.props.updateProducts();                        
                         }
                         else{
                             this.setState({failed: true})
@@ -411,7 +410,7 @@ class AdminProductForm extends Component {
                                 />
                         </FormGroup>                                
                         : null}                                                    
-                        <FormGroup>
+                        {/* <FormGroup>
                             <Label for="imageLabel">Images</Label>
                             <Input 
                                 size='sm' 
@@ -420,7 +419,7 @@ class AdminProductForm extends Component {
                                 onChange={this.handleFormChanges} 
                                 name="images" 
                                 id="imageLabel" />
-                        </FormGroup>
+                        </FormGroup> */}
                     </Form>
                     </ModalBody>
                     <ModalFooter>

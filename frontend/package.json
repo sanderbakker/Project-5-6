@@ -9,23 +9,33 @@
     "in-array": "^0.1.2",
     "jquery": "^3.2.1",
     "jwt-decode": "^2.2.0",
+    "nodemon": "^1.14.11",
     "popper": "^1.0.0",
     "react": "^16.0.0-beta.5",
     "react-bootstrap": "^0.31.3",
     "react-datepicker": "^1.0.4",
     "react-dom": "^16.0.0",
+    "react-icons": "^2.2.7",
     "react-native": "^0.49.3",
     "react-notification-alert": "0.0.4",
     "react-router-dom": "^4.2.2",
     "react-router-with-props": "^0.1.1",
     "react-scripts": "1.0.14",
     "react-ultimate-pagination-bootstrap-4": "^1.0.2",
-    "reactstrap": "^5.0.0-alpha.3"
+    "reactstrap": "^5.0.0-alpha.3",
+    "socket.io": "^2.0.4",
+    "uuid": "^3.2.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "nodemon src/chat-server/index.js"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.14.11"
   }
+  
 }

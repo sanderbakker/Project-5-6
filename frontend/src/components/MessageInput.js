@@ -64,7 +64,7 @@ export default class MessageInput extends Component {
 							value = { message } 
 							autoComplete={'off'}
 							placeholder="Type something to send"
-							onKeyUp={(e)=>{ e.keyCode !== 13 && this.sendTyping() }}
+							onKeyUp={(e)=>{ e.keyCode !== 13 }}
 							onChange = {
 								({target})=>{
 									this.setState({message:target.value})

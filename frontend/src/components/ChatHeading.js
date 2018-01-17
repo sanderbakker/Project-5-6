@@ -5,17 +5,18 @@ import MdEllipsisMenu from 'react-icons/lib/md/keyboard-control'
 
 export default function({name, numberOfUsers}) {
     return(
-        <h5 className="chat-header">
+        <div className="chat-header">
             <div className="user-info">
-                <div className="user-name">{name} 
-                    <i class="fa fa-user-plus pull-right"></i>                
-                </div>
+                <div className="user-name">{name}</div>
                 <div className="status">
                     <div className={`indicator`}></div>
                 	<span>{numberOfUsers ? numberOfUsers : null}</span>
                 </div>
             </div>
-            
-        </h5>
+            <div className="options">
+                <FAUserPlus />
+                <MdEllipsisMenu />
+            </div>
+        </div>
     );
 } 

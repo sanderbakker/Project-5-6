@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { clearInterval } from 'timers';
-import {Form, FormGroup, Input, Button, Row, Col} from 'reactstrap';
-
 export default class MessageInput extends Component {
     constructor(props) {
 	   super(props);
@@ -54,17 +52,14 @@ export default class MessageInput extends Component {
     render(){
         const { message } = this.state
         return(           
-					<Form  
+			<div className="message-input">
+					<form  
 						onSubmit={this.handleSubmit}
 					    className="message-form">
-                        <FormGroup>
-                            <Row>
-                                <Col md={8}>
-                        <Input 
+						<input 
 							id="message"
 							ref={"messageinput"}
-                            type="text" 
-                            size={"sm"}
+							type="text" 
 							className="form-control"
 							value = { message } 
 							autoComplete={'off'}
@@ -75,22 +70,14 @@ export default class MessageInput extends Component {
 									this.setState({message:target.value})
 								}
 							}/>
-                        </Col>
-                        <Col md={4}>
-                        <Button 
+						<button 
 							disabled={ message.length < 1} 
 							type="submit" 
-    						className="send pull-right"
-                            size="sm"
-                            >
+    						className="send">
                             Send
-						</Button>
-                        </Col>
-                        </Row>
-
-                        </FormGroup>
-						
-					</Form>
+						</button>
+					</form>
+				</div>
 				
 		);
 	}

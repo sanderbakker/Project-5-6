@@ -95,7 +95,7 @@ class ProductCard extends Component{
 
                             <ButtonGroup size="sm" className="float-right ">
                                 {this.props.admin ? 
-                                <AdminProductForm highlight={this.highlightItem} id={this.props.id} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
+                                <AdminProductForm highlight={this.highlightItem} id={this.props.id} force={this.props.forceUpdate} products={this.props.updateProducts} action="edit">Edit</AdminProductForm>
                                 : ""}
                                 {this.props.isAuction ? 
                                     <Button onClick={this.toggle} size="sm" color="warning">                                        

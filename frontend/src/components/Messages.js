@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Row, Col} from 'reactstrap'; 
 
 export default class Messages extends Component {
     constructor(props){
@@ -29,15 +28,15 @@ export default class Messages extends Component {
                     {
                         messages.map((mes)=>{
                             return( 
-                            <Col md={12} 
+                            <div 
                                 key={mes.id} 
                                 className={`message-container ${mes.sender === user.name && 'right'}`}>
-                                <div className="time">{mes.time} - {mes.sender}</div>
+                                <div className="time">{mes.time}</div>
                                 <div className="data">
                                     <div className="message">{mes.message}</div>
+                                    <div className="name">{mes.sender}</div>
                                 </div>
-                                <hr className="hr-without-margin"/>
-                            </Col>)
+                            </div>)
                         })
                     }
                     {

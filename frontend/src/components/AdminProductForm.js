@@ -113,6 +113,7 @@ class AdminProductForm extends Component {
                             this.notify("Edited product: " + this.state.name +  " (" + this.props.id + ")", "success")
                             this.props.products(); 
                             this.props.highlight(this.props.id);  
+                            this.props.force(); 
                         }
                         else{
                             this.setState({failed: true})

@@ -265,31 +265,5 @@ footer a:hover{
     padding: 10px;
     border-radius: 5px;
 }
-.thread-container{
-    flex-grow:1;
-    overflow-y:scroll;
-    position:relative !important;
-}
 
-.thread-container .thread{
-    position:relative !important;
-    width:100%;
-    min-height:200px;
-    max-height: 250px;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-    /* color:#b3b2ca; */
-    /* background:#dcddf5 */
-}
 
-.heading{
-    margin-top: 15px; 
-}
-.chat-room-container{
-    margin-top: 15px; 
-}
-.hr-without-margin {
-    margin-top: 0px !important;
-    margin-bottom: 5px !important; 
-}

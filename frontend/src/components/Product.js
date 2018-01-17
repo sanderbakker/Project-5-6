@@ -16,9 +16,13 @@ class Product extends Component {
         this.toggle = this.toggle.bind(this); 
         this.showCart = false;
         this.User = new User();
+        this.triggerProduct = this.triggerProduct.bind(this);
     }
 
     componentWillMount(){
+        this.triggerProduct(); 
+    }
+    triggerProduct(){
         this.products.getProductWithCustomizations(this.props.id).then(
             (val) => {
                 this.setState({currentProduct: val, fetching: false})

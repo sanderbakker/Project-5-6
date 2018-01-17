@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { VERIFY_USER } from '../chat-server/Events'
-import {Button} from 'reactstrap'; 
 
 export default class LoginForm extends Component {
 	
@@ -40,7 +39,6 @@ export default class LoginForm extends Component {
 	//Handles Verification 
 	handleSubmit(e){
 		e.preventDefault()
-		console.log("Triggered"); 
 		const { socket } = this.props
 		const { nickname } = this.state
 		socket.emit(VERIFY_USER, nickname, this.setUser)
@@ -74,7 +72,6 @@ export default class LoginForm extends Component {
 			          		onChange={this.handleChange}
 			          		placeholder="Enter here!"
 			          		/>
-						<Button onClick={this.handleSubmit}>Start</Button>
 			          	<div className="error">{error ? error : ""}</div>
 				</form>
 			</div>

@@ -5,7 +5,6 @@ import Messages from './Messages'
 import MessageInput from './MessageInput'
 import ChatHeading from './ChatHeading'
 import ChatSideBar from './ChatSideBar'
-import {Col, Container, Row} from 'reactstrap'; 
 
 export default class ChatContainer extends Component {
 	constructor(props) {
@@ -107,21 +106,18 @@ export default class ChatContainer extends Component {
 		const { user, logout } = this.props 
 		const { chats, activeChat } = this.state
 		return (
-			<Container className="chat-container">
-				<Row>
-				<Col md={4}>
+			<div className="container chat-box-container">
 				<ChatSideBar 
 					logout={logout}
 					chats={chats} 
 					user={user}
 					activeChat={activeChat}
 					setActiveChat={this.setActiveChat}
-                    onSendPrivateMessage={this.sendOpenPrivateMessage}/>
-				</Col>
-				<Col md={8} className="chat-room-container">
+                    onSendPrivateMessage={this.sendOpenPrivateMessage}/>		
+				<div className="chat-room-container">
 					{
 						activeChat !== null ? (
-							<Container className="chat-room">
+							<div className="chat-room">
 								<ChatHeading 
 									name={activeChat.name} />
 								<Messages 
@@ -140,15 +136,14 @@ export default class ChatContainer extends Component {
 										}
 									}
 									/>
-							</Container>
+							</div>
 							): 
 							<div className="ChatRoom choose">
 								<h3>Choose a chat</h3>
 							</div>
 					}
-				</Col>
-				</Row>
-			</Container>
+				</div>
+			</div>
 		);
 	}
 }
